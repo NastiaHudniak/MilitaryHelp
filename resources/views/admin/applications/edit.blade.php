@@ -112,7 +112,9 @@
                     backButton.addEventListener('click', function() {
                         if (formChanged) {
                             const confirmLeave = confirm("Ви внесли зміни. Бажаєте зберегти їх перед тим, як вийти?");
-                            if (!confirmLeave) {
+                            if (confirmLeave) {
+                                form.submit();
+                            } else {
                                 window.location.href = "{{ route('admin.applications.index') }}";
                             }
                         } else {
