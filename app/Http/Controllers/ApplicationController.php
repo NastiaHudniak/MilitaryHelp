@@ -20,15 +20,16 @@ class ApplicationController extends Controller
 
     public function create()
     {
+        $applications = Application::all();
         $users = User::all();
         $categories = Category::all();
-        return view('admin.applications.create', compact('users','categories', ));
+        return view('admin.applications.create', compact('applications','users','categories', ));
     }
 
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'category_id' => 'required|exists:application_categories,id',
+            'category_id' => 'required|exists:categories,id',
             'volunteer_id' => 'required|exists:users,id',
             'millitary_id' => 'required|exists:users,id',
             'title' => 'required|string|max:255',
