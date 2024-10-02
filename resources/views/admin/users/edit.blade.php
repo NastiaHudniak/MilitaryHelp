@@ -7,7 +7,7 @@
                 <h2>Редагування користувача "{{$user->login}}"</h2>
             </div>
             <div class="card-body">
-                <form action="{{ route('admin.users.update', $user->id) }}" method="POST">
+                <form id="user-form" action="{{ route('admin.users.update', $user->id) }}" method="POST">
                     @csrf
                     @method('PUT')
                     @if ($errors->any())
@@ -105,8 +105,27 @@
                             }
                         });
 
-                        document.getElementById('back-button').addEventListener('click', function() {
-                            window.location.href = "{{ route('admin.users.index') }}";
+                        let formChanged = false;
+                        const form = document.getElementById('user-form');
+                        const backButton = document.getElementById('back-button');
+
+
+                        form.addEventListener('change', function() {
+                            formChanged = true;
+                        });
+
+
+                        backButton.addEventListener('click', function() {
+                            if (formChanged) {
+                                const confirmLeave = confirm("Ви внесли зміни. Бажаєте зберегти їх перед тим, як вийти?");
+                                if (confirmLeave) {
+                                    form.submit();
+                                } else {
+                                    window.location.href = "{{ route('admin.users.index') }}";
+                                }
+                            } else {
+                                window.location.href = "{{ route('admin.users.index') }}";
+                            }
                         });
                     </script>
                 </form>
