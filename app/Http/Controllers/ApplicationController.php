@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Application;
 use App\Models\User;
-use App\Models\ApplicationCategory;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -12,15 +12,17 @@ class ApplicationController extends Controller
 {
     public function index()
     {
-        $applications = Application::with(['category', 'volunteer_id', 'military_id '])->get();
-        return view('admin.applications.index', compact('applications'));
+        $users = User::all();
+        $categories = Category::all();
+        $applications = Application::all();
+        return view('admin.applications.index', compact('applications','users', 'categories'));
     }
 
     public function create()
     {
-        $categories = ApplicationCategory::all();
-        $users = User::all(); // Отримуємо всіх користувачів для вибору волонтера та військового
-        return view('admin.applications.create', compact('categories', 'users'));
+        $users = User::all();
+        $categories = Category::all();
+        return view('admin.applications.create', compact('users','categories', ));
     }
 
     public function store(Request $request)
@@ -28,7 +30,7 @@ class ApplicationController extends Controller
         $validator = Validator::make($request->all(), [
             'category_id' => 'required|exists:application_categories,id',
             'volunteer_id' => 'required|exists:users,id',
-            'military_id' => 'required|exists:users,id',
+            'millitary_id' => 'required|exists:users,id',
             'title' => 'required|string|max:255',
             'description' => 'required|string|max:1000',
             'status' => 'required|string|max:255',
@@ -42,7 +44,7 @@ class ApplicationController extends Controller
         Application::create([
             'category_id' => $request->input('category_id'),
             'volunteer_id' => $request->input('volunteer_id'),
-            'military_id' => $request->input('military_id'),
+            'millitary_id' => $request->input('millitary_id'),
             'title' => $request->input('title'),
             'description' => $request->input('description'),
             'status' => $request->input('status'),
@@ -55,8 +57,8 @@ class ApplicationController extends Controller
     public function edit($id)
     {
         $application = Application::findOrFail($id);
-        $categories = ApplicationCategory::all();
-        $users = User::all(); // Отримуємо всіх користувачів для вибору волонтера та військового
+        $categories = Category::all();
+        $users = User::all();
         return view('admin.applications.edit', compact('application', 'categories', 'users'));
     }
 
@@ -67,7 +69,7 @@ class ApplicationController extends Controller
         $validated = $request->validate([
             'category_id' => 'required|exists:application_categories,id',
             'volunteer_id' => 'required|exists:users,id',
-            'military_id' => 'required|exists:users,id',
+            'millitary_id' => 'required|exists:users,id',
             'title' => 'required|string|max:255',
             'description' => 'required|string|max:1000',
             'status' => 'required|string|max:255',
@@ -88,7 +90,7 @@ class ApplicationController extends Controller
     public function search(Request $request)
     {
         $query = $request->input('query');
-        $applications = Application::with(['category', 'volunteer', 'military'])
+        $applications = Application::with(['category', 'volunteer', 'millitary'])
             ->where('title', 'like', "%{$query}%")
             ->orWhere('description', 'like', "%{$query}%")
             ->get();
@@ -102,7 +104,7 @@ class ApplicationController extends Controller
         $category = $request->input('category_id');
         $status = $request->input('status');
 
-        $applications = Application::with(['category', 'volunteer', 'military'])
+        $applications = Application::with(['category', 'volunteer', 'millitary'])
             ->when($query, function($queryBuilder) use ($query) {
                 $queryBuilder->where('title', 'like', "%{$query}%")
                     ->orWhere('description', 'like', "%{$query}%");
