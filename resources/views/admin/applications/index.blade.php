@@ -156,20 +156,20 @@
                         data.applications.forEach(application => {
                             const row = document.createElement('tr');
                             row.innerHTML = `
-                                <td>${application.title}</td>
-                                <td>${application.category.name}</td>
-                                <td>${application.description}</td>
-                                <td>${application.status}</td>
-                                <td>${application.comment}</td>
-                                <td>${application.volunteer_name ? application.volunteer_name : ''}</td>
-                                <td>${application.military_name ? application.military_name : ''}</td>
-                                <td>
-                                    <a href="/admin/applications/${application.id}/edit" class="btn btn-warning btn-sm">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                    <form action="/admin/applications/${application.id}" method="POST" style="display:inline;" onsubmit="return confirmDelete('${application.title}')">
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        @csrf
+                        <td>${application.title}</td>
+                        <td>${application.category.name}</td>
+                        <td>${application.description}</td>
+                        <td>${application.status}</td>
+                        <td>${application.comment}</td>
+                        <td>${application.volunteer ? application.volunteer.name : ''}</td>
+                        <td>${application.millitary ? application.millitary.name : ''}</td>
+                        <td>
+                            <a href="/admin/applications/${application.id}/edit" class="btn btn-warning btn-sm">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <form action="/admin/applications/${application.id}" method="POST" style="display:inline;" onsubmit="return confirmDelete('${application.title}')">
+                                <input type="hidden" name="_method" value="DELETE">
+                                @csrf
                             <button type="submit" class="btn btn-danger btn-sm" style="margin-left: 10px;">
                                 <i class="fas fa-trash"></i>
                             </button>
@@ -187,8 +187,42 @@
             return confirm(`Ви впевнені, що хочете видалити заявку "${title}"?`);
         }
 
+        let sortOrder = {};
+
         function sortTable(columnIndex) {
-            // Implement your sorting logic here
+            const table = document.getElementById("application-table-body");
+            const rows = Array.from(table.getElementsByTagName("tr"));
+
+            let ascending = sortOrder[columnIndex] === "asc" ? false : true;
+            sortOrder[columnIndex] = ascending ? "asc" : "desc";
+
+            rows.sort((a, b) => {
+                const cellA = a.getElementsByTagName("td")[columnIndex].innerText.toLowerCase();
+                const cellB = b.getElementsByTagName("td")[columnIndex].innerText.toLowerCase();
+
+                if (cellA < cellB) return ascending ? -1 : 1;
+                if (cellA > cellB) return ascending ? 1 : -1;
+                return 0;
+            });
+
+            while (table.firstChild) {
+                table.removeChild(table.firstChild);
+            }
+
+            rows.forEach(row => table.appendChild(row));
+
+            updateSortIcons(columnIndex, ascending);
+        }
+
+        function updateSortIcons(columnIndex, ascending) {
+            for (let i = 0; i < 7; i++) {
+                const icon = document.getElementById(`sortIcon${i}`);
+                if (i === columnIndex) {
+                    icon.className = ascending ? "fas fa-sort-up" : "fas fa-sort-down";
+                } else {
+                    icon.className = "fas fa-sort";
+                }
+            }
         }
     </script>
 @endsection

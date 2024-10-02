@@ -56,18 +56,18 @@ class ApplicationController extends Controller
 
     public function edit($id)
     {
-        $application = Application::findOrFail($id);
+        $applications = Application::findOrFail($id);
         $categories = Category::all();
         $users = User::all();
-        return view('admin.applications.edit', compact('application', 'categories', 'users'));
+        return view('admin.applications.edit', compact('applications', 'categories', 'users'));
     }
 
     public function update(Request $request, $id)
     {
-        $application = Application::findOrFail($id);
+        $applications = Application::findOrFail($id);
 
         $validated = $request->validate([
-            'category_id' => 'required|exists:application_categories,id',
+            'category_id' => 'required|exists:categories,id',
             'volunteer_id' => 'required|exists:users,id',
             'millitary_id' => 'required|exists:users,id',
             'title' => 'required|string|max:255',
@@ -76,14 +76,14 @@ class ApplicationController extends Controller
             'comment' => 'nullable|string|max:1000',
         ]);
 
-        $application->update($validated);
+        $applications->update($validated);
 
         return redirect()->route('admin.applications.index')->with('success', 'Заявка оновлена успішно!');
     }
 
-    public function destroy(Application $application)
+    public function destroy(Application $applications)
     {
-        $application->delete();
+        $applications->delete();
         return redirect()->route('admin.applications.index')->with('error', 'Заявка видалена успішно!');
     }
 
