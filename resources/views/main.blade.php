@@ -13,9 +13,8 @@
 
 <nav>
     <ul>
-        <li><a href="{{ url('/about') }}" class="btn btn-info" role="button">Про нас</a></li>
-        <li><a href="{{ url('/contact') }}" class="btn btn-info" role="button">Контакти</a></li>
-        <li><a href="{{ url('/hobbies') }}" class="btn btn-info" role="button">Хобі</a></li>
+        <li><a href="{{ url('/admin/users/') }}" class="btn btn-info" role="button">Користувачі</a></li>
+        <li><a href="{{ url('/admin/applications/') }}" class="btn btn-info" role="button">Заявки</a></li>
     </ul>
 </nav>
 <style>

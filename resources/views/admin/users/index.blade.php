@@ -5,7 +5,9 @@
     <div class="container" style="max-width: 1300px; margin-top: 100px;">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1 class="mb-0">Користувачі</h1>
-            <a href="{{ url('/admin') }}" class="btn btn-outline-secondary">
+            <a href="{{ url('/admin/applications') }}" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left"></i> Перейти до заявок</a>
+            <a href="{{ url('/') }}" class="btn btn-outline-secondary">
                 <i class="fas fa-arrow-left"></i> Повернутися на головну</a>
         </div>
 

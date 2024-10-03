@@ -115,7 +115,7 @@
                             if (confirmLeave) {
                                 form.submit();
                             } else {
-                                
+
                                 window.location.href = "{{ route('admin.applications.index') }}";
                             }
                         } else {
