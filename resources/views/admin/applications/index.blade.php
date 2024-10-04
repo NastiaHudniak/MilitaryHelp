@@ -1,14 +1,11 @@
 @extends('layouts.app')
+@include('layouts.header_admin')
 
 @section('content')
-    <div class="container" style="max-width: 1300px; margin-top: 100px;">
+
+    <div class="container" style="max-width: 1300px;">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1 class="mb-0">Заявки</h1>
-            <a href="{{ url('/admin/users') }}" class="btn btn-outline-secondary">
-                <i class="fas fa-arrow-left"></i> Перейти до користувачів</a>
-            <a href="{{ url('/') }}" class="btn btn-outline-secondary">
-                <i class="fas fa-arrow-left"></i> Повернутися на головну
-            </a>
         </div>
 
         <div class="row mb-4">
