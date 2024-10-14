@@ -7,6 +7,7 @@ use App\Http\Middleware\Check;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\LandingController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -52,3 +53,6 @@ Route::prefix('admin')->group(function () {
 //});
 
 
+Route::prefix('user')->group(function () {
+    Route::get('/landing', [LandingController::class, 'index'])->name('user.landing.index');
+});

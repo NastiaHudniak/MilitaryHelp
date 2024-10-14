@@ -3,7 +3,7 @@
 @section('content')
 
     <div class="container" style="max-width: 1300px; ">
-        
+
 
         <div class="row mb-4">
             <div class="col-md-4 d-flex align-items-end">
