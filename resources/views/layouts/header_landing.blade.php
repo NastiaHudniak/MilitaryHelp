@@ -108,7 +108,7 @@
         <a class="nav-link {{ request()->is('admin/applications') ? 'active' : '' }}" href="{{ url('/admin/applications') }}">
             Волонтери
         </a>
-        <a class="login-button" href="{{ url('/login') }}">
+        <a class="login-button" href="{{ url('auth/login') }}">
             Увійти
         </a>
     </nav>

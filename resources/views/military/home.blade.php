@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@include('layouts.header_landing')
+@include('layouts.header_military')
 @section('content')
     <img class="background-icon" src="{{ asset('images/лендінг/background1.png') }}" alt="Background">
     <div class="main-content" style="font-family: 'Jura', sans-serif;">

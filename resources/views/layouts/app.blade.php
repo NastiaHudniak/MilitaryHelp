@@ -33,7 +33,7 @@
     </div>
 @endif
 
-<div class="container mt-5" style="max-width: 1800px;">
+<div class="container" style="max-width: 1800px; margin-top: 0px;">
     @yield('content')
 </div>
 

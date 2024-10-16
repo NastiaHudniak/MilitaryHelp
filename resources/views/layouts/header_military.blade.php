@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Лендінг')</title>
+    <title>@yield('title', 'Адмін Панель')</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -19,18 +19,20 @@
             width: 100%;
             background-color: #2b4324;
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            padding: 8px 24px; /* Додано padding */
+            padding: 8px;
             color: white;
             font-family: 'Jura', sans-serif;
         }
-        .logo {
-            margin-right: 24px; /* Відстань між лого та навігацією */
+        .logo-and-home {
+            display: flex;
+            align-items: center;
+            gap: 24px;
         }
         .navbar-custom {
             display: flex;
-            justify-content: space-around; /* Розподіл елементів по всій ширині */
-            flex-grow: 1; /* Дозволяє навігації займати доступний простір */
+            gap: 40px;
             font-weight: 600;
             letter-spacing: 0.12em;
             font-size: 24px;
@@ -73,20 +75,9 @@
             width: 100%;
         }
 
-        .login-button {
+        .account {
             display: flex;
             align-items: center;
-            justify-content: center;
-            width: 133px; /* Ширина кнопки */
-            height: 52px; /* Висота кнопки */
-            background-color: #f8f9ab; /* Жовтий колір фону */
-            border-radius: 10px; /* Радіус кута */
-            color: #2b4324; /* Темно-зелений колір тексту */
-            text-align: center; /* Центрування тексту */
-            font-weight: 500; /* Жирний текст */
-            cursor: pointer; /* Курсор у вигляді руки при наведенні */
-            text-decoration: none; /* Без підкреслення */
-            line-height: 36px; /* Вирівнює текст по вертикалі */
         }
     </style>
 </head>
@@ -94,24 +85,23 @@
 
 <!-- Admin Header -->
 <header class="header-admin">
-    <div class="logo">
-        <img src="{{ asset('images/logo.jpg') }}" alt="Logo" style="width: 70px; height: auto; border-radius: 50%;">
+    <div class="logo-and-home">
+        <img src="{{ asset('images/logo.jpg') }}" alt="Logo" class="mr-3" style="width: 70px; height: auto; border-radius: 50%;">
+        <i class="bi bi-house" style="color: rgba(250, 251, 201, 1); font-size: 2rem; "></i>
     </div>
 
     <nav class="navbar-custom">
         <a class="nav-link {{ request()->is('admin/users') ? 'active' : '' }}" href="{{ url('/admin/users') }}">
-            Допомога
+            Користувачі
         </a>
         <a class="nav-link {{ request()->is('admin/applications') ? 'active' : '' }}" href="{{ url('/admin/applications') }}">
-            Про нас
-        </a>
-        <a class="nav-link {{ request()->is('admin/applications') ? 'active' : '' }}" href="{{ url('/admin/applications') }}">
-            Волонтери
-        </a>
-        <a class="login-button" href="{{ url('/login') }}">
-            Увійти
+            Заявки
         </a>
     </nav>
+
+    <div class="account">
+        <i class="bi bi-person-circle" style="color: rgba(250, 251, 201, 1); font-size: 2rem; "></i>
+    </div>
 </header>
 
 <!-- Основний Контент -->
