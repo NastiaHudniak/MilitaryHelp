@@ -9,6 +9,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\MilitaryHomeController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -57,6 +58,12 @@ Route::prefix('admin')->group(function () {
 Route::prefix('user')->group(function () {
     Route::get('/landing', [LandingController::class, 'index'])->name('user.landing.index');
 });
+
+Route::prefix('user')->group(function () {
+    Route::get('/military', [MilitaryHomeController::class, 'index'])->name('user.military.index');
+});
+
+
 
 Route::prefix('auth')->group(function () {
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');

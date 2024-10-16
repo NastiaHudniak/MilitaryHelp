@@ -7,8 +7,9 @@
     <title>@yield('title', 'Адмін Панель')</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jura:wght@600&display=swap">
+    <link href="{{ asset('css/icon.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/global.css') }}" rel="stylesheet">
     <style>
         body {
             margin: 0;
@@ -16,12 +17,10 @@
             width: 100%;
         }
         .header-admin {
-            width: 100%;
-            background-color: #2b4324;
+            background-color: var(--green-800);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 8px;
             color: white;
             font-family: 'Jura', sans-serif;
         }
@@ -30,78 +29,88 @@
             align-items: center;
             gap: 24px;
         }
-        .navbar-custom {
+        .navbar-search {
             display: flex;
-            gap: 40px;
+            justify-content: space-around;
+            align-items: center;
             font-weight: 600;
             letter-spacing: 0.12em;
             font-size: 24px;
+            gap: 30px;
         }
-        .navbar-custom .nav-link {
-            color: white;
+
+
+
+
+        .search-title {
+            width: 100%;
             position: relative;
-            text-decoration: none;
-            transition: color 0.3s ease-in-out;
+            border-radius: 40px;
+            background-color: var(--green-300);
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            padding: 5px 20px;
+            box-sizing: border-box;
+            text-align: left;
+            font-size: var(--bold-28-8-size);
+            color: var(--green-500);
+            gap: 150px;
         }
 
-        .navbar-custom .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            background-color: #fafbc9;
-            left: 0;
-            bottom: -2px;
-            transition: width 0.3s ease-in-out;
-        }
-
-        .navbar-custom .nav-link:hover::after {
-            width: 100%;
-        }
-
-        .navbar-custom .nav-link:hover {
-            color: #fafbc9;
-        }
-
-        .navbar-custom .nav-link:active {
-            transform: scale(0.95);
-        }
-
-        .navbar-custom .nav-link.active {
-            color: #fafbc9;
-        }
-
-        .navbar-custom .nav-link.active::after {
-            width: 100%;
-        }
-
-        .account {
+        .search {
+            width: 100px;
+            position: relative;
+            letter-spacing: 0.08em;
+            line-height: 30px;
             display: flex;
             align-items: center;
+            flex-shrink: 0;
+            color: var(--green-500);
         }
+
+        .navbar-right {
+            display: flex;
+            align-items: center; /* Вирівнювання по вертикалі по центру */
+            justify-content: space-between;
+            gap: 20px; /* Відстань між іконками */
+        }
+
+        .navbar-right span {
+            display: flex;
+            align-items: center; /* Вирівнювання тексту або іконок по центру вертикально */
+            justify-content: center;
+            flex: 1; /* Авто-розтягування елементів по ширині */
+        }
+
+
+
     </style>
 </head>
 <body>
 
 <!-- Admin Header -->
 <header class="header-admin">
-    <div class="logo-and-home">
-        <img src="{{ asset('images/logo.jpg') }}" alt="Logo" class="mr-3" style="width: 70px; height: auto; border-radius: 50%;">
-        <i class="bi bi-house" style="color: rgba(250, 251, 201, 1); font-size: 2rem; "></i>
-    </div>
-
-    <nav class="navbar-custom">
-        <a class="nav-link {{ request()->is('admin/users') ? 'active' : '' }}" href="{{ url('/admin/users') }}">
-            Користувачі
-        </a>
-        <a class="nav-link {{ request()->is('admin/applications') ? 'active' : '' }}" href="{{ url('/admin/applications') }}">
-            Заявки
-        </a>
+    <nav class="logo-and-home">
+        <img src="{{ asset('images/logo.jpg') }}" alt="Logo" class="mr" style="width: 70px; height: auto; border-radius: 50%;">
+        <span class="fluent--home-20-regular" style="color: var(--yellow-400); font-size: 37px; "></span>
     </nav>
 
-    <div class="account">
-        <i class="bi bi-person-circle" style="color: rgba(250, 251, 201, 1); font-size: 2rem; "></i>
-    </div>
+    <nav class="navbar-search">
+        <div class="search-title">
+            <a class="search">Пошук</a>
+            <span class="mynaui--search"  style="color: var(--green-800); font-size: 37px; "></span>
+        </div>
+
+        <span class="oui--filter" style="color: var(--yellow-400); font-size: 37px; " ></span>
+    </nav>
+
+    <nav class="navbar-right">
+        <span class="fluent-mdl2--add-to" style="color: var(--yellow-400); font-size: 37px; "></span>
+        <span class="solar--history-bold-duotone" style="color: var(--yellow-400); font-size: 37px; "></span>
+        <span class="material-symbols-light--account-circle" style="color: var(--yellow-400); font-size: 37px; "></span>
+    </nav>
 </header>
 
 <!-- Основний Контент -->
