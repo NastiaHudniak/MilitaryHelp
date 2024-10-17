@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Адмін Панель')</title>
+    <title>@yield('title', 'Користувач')</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jura:wght@600&display=swap">
@@ -16,7 +16,7 @@
             padding: 0;
             width: 100%;
         }
-        .header-admin {
+        .header-military {
             background-color: var(--green-800);
             display: flex;
             justify-content: space-between;
@@ -28,6 +28,7 @@
             display: flex;
             align-items: center;
             gap: 24px;
+            margin: 10px 20px;
         }
         .navbar-search {
             display: flex;
@@ -37,10 +38,8 @@
             letter-spacing: 0.12em;
             font-size: 24px;
             gap: 30px;
+            margin: 10px 20px;
         }
-
-
-
 
         .search-title {
             width: 100%;
@@ -75,6 +74,7 @@
             align-items: center; /* Вирівнювання по вертикалі по центру */
             justify-content: space-between;
             gap: 20px; /* Відстань між іконками */
+            margin: 10px 20px;
         }
 
         .navbar-right span {
@@ -91,7 +91,7 @@
 <body>
 
 <!-- Admin Header -->
-<header class="header-admin">
+<header class="header-military">
     <nav class="logo-and-home">
         <img src="{{ asset('images/logo.jpg') }}" alt="Logo" class="mr" style="width: 70px; height: auto; border-radius: 50%;">
         <span class="fluent--home-20-regular" style="color: var(--yellow-400); font-size: 37px; "></span>
