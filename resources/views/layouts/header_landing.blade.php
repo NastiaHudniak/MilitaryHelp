@@ -9,6 +9,8 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jura:wght@600&display=swap">
+    <link href="{{ asset('css/icon.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/global.css') }}" rel="stylesheet">
     <style>
         body {
             margin: 0;
@@ -77,16 +79,24 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 133px; /* Ширина кнопки */
-            height: 52px; /* Висота кнопки */
-            background-color: #f8f9ab; /* Жовтий колір фону */
-            border-radius: 10px; /* Радіус кута */
-            color: #2b4324; /* Темно-зелений колір тексту */
-            text-align: center; /* Центрування тексту */
-            font-weight: 500; /* Жирний текст */
-            cursor: pointer; /* Курсор у вигляді руки при наведенні */
-            text-decoration: none; /* Без підкреслення */
-            line-height: 36px; /* Вирівнює текст по вертикалі */
+            width: 133px;
+            height: 52px;
+            background-color: var(--yellow-500);
+            border-radius: 10px;
+            color: var(--green-800);
+            text-align: center;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            line-height: 36px;
+            transition: background-color 0.3s ease, color 0.3s ease; /* Анімація зміни кольору */
+        }
+
+        .login-button:hover {
+            background-color: var(--green-500);
+            color: var(--yellow-200);
+            text-decoration: none; /* Без підкреслення при наведенні */
+            transform: scale(1.1);
         }
     </style>
 </head>

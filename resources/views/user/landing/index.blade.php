@@ -216,14 +216,19 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: #f8f9ab;
-        color: #2b4324;
+        background-color: var(--yellow-400);
+        color: var(--green-800);
         text-align: center;
         font-weight: 500;
         font-size: 24px;
-        /*cursor: pointer; /* Курсор у вигляді руки при наведенні */
-        /*text-decoration: none; /* Без підкреслення */
-        /*line-height: 36px; /* Вирівнює текст по вертикалі */
+        transition: background-color 0.3s ease, color 0.3s ease; /* Анімація зміни кольору */
+    }
+
+    .learn-more-button:hover {
+        background-color: var(--green-500);
+        color: var(--yellow-200);
+        text-decoration: none;
+        transform: scale(1.1);
     }
 
     .info-title {
@@ -272,6 +277,13 @@
         display: flex;
         align-items: center; /* Вирівнює іконки та текст по центру по вертикалі */
         gap: 20px; /* Проміжок між іконкою та текстом */
+        transition: background-color 0.3s ease, color 0.3s ease; /* Анімація зміни кольору */
+    }
+
+    .service-item:hover {
+        background-color: var(--yellow-500);
+        text-decoration: none;
+        transform: scale(1.1);
     }
 
 
@@ -330,6 +342,13 @@
         flex-direction: column; /* Розміщення елементів вертикально */
         align-items: center; /* Вирівнює елементи по центру по горизонталі */
         gap: 8px; /* Проміжок між іконкою та текстом */
+        transition: background-color 0.3s ease, color 0.3s ease; /* Анімація зміни кольору */
+    }
+
+    .reason-item:hover {
+        background-color: var(--yellow-400);
+        text-decoration: none;
+        transform: scale(1.1);
     }
     .reason-item h3 {
         font-size: 26px; /* Розмір шрифту для заголовків h3 */
