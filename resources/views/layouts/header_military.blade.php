@@ -120,7 +120,7 @@
 </header>
 
 <!-- Основний Контент -->
-<div class="container mt-5" style="max-width: 1800px;">
+<div class="container" style="max-width: 1800px;">
     @yield('content')
 </div>
 

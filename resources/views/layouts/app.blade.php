@@ -35,7 +35,7 @@
     </div>
 @endif
 
-<div class="container" style="max-width: 1800px; margin-top: 0px; padding: 0px 40px;">
+<div class="container" style="max-width: 1800px; margin: 0px; padding: 0px 0px;">
     @yield('content')
 </div>
 

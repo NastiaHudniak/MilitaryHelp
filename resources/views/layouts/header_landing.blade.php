@@ -25,7 +25,12 @@
             padding: 8px 24px; /* Додано padding */
             color: white;
             font-family: 'Jura', sans-serif;
+            position: sticky; /* Робимо хедер прикріпленим */
+            top: 0;
+            z-index: 1000;
         }
+
+
         .logo {
             margin-right: 24px; /* Відстань між лого та навігацією */
         }
@@ -104,20 +109,14 @@
 
 <!-- Admin Header -->
 <header class="header-admin">
-    <div class="logo">
-        <img src="{{ asset('images/logo.jpg') }}" alt="Logo" style="width: 70px; height: auto; border-radius: 50%;">
-    </div>
+    <a class="logo" href="#logos">
+        <img src="{{ asset('images/logo.jpg') }}"   alt="Logo" style="width: 70px; height: auto; border-radius: 50%;">
+    </a>
 
     <nav class="navbar-custom">
-        <a class="nav-link {{ request()->is('admin/users') ? 'active' : '' }}" href="{{ url('/admin/users') }}">
-            Допомога
-        </a>
-        <a class="nav-link {{ request()->is('admin/applications') ? 'active' : '' }}" href="{{ url('/admin/applications') }}">
-            Про нас
-        </a>
-        <a class="nav-link {{ request()->is('admin/applications') ? 'active' : '' }}" href="{{ url('/admin/applications') }}">
-            Волонтери
-        </a>
+        <a href="#help-section" class="nav-link">Допомога</a>
+        <a href="#about-section" class="nav-link">Про нас</a>
+        <a href="#volunteers-section" class="nav-link">Волонтери</a>
         <a class="login-button" href="{{ url('auth/login') }}">
             Увійти
         </a>
@@ -125,7 +124,7 @@
 </header>
 
 <!-- Основний Контент -->
-<div class="container mt-5" style="max-width: 1800px;">
+<div class="container" style="max-width: 1800px;">
     @yield('content')
 </div>
 

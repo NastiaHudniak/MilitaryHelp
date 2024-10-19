@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @include('layouts.header_landing')
 @section('content')
-    <img class="background-icon" src="{{ asset('images/лендінг/background1.png') }}" alt="Background">
+    <img class="background-icon" src="{{ asset('images/лендінг/background1.png') }}" id="logos" alt="Background">
     <div class="main-content" style="font-family: 'Jura', sans-serif;">
         <div class="title-parent">
             <div class="title">
@@ -14,8 +14,8 @@
         </div>
         <img class="vector1-icon" alt="" src="{{ asset('images/лендінг/vector1.svg') }}">
         <img class="vector2-icon" alt="" src="{{ asset('images/лендінг/vector2.svg') }}">
-        <div class="info-section">
-            <div class="info-title">
+        <div class="info-section" id="help-section">
+            <div class="info-title" style="margin-top:40px;  ">
                 ВІЙСЬКОВІ ПУБЛІКУЮТЬ ЗАЯВКИ ЗІ СВОЇМИ ПОТРЕБАМИ -
                 <span class="highlight">ВОЛОНТЕРИ ДОПОМАГАЮТЬ</span>
             </div>
@@ -38,7 +38,7 @@
             </div>
         </div>
         <img class="vector3-icon" alt="" src="{{ asset('images/лендінг/vector3.svg') }}">
-        <div class="why-us-section">
+        <div class="why-us-section" id="about-section">
             <div style="color: #f5f786"  class="reasons-title"> Чому саме ми? </div>
             <div class="reasons" style="font-size:22px">
                 <div class="reason-item" >
@@ -60,7 +60,7 @@
             </div>
         </div>
 
-        <div class="volunteers-section">
+        <div class="volunteers-section" id="volunteers-section">
             <div style="color: #8fbc82" class="volunteers-title"> Що ми можемо надати? </div>
             <div class="otziv-parent">
                 <div class="otziv">
@@ -141,15 +141,12 @@
             </div>
 
         </div>
-
-
-
-
-
     </div>
 
     @include('layouts.footer_landing')
 @endsection
+
+
 
 <style>
     body {
@@ -159,6 +156,7 @@
     * {
         box-sizing: border-box;
     }
+
 
     .main-content {
         font-family: 'Arial', sans-serif;
@@ -509,4 +507,16 @@
 
     // Змінюємо фон кожні 5 секунд
     setInterval(changeBackground, 5000);
+
+
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
 </script>

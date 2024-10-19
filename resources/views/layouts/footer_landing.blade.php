@@ -9,113 +9,117 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jura:wght@600&display=swap">
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-        }
-        .header-admin {
-            width: 100%;
-            background-color: #2b4324;
-            display: flex;
-            align-items: center;
-            padding: 8px 24px; /* Додано padding */
-            color: white;
-            font-family: 'Jura', sans-serif;
-        }
-        .logo {
-            margin-right: 24px; /* Відстань між лого та навігацією */
-        }
-        .navbar-custom {
-            display: flex;
-            justify-content: space-around; /* Розподіл елементів по всій ширині */
-            flex-grow: 1; /* Дозволяє навігації займати доступний простір */
-            font-weight: 600;
-            letter-spacing: 0.12em;
-            font-size: 24px;
-        }
-        .navbar-custom .nav-link {
-            color: white;
-            position: relative;
-            text-decoration: none;
-            transition: color 0.3s ease-in-out;
-        }
 
-        .navbar-custom .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            background-color: #fafbc9;
-            left: 0;
-            bottom: -2px;
-            transition: width 0.3s ease-in-out;
-        }
-
-        .navbar-custom .nav-link:hover::after {
-            width: 100%;
-        }
-
-        .navbar-custom .nav-link:hover {
-            color: #fafbc9;
-        }
-
-        .navbar-custom .nav-link:active {
-            transform: scale(0.95);
-        }
-
-        .navbar-custom .nav-link.active {
-            color: #fafbc9;
-        }
-
-        .navbar-custom .nav-link.active::after {
-            width: 100%;
-        }
-
-        .login-button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 133px; /* Ширина кнопки */
-            height: 52px; /* Висота кнопки */
-            background-color: #f8f9ab; /* Жовтий колір фону */
-            border-radius: 10px; /* Радіус кута */
-            color: #2b4324; /* Темно-зелений колір тексту */
-            text-align: center; /* Центрування тексту */
-            font-weight: 500; /* Жирний текст */
-            cursor: pointer; /* Курсор у вигляді руки при наведенні */
-            text-decoration: none; /* Без підкреслення */
-            line-height: 36px; /* Вирівнює текст по вертикалі */
-        }
-    </style>
 </head>
 <body>
+<footer class="footer ">
+    <div class="row">
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="footer-logo">
+                <img src="{{ asset('images/logo.jpg') }}" alt="Logo" style="width: 80px; height: auto; border-radius: 50%;">
+                <h4 class="help" style="color: var(--yellow-500)">Military Help</h4>
+                <p style="color: var(--yellow-200)">Ми допомагаємо військовим та волонтерам знайти необхідну допомогу.</p>
+            </div>
+        </div>
 
-<!-- Admin Header -->
-<header class="header-admin">
-    <div class="logo">
-        <img src="{{ asset('images/logo.jpg') }}" alt="Logo" style="width: 70px; height: auto; border-radius: 50%;">
+        <div class="col-lg-4 col-md-6 mb-4">
+            <h5 style="color: var(--yellow-500)">Навігація по сторінці</h5>
+            <div class="list" style="color: var(--yellow-200)" >
+                <a style="color: var(--yellow-200)" href="#help-section" >Допомога</a>
+                <a style="color: var(--yellow-200)" href="#about-section" >Про нас</a>
+                <a style="color: var(--yellow-200)" href="#volunteers-section" >Волонтери</a>
+            </div>
+        </div>
+
+        <!-- Social Media Links -->
+        <div class="col-lg-4 col-md-12 mb-4">
+            <h5 style="color: var(--yellow-500)">Соціальні мережі</h5>
+            <div class="com">
+                <a href="https://www.facebook.com/profile.php?id=100013498512633" >
+                    <span class="iconoir--instagram" style=" font-size: 37px;"></span>
+                </a>
+                <a href="https://www.instagram.com/___aanastaasia___" >
+                    <span class="mdi--facebook" style=" font-size: 37px;"></span>
+                </a>
+                <a href="https://t.me/nas_tia_a" >
+                    <span class="ic--twotone-telegram" style=" font-size: 37px;"></span>
+                </a>
+                <a href="https://github.com/NastiaHudniak/MilitaryHelp" >
+                    <span class="bi--github" style=" font-size: 30px;"></span>
+                </a>
+            </div>
+        </div>
     </div>
 
-    <nav class="navbar-custom">
-        <a class="nav-link {{ request()->is('admin/users') ? 'active' : '' }}" href="{{ url('/admin/users') }}">
-            Допомога
-        </a>
-        <a class="nav-link {{ request()->is('admin/applications') ? 'active' : '' }}" href="{{ url('/admin/applications') }}">
-            Про нас
-        </a>
-        <a class="nav-link {{ request()->is('admin/applications') ? 'active' : '' }}" href="{{ url('/admin/applications') }}">
-            Волонтери
-        </a>
-        <a class="login-button" href="{{ url('/login') }}">
-            Увійти
-        </a>
-    </nav>
-</header>
+    <hr class="bg-white">
+
+    <!-- Footer Bottom Text -->
+    <div class="row">
+        <div class="col-md-6">
+            <p class="text-white-50">&copy; 2024 Наша Компанія. Усі права захищено.</p>
+        </div>
+        <div class="col-md-6 text-md-right">
+            <a href="{{ url('/privacy') }}" class="text-white-50">Політика конфіденційності</a>
+            <span class="text-white-50 mx-2">|</span>
+            <a href="{{ url('/terms') }}" class="text-white-50">Умови використання</a>
+        </div>
+    </div>
+</footer>
+
+<!-- Styles for Footer -->
+<style>
+    .footer {
+        background-color: var(--green-800);
+        padding: 20px 40px;
+    }
+
+    .footer-logo img {
+        margin-bottom: 12px;
+    }
+    .footer p, .footer a {
+        font-size: 16px;
+        color: white;
+        text-decoration: none;
+    }
+    .footer a:hover {
+        color: #f8f9ab;
+        text-decoration: underline;
+    }
+    .footer hr {
+        border-color: white;
+    }
+
+    .com{
+        display: flex; /* Вмикаємо Flexbox */
+        flex-direction: row; /* Розташовуємо елементи вертикально */
+        gap: 30px;
+    }
+
+    .list{
+        display: flex; /* Вмикаємо Flexbox */
+        flex-direction: column; /* Розташовуємо елементи вертикально */
+        gap: 30px;
+
+    }
+
+
+    .ic--twotone-telegram, .iconoir--instagram, .mdi--facebook, .bi--github{
+        color: var(--yellow-200);
+        transition: background-color 0.3s ease, color 0.3s ease; /* Анімація зміни кольору */
+
+    }
+
+    .ic--twotone-telegram:hover, .iconoir--instagram:hover, .mdi--facebook:hover, .bi--github:hover {
+        color: var(--yellow-500);
+        text-decoration: none; /* Без підкреслення при наведенні */
+        transform: scale(1.1);
+    }
+
+</style>
+
 
 <!-- Основний Контент -->
-<div class="container mt-5" style="max-width: 1800px;">
+<div class="container" style="max-width: 1800px;">
     @yield('content')
 </div>
 
