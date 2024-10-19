@@ -16,7 +16,7 @@
                     <div class="card-header" style="background-color: #FAFBC9; color: #2B4324;">
                         <h2>Вхід в акаунт</h2>
                     </div>
-                    <div class="card-body" style="background-color: #FCFDE1;">
+                    <div class="card-body" style="background-color: #fcfde1;">
                         <form action="{{ route('login') }}" method="POST">
                             @csrf
                             @if ($errors->any())
@@ -47,7 +47,7 @@
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <button type="submit" class="btn btn-login">Увійти</button>
+                            <button type="submit" class="btn btn-login" >Увійти</button>
                             <div class="divider">Або</div>
                             <div style="margin-top: 20px; text-align: center;">
                                 <p>У Вас немає акаунта? <a href="{{ route('register') }}">Зареєструватися</a></p>
@@ -90,14 +90,14 @@
             color: white;
         }
 
-        .form-control:focus {
-            border-color: #2C73BB;
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-        }
+            .form-control:focus {
+                border-color: #2C73BB;
+                box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+            }
 
-        .form-control{
-            background-color: #FEFEF2;
-        }
+            .form-control{
+                background-color: #FEFEF2;
+            }
 
 
         .input-group {

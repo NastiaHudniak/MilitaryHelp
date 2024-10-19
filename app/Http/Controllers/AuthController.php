@@ -92,7 +92,7 @@ class AuthController extends Controller
             return redirect()->route('admin.admin')->with('success', 'Авторизація успішна!');
         }
         elseif ($user->role_id == 2) {
-            return redirect()->route('admin.users.index')->with('success', 'Авторизація успішна!');
+            return redirect()->route('user.military.index')->with('success', 'Авторизація успішна!');
         }
         elseif ($user->role_id == 3) {
             return redirect()->route('admin.users.index')->with('success', 'Авторизація успішна!');

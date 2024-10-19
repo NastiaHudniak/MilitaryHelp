@@ -107,8 +107,14 @@
     </nav>
 
     <nav class="navbar-right">
-        <span class="fluent-mdl2--add-to" style="color: var(--yellow-400); font-size: 37px; "></span>
+        <a class="fluent-mdl2--add-to" style="color: var(--yellow-400); font-size: 37px;" href="{{ route('user.military.create') }}"></a>
         <span class="solar--history-bold-duotone" style="color: var(--yellow-400); font-size: 37px; "></span>
+        @if (!empty(Auth::user()->login))
+            <span class="mr-3" style="font-size: 22px; color: var(--yellow-400);">
+                {{ Auth::user()->login }}
+               <i class="fas fa-circle-check" style="color: var(--green-500); margin-left: 5px;"></i>
+            </span>
+        @endif
         <span class="material-symbols-light--account-circle" style="color: var(--yellow-400); font-size: 37px; "></span>
     </nav>
 </header>
@@ -121,5 +127,6 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </body>
 </html>

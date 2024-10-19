@@ -144,33 +144,7 @@
 
 
 
-        <div class="selectedCategory">
-            <div class="category">
-                <i class="fas fa-chevron-right" style="margin-left: 5px;"></i>
-                <p>Новинки</p>
-                <i class="fas fa-chevron-right" style="margin-left: 5px;"></i>
-            </div>
-            <div class="category">
-                <i class="fas fa-first-aid" style="margin-left: 5px;"></i>
-                <p>Знижки</p>
-                <i class="fas fa-chevron-right" style="margin-left: 5px;"></i>
-            </div>
-            <div class="category">
-                <i class="fas fa-chevron-right" style="margin-left: 5px;"></i>
-                <p>Балансири</p>
-                <i class="fas fa-chevron-right" style="margin-left: 5px;"></i>
-            </div>
-            <div class="category">
-                <i class="fas fa-chevron-right" style="margin-left: 5px;"></i>
-                <p>Пількери</p>
-                <i class="fas fa-chevron-right" style="margin-left: 5px;"></i>
-            </div>
-            <div class="category">
-                <i class="fas fa-chevron-right" style="margin-left: 5px;"></i>
-                <p>Тейл-спінери</p>
-                <i class="fas fa-chevron-right" style="margin-left: 5px;"></i>
-            </div>
-        </div>
+
 
     </div>
 
@@ -202,38 +176,6 @@
         object-fit: cover; /* Збереження пропорцій зображення */
         z-index: -1; /* Фон залишається за контентом */
     }
-
-
-
-
-
-    .selectedCategory {
-        margin-left: 100px;
-        background: #D0DAF3;
-        width: 30%;
-        padding: 30px;
-        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4);
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        gap: 10px;
-    }
-
-
-    .category{
-        text-align: left;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        gap: 10px;
-        font-size: 20px;
-    }
-
-    .category p{
-        width: 140px;
-    }
-
-
 
 
 

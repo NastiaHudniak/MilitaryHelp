@@ -10,6 +10,7 @@ use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MilitaryHomeController;
+use App\Http\Controllers\MilitaryAddApplicationsController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -60,7 +61,10 @@ Route::prefix('user')->group(function () {
 });
 
 Route::prefix('user')->group(function () {
-    Route::get('/military', [MilitaryHomeController::class, 'index'])->name('user.military.index');
+    Route::get('/military/index', [MilitaryHomeController::class, 'index'])->name('user.military.index');
+    Route::get('/military/create', [MilitaryAddApplicationsController::class, 'create'])->name('user.military.create');
+    Route::post ('/military', [MilitaryAddApplicationsController::class, 'store'])->name('user.military.store');
+
 });
 
 
