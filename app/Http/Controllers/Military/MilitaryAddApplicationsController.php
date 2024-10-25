@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Military;
 
+use App\Http\Controllers\Controller;
 use App\Models\Application;
 use App\Models\Category;
 use App\Models\User;

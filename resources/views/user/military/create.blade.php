@@ -3,11 +3,11 @@
 @section('content')
     <img class="background-icon" src="{{ asset('images/pattern.png') }}" alt="Background">
     <div class="container" style="max-width: 500px; margin: 0 auto; padding-bottom: 40px;">
-        <div class="card" style="box-shadow: 0 6px 10px rgba(0, 0, 0, 0.6);">
-            <div class="card-header" style="background-color: var(--yellow-200); color: var(--green-800);">
+        <div class="card" style="margin-top: 100px; box-shadow: 0 6px 10px rgba(0, 0, 0, 0.6);">
+            <div class="card-header" style="background-color: var(--yellow-400); color: var(--green-800);">
                 <h2>Додавання нової заявки</h2>
             </div>
-            <div class="card-body" style="background-color: #fcfde1;">
+            <div class="card-body" style="background-color: #FCFDE1;">
                 <form action="{{ route('user.military.store') }}" method="POST">
                     @csrf
                     @if ($errors->any())
@@ -19,7 +19,7 @@
                             </ul>
                         </div>
                     @endif
-                    <div class="form-group">
+                    <div class="form-group" style=" color: var(--green-800);">
                         <label for="title">Назва</label>
                         <input type="text" class="form-control" id="title" name="title" value="{{ old('title') }}" required>
                         @error('title')
@@ -27,7 +27,7 @@
                         @enderror
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group" style=" color: var(--green-800);">
                         <label for="category_id">Категорія</label>
                         <select class="form-control" id="category_id" name="category_id" required>
                             @foreach ($categories as $category)
@@ -41,7 +41,7 @@
                         @enderror
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group" style=" color: var(--green-800);">
                         <label for="description">Опис</label>
                         <input type="text" class="form-control" id="description" name="description" value="{{ old('description') }}" required>
                         @error('description')

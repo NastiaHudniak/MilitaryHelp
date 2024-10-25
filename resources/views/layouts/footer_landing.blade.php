@@ -78,15 +78,15 @@
     }
     .footer p, .footer a {
         font-size: 16px;
-        color: white;
+        color: var(--yellow-200);
         text-decoration: none;
     }
     .footer a:hover {
-        color: #f8f9ab;
+        color: var(--yellow-400);
         text-decoration: underline;
     }
     .footer hr {
-        border-color: white;
+        border-color: var(--yellow-200);
     }
 
     .com{

@@ -19,11 +19,11 @@
         }
         .header-admin {
             width: 100%;
-            background-color: #2b4324;
+            background-color: var(--green-800);
             display: flex;
             align-items: center;
             padding: 8px 24px; /* Додано padding */
-            color: white;
+            color: var(--green-200);
             font-family: 'Jura', sans-serif;
             position: sticky; /* Робимо хедер прикріпленим */
             top: 0;
@@ -43,7 +43,7 @@
             font-size: 24px;
         }
         .navbar-custom .nav-link {
-            color: white;
+            color: var(--green-200);
             position: relative;
             text-decoration: none;
             transition: color 0.3s ease-in-out;
@@ -54,7 +54,7 @@
             position: absolute;
             width: 0;
             height: 2px;
-            background-color: #fafbc9;
+            background-color: var(--yellow-200);
             left: 0;
             bottom: -2px;
             transition: width 0.3s ease-in-out;
@@ -65,7 +65,7 @@
         }
 
         .navbar-custom .nav-link:hover {
-            color: #fafbc9;
+            color: var(--yellow-200);
         }
 
         .navbar-custom .nav-link:active {
@@ -73,7 +73,7 @@
         }
 
         .navbar-custom .nav-link.active {
-            color: #fafbc9;
+            color: var(--green-200);
         }
 
         .navbar-custom .nav-link.active::after {

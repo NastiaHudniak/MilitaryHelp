@@ -2,6 +2,8 @@
 
 <head>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link href="{{ asset('css/icon.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/global.css') }}" rel="stylesheet">
 </head>
 
 @section('content')
@@ -9,7 +11,7 @@
         <div class="row" style="height: 100vh; display: flex;">
             <div class="col-md-6 d-flex justify-content-center align-items-center"   style="padding-bottom: 60px; padding-top: 60px;">
                 <div class="card" style=" max-width: 400px; width: 100%; box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);">
-                    <div class="card-header" style="background-color: #FAFBC9; color: #2B4324;">
+                    <div class="card-header" style="background-color: var(--yellow-200); color: var(--green-800);">
                         <h2>Реєстрація</h2>
                     </div>
                     <div class="card-body" style="background-color: #FCFDE1;">
@@ -25,14 +27,14 @@
                                 </div>
                             @endif
 
-                            <div class="form-group" style=" color: #2B4324;">
+                            <div class="form-group" style=" color: var(--green-800);">
                                 <label for="login">Логін</label>
                                 <input type="text" class="form-control" id="login" name="login" value="{{ old('login') }}" required>
                                 @error('login')
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="form-group" style=" color: #2B4324;">
+                            <div class="form-group" style=" color: var(--green-800);">
                                 <label for="password">Пароль</label>
                                 <div class="input-group">
                                     <input type="password" class="form-control" id="password" name="password" required style="border-radius: 5px;">
@@ -44,7 +46,7 @@
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="form-group" style=" color: #2B4324;">
+                            <div class="form-group" style=" color: var(--green-800);">
                                 <label for="password_confirmation">Підтвердити пароль</label>
                                 <div class="input-group">
                                     <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required style="border-radius: 5px;">
@@ -56,44 +58,44 @@
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="form-group" style=" color: #2B4324;">
+                            <div class="form-group" style=" color: var(--green-800);">
                                 <label for="email">Електронна пошта</label>
                                 <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" required>
                                 @error('email')
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="form-group" style=" color: #2B4324;">
+                            <div class="form-group" style=" color: var(--green-800);">
                                 <label for="surname">Прізвище</label>
                                 <input type="text" class="form-control" id="surname" name="surname" value="{{ old('surname') }}" required>
                                 @error('surname')
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="form-group" style=" color: #2B4324;">
+                            <div class="form-group" style=" color: var(--green-800);">
                                 <label for="name">Ім'я</label>
                                 <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" required>
                                 @error('name')
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="form-group" style=" color: #2B4324;">
+                            <div class="form-group" style=" color:var(--green-800);">
                                 <label for="phone">Телефон</label>
                                 <div>
-                                    <input type="tel" class="form-control" id="phone" name="phone" value="{{ old('phone') }}" style="width: 338px;">
+                                    <input type="tel" class="form-control" id="phone" name="phone" value="{{ old('phone') }}" style="width: 368px;">
                                     @error('phone')
                                     <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
-                            <div class="form-group" style=" color: #2B4324;">
+                            <div class="form-group" style=" color: var(--green-800);">
                                 <label for="address">Адреса</label>
                                 <input type="text" class="form-control" id="address" name="address" value="{{ old('address') }}">
                                 @error('address')
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="form-group" style=" color: #2B4324;">
+                            <div class="form-group" style=" color: var(--green-800);">
                                 <label for="role_id">Роль</label>
                                 <select class="form-control" id="role_id" name="role_id" required>
                                     <option value="1">Військовий</option>
@@ -105,7 +107,7 @@
                             </div>
                             <button type="submit" class="btn btn-login">Зареєструватися</button>
                             <div style="margin-top: 20px; text-align: center;">
-                                <p>Вже маєте акаунт? <a href="{{ route('login') }}">Увійти</a></p>
+                                <p>Вже маєте акаунт? <a style=" color:var(--green-500);" href="{{ route('login') }}">Увійти</a></p>
                             </div>
                         </form>
                     </div>
@@ -129,16 +131,16 @@
         }
 
         .btn-login {
-            background-color: #2C73BB;
+            background-color: var(--green-500);
             width: 100%;
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
             border-radius: 5px;
-            color: white;
+            color: var(--yellow-200);
         }
 
         .btn-login:hover {
-            background-color: #266198;
-            color: white;
+            background-color: var(--green-800);
+            color: var(--yellow-200);
         }
 
         .card-body {
@@ -155,12 +157,13 @@
         }
 
         .form-control:focus {
-            border-color: #2C73BB;
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+            border-color: var(--green-500);
+            box-shadow: 0 0 5px var(--green-800);
+            opacity: 0.5;
         }
 
         .form-control{
-            background-color: #FEFEF2;
+            background-color: var(--yellow-200);
 
         }
 

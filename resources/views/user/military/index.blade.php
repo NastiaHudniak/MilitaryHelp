@@ -5,7 +5,6 @@
         <div class="main-content" style="font-family: 'Jura', sans-serif;">
             <div class="block">
                 <div class="infos">
-                    <a class="bxs--left-arrow" style="color: var(--green-800); font-size: 37px; " href="{{ route('user.military.create') }}" ></a>
                     <div class="info">
                         <div class="info-block">
                             <h1 class="title"  >Подання заявки</h1>
@@ -13,9 +12,10 @@
                         </div>
                         <img class="info-image" alt="" src="{{ asset('images/info-image-1.png') }}">
                     </div>
+                    <a class="ic--round-play-arrow" style="color: var(--green-800); font-size: 47px; " href="{{ route('user.military.create') }}" ></a>
+
                 </div>
                 <div class="infos">
-                    <span class="bxs--left-arrow" style="color: var(--green-800); font-size: 37px; " ></span>
                     <div class="info">
                         <div class="info-block">
                             <h1 class="title">Перегляд історії заявок</h1>
@@ -23,9 +23,10 @@
                         </div>
                         <img class="info-image" alt="" src="{{ asset('images/info-image-2.png') }}">
                     </div>
+                    <a class="ic--round-play-arrow" style="color: var(--green-800); font-size: 47px; " href="{{ route('user.military.view_app') }}"></a>
                 </div>
                 <div class="infos">
-                    <span class="bxs--left-arrow" style="color: var(--green-800); font-size: 37px; " ></span>
+
                     <div class="info">
                         <div class="info-block">
                             <h1 class="title">Перегляд списку волонтерів</h1>
@@ -33,6 +34,7 @@
                         </div>
                         <img class="info-image" alt="" src="{{ asset('images/info-image-3.png') }}">
                     </div>
+                    <a class="ic--round-play-arrow" style="color: var(--green-800); font-size: 47px; "  href="{{ route('user.military.view_volunteer')}}"></a>
                 </div>
             </div>
             <div class="title-name">
@@ -42,7 +44,7 @@
             </div>
         </div>
 
-    {{--    @include('layouts.footer_landing')--}}
+        @include('layouts.footer_military')
     @endsection
 
     <style>
@@ -67,6 +69,7 @@
             position: relative;
             width: 45%;
             font-size: 76px;
+            padding: 48px 0px ;
 
         }
         .b, .b1, .b2 {
@@ -108,8 +111,17 @@
             align-items: center;
             font-size: var(--bold-28-8-size);
             background-color: var(--green-300);
-            gap: 20px;
+            gap: 10px;
+            margin-left: 20px;
+            margin-bottom: 15px;transition: background-color 0.3s ease, color 0.3s ease; /* Анімація зміни кольору */
         }
+
+        .info:hover {
+            background-color: var(--green-500);
+            text-decoration: none;
+            transform: scale(1.05);
+        }
+
 
         .infos {
             width: 100%;
@@ -119,7 +131,7 @@
             justify-content: space-between;
             align-items: center;
             font-size: var(--bold-28-8-size);
-            gap: 20px;
+            gap: 10px;
         }
 
         .info-image {
@@ -136,8 +148,8 @@
             justify-content: space-between;
             align-items: center;
             font-size: var(--bold-28-8-size);
-            gap: 20px;
-            padding-bottom: 48px;
+            gap: 10px;
+            padding: 48px 0px ;
         }
 
 

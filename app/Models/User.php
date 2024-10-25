@@ -59,4 +59,10 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class);
     }
+
+    // Вказуємо зв'язок з моделлю UserImage
+    public function images()
+    {
+        return $this->hasMany(UserImage::class);
+    }
 }

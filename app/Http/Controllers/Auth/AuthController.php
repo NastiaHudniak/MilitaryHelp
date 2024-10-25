@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Controller;
 use App\Mail\ForgotPassword;
 use App\Models\User;
+use App\Models\UserImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -48,6 +49,18 @@ class AuthController extends Controller
             'address' => $request->address,
             'role_id' => $role_id, // Використовуємо змінну $role_id
         ]);
+
+        // Обробка зображення
+        if ($request->hasFile('image_url')) {
+            $file = $request->file('image_url');
+            $filePath = $file->store('uploads/users', 'public');
+
+            // Додаємо запис у таблицю user_image
+            UserImage::create([
+                'user_id' => $user->id,
+                'image_url' => $filePath,
+            ]);
+        }
 
         Auth::login($user);
 
@@ -95,7 +108,7 @@ class AuthController extends Controller
             return redirect()->route('user.military.index')->with('success', 'Авторизація успішна!');
         }
         elseif ($user->role_id == 3) {
-            return redirect()->route('admin.users.index')->with('success', 'Авторизація успішна!');
+            return redirect()->route('user.volunteer.index')->with('success', 'Авторизація успішна!');
         }
 
         return redirect()->route('/')->withErrors('Невідома роль користувача.');

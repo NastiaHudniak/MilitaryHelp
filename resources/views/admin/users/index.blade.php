@@ -2,13 +2,13 @@
 @include('layouts.header_admin')
 @section('content')
 
-    <div class="container" style="max-width: 1300px; ">
+    <div class="container" style="max-width: 1300px; padding: 50px 0px;">
 
 
         <div class="row mb-4">
             <div class="col-md-4 d-flex align-items-end">
-                <a href="{{ route('admin.users.create') }}" class="btn btn-success" style="width: 260px; white-space: nowrap;">
-                    <i class="fas fa-plus"></i> Додати нового користувача
+                <a href="{{ route('admin.users.create') }}" class="btn" style="width: 260px; white-space: nowrap; background-color: var(--green-500);">
+                    <i class="fas fa-plus"></i> Додати користувача
                 </a>
             </div>
 
@@ -53,8 +53,8 @@
         </div>
 
         <div class="table-responsive" style="max-height: 560px; overflow-y: auto;">
-            <table class="table table-bordered" style="background-color: #ffffff;">
-                <thead class="thead-light">
+            <table class="table table-bordered" style="background-color: var(--green-300);">
+                <thead class="thead-light" style="background-color: var(--green-500);">
                 <tr>
                     <th style="min-width: 120px; position: sticky; top: 0; z-index: 1; cursor: pointer;" onclick="sortTable(0)">
                         Логін <i id="sortIcon0" class="fas fa-sort"></i>
@@ -217,3 +217,14 @@
     </script>
 
 @endsection
+<style>
+    .btn{
+        transition: background-color 0.3s ease, color 0.3s ease; /* Анімація зміни кольору */
+    }
+
+    .btn:hover {
+        background-color: var(--green-800);
+        text-decoration: none;
+        transform: scale(1.1);
+    }
+</style>

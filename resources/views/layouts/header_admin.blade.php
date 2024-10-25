@@ -9,6 +9,8 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jura:wght@600&display=swap">
+    <link href="{{ asset('css/icon.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/global.css') }}" rel="stylesheet">
     <style>
         body {
             margin: 0;
@@ -17,12 +19,12 @@
         }
         .header-admin {
             width: 100%;
-            background-color: #2b4324;
+            background-color: var(--green-800);
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 8px;
-            color: white;
+            color: var(--yellow-200);
             font-family: 'Jura', sans-serif;
         }
         .logo-and-home {
@@ -38,7 +40,7 @@
             font-size: 24px;
         }
         .navbar-custom .nav-link {
-            color: white;
+            color: var(--yellow-200);
             position: relative;
             text-decoration: none;
             transition: color 0.3s ease-in-out;
@@ -49,7 +51,7 @@
             position: absolute;
             width: 0;
             height: 2px;
-            background-color: #fafbc9;
+            background-color: var(--yellow-200);
             left: 0;
             bottom: -2px;
             transition: width 0.3s ease-in-out;
@@ -60,7 +62,7 @@
         }
 
         .navbar-custom .nav-link:hover {
-            color: #fafbc9;
+            color: var(--yellow-200);
         }
 
         .navbar-custom .nav-link:active {
@@ -68,7 +70,7 @@
         }
 
         .navbar-custom .nav-link.active {
-            color: #fafbc9;
+            color: var(--yellow-200);
         }
 
         .navbar-custom .nav-link.active::after {
@@ -87,7 +89,7 @@
 <header class="header-admin">
     <div class="logo-and-home">
         <img src="{{ asset('images/logo.jpg') }}" alt="Logo" class="mr-3" style="width: 70px; height: auto; border-radius: 50%;">
-        <i class="bi bi-house" style="color: rgba(250, 251, 201, 1); font-size: 2rem; "></i>
+        <i class="bi bi-house" style="color: var(--yellow-200); font-size: 2rem; "></i>
     </div>
 
     <nav class="navbar-custom">
@@ -97,10 +99,13 @@
         <a class="nav-link {{ request()->is('admin/applications') ? 'active' : '' }}" href="{{ url('/admin/applications') }}">
             Заявки
         </a>
+        <a class="nav-link {{ request()->is('admin/categories') ? 'active' : '' }}" href="{{ url('/admin/categories') }}">
+            Категорії
+        </a>
     </nav>
 
     <div class="account">
-        <i class="bi bi-person-circle" style="color: rgba(250, 251, 201, 1); font-size: 2rem; "></i>
+        <i class="bi bi-person-circle" style="color: var(--yellow-200); font-size: 2rem; "></i>
     </div>
 </header>
 

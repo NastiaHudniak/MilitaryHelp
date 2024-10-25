@@ -1,16 +1,20 @@
 @extends('layouts.app')
 @include('layouts.header_landing')
+<body><link href="{{ asset('css/icon.css') }}" rel="stylesheet">
+<link href="{{ asset('css/global.css') }}" rel="stylesheet"></body>
+
+
 @section('content')
     <img class="background-icon" src="{{ asset('images/лендінг/background1.png') }}" id="logos" alt="Background">
     <div class="main-content" style="font-family: 'Jura', sans-serif;">
         <div class="title-parent">
             <div class="title">
-                <b style=" color: #e3eee0;" class="b">КОСМЕТОЛОГІЧНА </b>
-                <b style=" color: #8fbc82;;" class="b1">ДОПОМОГА</b>
-                <b style=" color: #e3eee0;" class="b2">ВІЙСЬКОВИМ</b>
+                <b style=" color: var(--green-200);" class="b">КОСМЕТОЛОГІЧНА </b>
+                <b style=" color: var(--green-500);" class="b1">ДОПОМОГА</b>
+                <b style=" color: var(--green-200);" class="b2">ВІЙСЬКОВИМ</b>
             </div>
             <div class="b3">Солідарність у боротьбі: ваша підтримка — наша сила.</div>
-            <a class="learn-more-button" href="{{ url('/login') }}"> Дізнатись більше </a>
+            <a class="learn-more-button" href="#about-section"> Дізнатись більше </a>
         </div>
         <img class="vector1-icon" alt="" src="{{ asset('images/лендінг/vector1.svg') }}">
         <img class="vector2-icon" alt="" src="{{ asset('images/лендінг/vector2.svg') }}">
@@ -19,7 +23,7 @@
                 ВІЙСЬКОВІ ПУБЛІКУЮТЬ ЗАЯВКИ ЗІ СВОЇМИ ПОТРЕБАМИ -
                 <span class="highlight">ВОЛОНТЕРИ ДОПОМАГАЮТЬ</span>
             </div>
-            <div style="color: #8fbc82" href="{{ url('/auth/login') }}" class="service-title"> Що ми можемо надати? </div>
+            <div style="color: var(--green-500)" href="{{ url('/auth/login') }}" class="service-title"> Що ми можемо надати? </div>
             <div class="services-list">
 
                 <div class="service-item" style="font-size:25px">
@@ -39,7 +43,7 @@
         </div>
         <img class="vector3-icon" alt="" src="{{ asset('images/лендінг/vector3.svg') }}">
         <div class="why-us-section" id="about-section">
-            <div style="color: #f5f786"  class="reasons-title"> Чому саме ми? </div>
+            <div style="color: var(--yellow-500)"  class="reasons-title"> Чому саме ми? </div>
             <div class="reasons" style="font-size:22px">
                 <div class="reason-item" >
                     <h3>Ефективність</h3>
@@ -61,89 +65,40 @@
         </div>
 
         <div class="volunteers-section" id="volunteers-section">
-            <div style="color: #8fbc82" class="volunteers-title"> Що ми можемо надати? </div>
+            <div style="color: var(--green-500)" class="volunteers-title"> Наші волонтери </div>
             <div class="otziv-parent">
-                <div class="otziv">
-                    <div class="img-text">
-                        <img class="img1-icon" alt="" src="{{ asset('images/лендінг/img1.png') }}" />
-                        <div class="header2">
-                            <b class="b7">Віктор Сергієнко</b>
+                @foreach($volunteers as $volunteer)
+                    <div class="otziv">
+                        <div class="img-text">
+                            <!-- Виводимо зображення волонтера -->
+                            @if($volunteer->images->isNotEmpty())
+                                @foreach ($volunteer->images as $image)
+                                    <img class="img1-icon" alt="" src="{{ asset('storage/' . $image->image_url) }}" />
+                                @endforeach
+                            @else
+                                <p>No images available for this volunteer.</p>
+                            @endif
+                            <div class="header2">
+                                <b class="b7">{{ $volunteer->name }} {{ $volunteer->surname }} </b>
+                            </div>
                         </div>
-                    </div>
-                    <div class="header-text">
-                        <div class="text-more">
-                            <div class="div21">
-                    <span>
-                        <b>Координатор волонтерських ініціатив</b>
-                        <span class="span">. Відповідає за організацію зборів гуманітарної допомоги, логістику та доставку на передову.</span>
-                    </span>
+                        <div class="header-text">
+                            <div class="text-more">
+                                <div class="div21">
+                            <span>
+                                <b>{{ $volunteer->phone }}</b>
+                                <span class="span">{{ $volunteer->email }}</span>
+                            </span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="otziv">
-                    <div class="img-text">
-                        <img class="img1-icon" alt="" src="{{ asset('images/лендінг/img2.png') }}" />
-                        <div class="header2">
-                            <b class="b7">Ірина Черненко</b>
-                        </div>
-                    </div>
-                    <div class="header-text">
-                        <div class="text-more">
-                            <div class="div21">
-                    <span>
-                        <b>Психолог</b>
-                        <span class="span1">. Надає психологічну підтримку військовим та їхнім родинам. Проводить консультації, допомагає адаптуватися до мирного життя після фронту.</span>
-                    </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="otziv">
-                    <div class="img-text">
-                        <img class="img1-icon" alt="" src="{{ asset('images/лендінг/img3.png') }}" />
-                        <div class="header2">
-                            <b class="b7">Василь Нікітенко</b>
-                        </div>
-                    </div>
-                    <div class="header-text">
-                        <div class="text-more">
-                            <div class="div21">
-                    <span>
-                        <b>Волонтер</b>
-                        <span class="span"> на складі. Відповідає за прийом, сортування та пакування гуманітарних вантажів. Також допомагає у координації доставки медикаментів і військового спорядження.</span>
-                    </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="otziv">
-                    <div class="img-text">
-                        <img class="img1-icon" alt="" src="{{ asset('images/лендінг/img2.png') }}" />
-                        <div class="header2">
-                            <b class="b7">Наталя Макогончук</b>
-                        </div>
-                    </div>
-                    <div class="header-text">
-                        <div class="text-more">
-                            <div class="div21">
-                    <span>
-                        <b>Волонтерка з питань комунікацій</b>
-                        <span class="span">. Займається залученням спонсорів, веде соціальні мережі центру, організовує благодійні заходи для збору коштів.</span>
-                    </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
-
         </div>
-    </div>
 
-    @include('layouts.footer_landing')
+
+        @include('layouts.footer_landing')
 @endsection
 
 
@@ -159,7 +114,6 @@
 
 
     .main-content {
-        font-family: 'Arial', sans-serif;
         color: #333;
         margin: 0; /* Відмінити відступи з боків */
         max-width: 1400px; /* Встановіть максимальну ширину */
@@ -182,7 +136,8 @@
         display: flex; /* Вмикаємо Flexbox */
         flex-direction: column; /* Розташовуємо елементи вертикально */
         justify-content: space-between; /* Рівномірно розподіляємо елементи */
-        margin-bottom: 95px;
+        margin-bottom: 75px;
+        margin-top: 65px;
     }
     .title {
         width: 770px;
@@ -203,7 +158,7 @@
         height: 80px;
         position: relative;
         font-size: 24px;
-        color: #fafbc9;
+        color: var(--yellow-200);
         flex-shrink: 0;
         margin-left: 80px;
     }
@@ -234,15 +189,15 @@
         font-weight: 600;
         text-align: center;
         font-size: 60px;
-        color: #2b4324;
+        color: var(--green-800);
         flex-shrink: 0;
         margin: 0 auto;
         line-height: 1.2;
         position: relative;
     }
     .highlight {
-        background-color: #f8f9ab;
-        color: #2b4324;
+        background-color: var(--yellow-400);
+        color: var(--green-800);
         padding: 0 10px;
         border-radius: 10px;
     }
@@ -269,7 +224,7 @@
         margin: 10px;
         padding: 20px;
         text-align: center;
-        background-color: #fafbc9;
+        background-color: var(--yellow-200);
         border-radius: 8px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         display: flex;
@@ -333,7 +288,7 @@
         margin: 10px;
         padding: 20px;
         text-align: left;
-        background-color: #f5f786;
+        background-color: var(--yellow-500);
         border-radius: 8px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         display: flex;
@@ -350,14 +305,14 @@
     }
     .reason-item h3 {
         font-size: 26px; /* Розмір шрифту для заголовків h3 */
-        color: #2b4324;
-        text-shadow: 0.5px 0 0 #2b4324, 0 0.5px 0 #2b4324, -0.5px 0 0 #2b4324, 0 -0.5px 0 #2b4324;
+        color: var(--green-800);
+        text-shadow: 0.5px 0 0 var(--green-800), 0 0.5px 0 var(--green-800), -0.5px 0 0 var(--green-800), 0 -0.5px 0 var(--green-800);
     }
 
 
     .reason-item p {
         font-weight: bold;
-        color: #2b4324;
+        color:  var(--green-800);
         font-size: 20px; /* Розмір шрифту для параграфів p */
 
     }
@@ -384,24 +339,20 @@
         margin-top: 30px;
     }
 
-
-
-
-
     .otziv-parent {
         display: flex;
         flex-direction: row;
         overflow-x: auto;
         gap: 20px;
         padding: 20px;
-        background-color: #E3EEE0;
+        background-color:  var(--green-200);
     }
 
     .otziv {
         width: 400px;
         box-shadow: 2px 8px 16px rgba(194, 198, 208, 0.06);
         border-radius: 5px;
-        background-color: #fafbc9;
+        background-color: var(--yellow-200);
         padding: 20px;
         flex-shrink: 0;
         display: flex;
@@ -454,23 +405,12 @@
         font-size: 16px;
     }
 
-
-
-
-
-
-
-
-
-
-
-
     .info-section, .why-us-section, .volunteers-section {
         padding: 40px 20px;
         text-align: center;
     }
 
-    .services-list, .reasons, .volunteers {
+    .services-list, .reasons{
         display: flex;
         justify-content: space-around;
         flex-wrap: wrap;
@@ -483,9 +423,7 @@
         margin-bottom: 15px;
     }
 
-    .volunteer-info {
-        margin-top: 10px;
-    }
+
 
 
 </style>

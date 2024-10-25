@@ -22,7 +22,7 @@
         }
     </style>
 </head>
-<body style="background-color: #E3EEE0; font-family: 'Jura', sans-serif;">
+<body style="background-color: var(--green-200); font-family: 'Jura', sans-serif;">
 @if (session('success'))
     <div class="alert alert-success" id="success-alert">
         {{ session('success') }}
