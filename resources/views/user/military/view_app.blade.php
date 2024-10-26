@@ -3,16 +3,29 @@
 
 @section('content')
     <div class="container" style="max-width: 1300px; padding: 50px 0px;">
-        <div class="row mb-4">
-            <div class="col-md-4 d-flex align-items-end">
-                <a href="{{ route('user.military.create') }}" class="btn" style="width: 260px; white-space: nowrap; background-color: var(--green-500);">
-                    <i class="fas fa-plus"></i> Додати заявку
-                </a>
+        <div class="naw">
+            <div class="nawb">
+                <label for="application-sort-filter" class="form-label" >Додавання нової заявки:</label>
+                <div>
+                    <a href="{{ route('user.military.create') }}" class="btn" style="width: 260px; white-space: nowrap; background-color: var(--green-500);">
+                        <i class="fas fa-plus"></i> Додати заявку
+                    </a>
+                </div>
+            </div>
+            <div class="nawb">
+                <label for="application-sort-filter" class="form-label" >Сортування за:</label>
+                <div class="input-group" style="width: 250px; ">
+                    <select id="sort-filter" class="form-control">
+                        <option value="latest">Останні</option>
+                        <option value="oldest">Старіші</option>
+                        <option value="status">Статус</option>
+                    </select>
+                </div>
             </div>
 
-            <div class="col-md-4">
-                <label for="application-category-filter" class="form-label" style="margin-left: 200px; width: 250px;">Фільтр за категорією заявки</label>
-                <div class="input-group" style="width: 250px; margin-left: 200px;">
+            <div class="nawb">
+                <label for="application-category-filter" class="form-label" >Фільтр за категорією заявки</label>
+                <div class="input-group" style="width: 250px; ">
                     <div class="input-group-prepend">
                         <span class="input-group-text">
                             <i class="fas fa-filter"></i>
@@ -31,6 +44,8 @@
                     </div>
                 </div>
             </div>
+
+
 
         </div>
 
@@ -129,8 +144,8 @@
             fetchApplications(query, category);
         });
 
-        function fetchApplications(query, category) {
-            const url = `{{ route('user.military.filter') }}?query=${encodeURIComponent(query)}&category=${encodeURIComponent(category)}`;
+        function fetchApplications(query, category, sort) {
+            const url = `{{ route('user.military.filter') }}?query=${encodeURIComponent(query)}&category=${encodeURIComponent(category)}&sort=${encodeURIComponent(sort)}`;
             console.log(url);
             fetch(url)
                 .then(response => response.json())
@@ -180,6 +195,13 @@
                 .catch(error => console.error('Error:', error));
         }
 
+
+        document.getElementById('sort-filter').addEventListener('change', function() {
+            const query = document.getElementById('search').value;
+            const category = document.getElementById('category-filter').value;
+            const sort = document.getElementById('sort-filter').value;
+            fetchApplications(query, category, sort);
+        });
 
 
 
@@ -238,5 +260,12 @@
 
     .h-100 {
         height: 100%;
+    }
+
+    .naw{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 30px 0;
     }
 </style>

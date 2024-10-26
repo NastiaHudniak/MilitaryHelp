@@ -35,11 +35,9 @@
                                 @else
                                     <p>No image available.</p>
                                 @endif
-
-                                <!-- Кнопка редагування фото -->
-                                <button class="btn btn-primary mt-3" id="edit-photo-btn">Редагувати фото</button>
-
-                                <!-- Поле для вибору файлу з провідника та кнопка збереження -->
+                                    <button onclick="window.location.href='{{ route('user.military.account.edit_photo', $user->id) }}'" class="btn btn-primary mt-3">
+                                        Редагувати фото
+                                    </button>
 
                             </div>
 

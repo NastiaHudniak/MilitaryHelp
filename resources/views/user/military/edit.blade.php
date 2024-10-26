@@ -4,8 +4,9 @@
     <link href="{{ asset('css/icon.css') }}" rel="stylesheet">
     <link href="{{ asset('css/global.css') }}" rel="stylesheet">
 </head>
+@include('layouts.header_military_notsearch')
 @section('content')
-
+    <img class="background-icon" src="{{ asset('images/pattern.png') }}" alt="Background">
     <div class="container" style="max-width: 500px; margin: 0 auto; padding: 50px 0px;">
         <div class="card" style="box-shadow: 0 6px 15px rgba(0, 0, 0, 0.8);">
             <div class="card-header" style="background-color: var(--yellow-400); color: var(--green-800);">
@@ -78,10 +79,10 @@
                                 form.submit();
                             } else {
 
-                                window.location.href = "{{ route('user.military.index') }}";
+                                window.location.href = "{{ route('user.military.view_app') }}";
                             }
                         } else {
-                            window.location.href = "{{ route('user.military.index') }}";
+                            window.location.href = "{{ route('user.military.view_app') }}";
                         }
                     });
                 </script>
@@ -90,3 +91,15 @@
     </div>
 @endsection
 
+<style>
+
+    .background-icon {
+        position: absolute; /* Абсолютне позиціонування, щоб залишалась зверху */
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh; /* Висота в 100% висоти видимої частини екрану */
+        object-fit: cover; /* Збереження пропорцій зображення */
+        z-index: -1; /* Фон залишається за контентом */
+    }
+</style>

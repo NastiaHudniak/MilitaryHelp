@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@include('layouts.header_military')
+@include('layouts.header_military_notsearch')
 @section('content')
     <img class="background-icon" src="{{ asset('images/pattern.png') }}" alt="Background">
     <div class="container" style="max-width: 500px; margin: 0 auto; padding-bottom: 40px;">

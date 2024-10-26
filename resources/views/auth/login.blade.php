@@ -49,6 +49,9 @@
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
+                            <div>
+                                <a style=" color:var(--green-500);" href="{{ route('password.request') }}" class="btn">Забули пароль?</a>
+                            </div>
                             <button type="submit" class="btn btn-login" >Увійти</button>
 {{--                            <div class="divider">Або</div>--}}
                             <div style="margin-top: 20px; text-align: center;">

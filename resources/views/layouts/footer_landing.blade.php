@@ -35,10 +35,10 @@
         <div class="col-lg-4 col-md-12 mb-4">
             <h5 style="color: var(--yellow-500)">Соціальні мережі</h5>
             <div class="com">
-                <a href="https://www.facebook.com/profile.php?id=100013498512633" >
+                <a href="https://www.instagram.com/___aanastaasia___"  >
                     <span class="iconoir--instagram" style=" font-size: 37px;"></span>
                 </a>
-                <a href="https://www.instagram.com/___aanastaasia___" >
+                <a href="https://www.facebook.com/profile.php?id=100013498512633" >
                     <span class="mdi--facebook" style=" font-size: 37px;"></span>
                 </a>
                 <a href="https://t.me/nas_tia_a" >

@@ -66,23 +66,23 @@
 
         <div class="volunteers-section" id="volunteers-section">
             <div style="color: var(--green-500)" class="volunteers-title"> Наші волонтери </div>
+            <a style="color: var(--green-500); font-size: 30px" >Завжди допоможуть та підтримають</a>
             <div class="otziv-parent">
                 @foreach($volunteers as $volunteer)
                     <div class="otziv">
                         <div class="img-text">
-                            <!-- Виводимо зображення волонтера -->
                             @if($volunteer->images->isNotEmpty())
                                 @foreach ($volunteer->images as $image)
-                                    <img class="img1-icon" alt="" src="{{ asset('storage/' . $image->image_url) }}" />
+                                    <img  class="img1-icon" alt="" src="{{ asset('storage/' . $image->image_url) }}" />
                                 @endforeach
                             @else
                                 <p>No images available for this volunteer.</p>
                             @endif
-                            <div class="header2">
+                            <div class="header2" style="color: var(--green-800)">
                                 <b class="b7">{{ $volunteer->name }} {{ $volunteer->surname }} </b>
                             </div>
                         </div>
-                        <div class="header-text">
+                        <div class="header-text" style="color: var(--green-800)">
                             <div class="text-more">
                                 <div class="div21">
                             <span>
@@ -115,9 +115,8 @@
 
     .main-content {
         color: #333;
-        margin: 0; /* Відмінити відступи з боків */
-        max-width: 1400px; /* Встановіть максимальну ширину */
-        margin: 0 auto; /* Центруйте контейнер */
+        max-width: 1800px; /* Встановіть максимальну ширину */
+        margin: 0 0; /* Центруйте контейнер */
     }
     .background-icon {
         position: absolute; /* Абсолютне позиціонування, щоб залишалась зверху */
@@ -329,21 +328,21 @@
     }
 
 
-    .volunteers-section{
+    .volunteers-section {
         height: 670px; /* Фіксована ширина */
         display: flex; /* Вмикаємо Flexbox */
         flex-direction: column; /* Розташовуємо елементи вертикально */
         justify-content: space-between; /* Рівномірно розподіляємо елементи */
         padding: 40px 20px;
         text-align: center;
-        margin-top: 30px;
+        margin-top: 50px;
     }
 
     .otziv-parent {
         display: flex;
         flex-direction: row;
         overflow-x: auto;
-        gap: 20px;
+        gap: 35px;
         padding: 20px;
         background-color:  var(--green-200);
     }
@@ -353,12 +352,19 @@
         box-shadow: 2px 8px 16px rgba(194, 198, 208, 0.06);
         border-radius: 5px;
         background-color: var(--yellow-200);
-        padding: 20px;
+        padding: 30px;
         flex-shrink: 0;
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 20px;
+        transition: background-color 0.3s ease, color 0.3s ease; /* Анімація зміни кольору */
+    }
+
+    .otziv:hover {
+        background-color: var(--yellow-500);
+        text-decoration: none;
+        transform: scale(1.1);
     }
 
     .img1-icon {

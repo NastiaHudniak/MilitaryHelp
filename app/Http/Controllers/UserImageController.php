@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 class UserImageController extends Controller
 {
+
     public function create(User $user)
     {
         return view('admin.users.images.create', compact('user'));

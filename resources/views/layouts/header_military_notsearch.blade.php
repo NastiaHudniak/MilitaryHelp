@@ -167,9 +167,14 @@
 
 
 
-
-
-
+        .gradient-text {
+            font-size: 37px;
+            font-weight: bold;
+            background: linear-gradient(to right, #fafbc9, #F5F786, #8fbc82); /* Задаємо градієнт */
+            -webkit-background-clip: text; /* Обрізаємо фон по тексту для підтримки у Webkit-браузерах */
+            -webkit-text-fill-color: transparent; /* Робимо текст прозорим, щоб градієнт був видимий */
+            background-clip: text; /* Підтримка для інших браузерів */
+        }
 
 
 
@@ -185,11 +190,7 @@
     </nav>
 
     <nav class="navbar-search">
-        <div class="search-title">
-                <input type="text" class="searcht" style="background-color: var(--green-300); " id="search" placeholder="Пошук за назвою">
-{{--            <a class="search">Пошук</a>--}}
-         <span class="mynaui--search"  style="color: var(--green-800); font-size: 32px; "></span>
-        </div>
+        <span class="gradient-text" style="color: var(--yellow-400); font-size: 37px; " >Косметологічна допомога військовим</span>
     </nav>
 
     <nav class="navbar-right">

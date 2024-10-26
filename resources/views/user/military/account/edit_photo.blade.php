@@ -10,19 +10,17 @@
                 @foreach($images as $image)
                     <div class="image-container mb-3" style="display: flex; align-items: center;">
                         <img src="{{ asset('storage/' . $image->image_url) }}" alt="User Image" style="max-width: 350px; margin-right: 15px;">
-                        <form action="{{ route('user.military.account.delete', [$product, $image]) }}" method="POST" style="display:inline;">
+                        <form action="{{ route('user.military.account.update_photo', $user) }}" method="POST" enctype="multipart/form-data">
                             @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger" style="margin-left: 30px" onclick="return confirmDelete()">
-                                <i class="fas fa-trash"></i> Видалити
-                            </button>
+                            <div class="form-group">
+                                <label for="new_image">Виберіть нове зображення:</label>
+                                <input type="file" name="new_image" id="new_image" class="form-control" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary mt-3">Зберегти нове фото</button>
                         </form>
                     </div>
                 @endforeach
 
-                <a href="{{ route('user.military.account.edit_photo', $product) }}" class="btn btn-success mt-3">
-                    <i class="fas fa-plus"></i> Додати нове зображення
-                </a>
                 <button type="button" class="btn btn-outline-dark mx-3 mt-3" id="back-button">
                     <i class="fas fa-arrow-left"></i> Назад</button>
             </div>

@@ -1,5 +1,5 @@
     @extends('layouts.app')
-    @include('layouts.header_military')
+    @include('layouts.header_military_notsearch')
     @section('content')
         <img class="background" src="{{ asset('images/back-image.png') }}" alt="">
         <div class="main-content" style="font-family: 'Jura', sans-serif;">
@@ -26,7 +26,6 @@
                     <a class="ic--round-play-arrow" style="color: var(--green-800); font-size: 47px; " href="{{ route('user.military.view_app') }}"></a>
                 </div>
                 <div class="infos">
-
                     <div class="info">
                         <div class="info-block">
                             <h1 class="title">Перегляд списку волонтерів</h1>
@@ -41,6 +40,27 @@
                 <b style=" color: var(--green-800); text-shadow: 0.5px 0 0 var(--green-800), 0 0.5px 0 var(--green-800), -0.5px 0 0 var(--green-800), 0 -0.5px 0 var(--green-800);" class="b">КОСМЕТОЛОГІЧНА </b>
                 <b style=" color: var(--green-500); text-shadow: 0.5px 0 0 var(--green-500), 0 0.5px 0 var(--green-500), -0.5px 0 0 var(--green-500), 0 -0.5px 0 var(--green-500);" class="b1">ДОПОМОГА</b>
                 <b style=" color: var(--green-800); text-shadow: 0.5px 0 0 var(--green-800), 0 0.5px 0 var(--green-800), -0.5px 0 0 var(--green-800), 0 -0.5px 0 var(--green-800);" class="b2">ВІЙСЬКОВИМ</b>
+                <div class="info-container">
+                    <div class="bl-info">
+                        <div class="info-number-circle">
+                            <span>{{ $totalApplications }}</span>
+                        </div>
+                        <p class="info-text">
+                            <strong>Загальна кількість заявок:</strong>
+                        </p>
+                    </div>
+
+                    <div class="bl-info">
+                        <div class="info-number-circle">
+                            <span>{{ $acceptedApplications }}</span>
+                        </div>
+                        <p class="info-text">
+                            <strong>Прийняті заявки волонтерами:</strong>
+                        </p>
+                    </div>
+                </div>
+
+
             </div>
         </div>
 
@@ -122,7 +142,6 @@
             transform: scale(1.05);
         }
 
-
         .infos {
             width: 100%;
             position: relative;
@@ -151,6 +170,83 @@
             gap: 10px;
             padding: 48px 0px ;
         }
+
+
+
+
+        .info-container {
+            display: flex;
+            gap: 20px;
+            justify-content: flex-start;
+            padding: 10px;
+            margin-top: 35px;
+        }
+
+        .bl-info {
+            width: 40%;
+            height: 160px;
+            position: relative;
+            border-radius: 10px;
+            padding: 0 20px;
+
+            font-size: var(--bold-28-8-size);
+            background-color: var(--green-300);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            overflow: hidden;
+        }
+
+        .bl-info:hover {
+            background-color: var(--green-500);
+            text-decoration: none;
+            transform: scale(1.05);
+        }
+
+        .info-number-circle {
+            position: absolute;
+            bottom: -10px; /* Розміщення знизу */
+            right: -17px; /* Розміщення праворуч */
+            width: 78px;
+            height: 78px;
+            background-color: var(--yellow-200);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            font-weight: bold;
+            color: var(--green-800);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .info-text {
+            color: var(--green-800);
+            font-size: 24px;
+            font-weight: 500;
+            margin-top: 20px;
+        }
+
+        .bl-info::before {
+            content: "";
+            position: absolute;
+            top: 10px; /* Відступ зверху */
+            left: 10px; /* Відступ зліва */
+            height: 4px; /* Товщина лінії */
+            width: 60px; /* Довжина горизонтальної лінії */
+            background-color: var(--yellow-200);
+        }
+
+        .bl-info::after {
+            content: "";
+            position: absolute;
+            top: 10px; /* Відступ зверху */
+            left: 10px; /* Відступ зліва */
+            width: 4px; /* Товщина лінії */
+            height: 60px; /* Довжина вертикальної лінії */
+            background-color: var(--yellow-200);
+        }
+
+
 
 
 

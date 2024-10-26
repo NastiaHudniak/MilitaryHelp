@@ -4,6 +4,8 @@ use App\Http\Controllers\Admin\ApplicationController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\EditMilitaryImageController;
+use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\LabController;
 use App\Http\Controllers\Landing\LandingController;
 use App\Http\Controllers\Military\Account\MilitaryEditUserController;
@@ -113,6 +115,8 @@ Route::prefix('user')->group(function () {
     Route::get('/military/create', [MilitaryAddApplicationsController::class, 'create'])->name('user.military.create');
     Route::post ('/military', [MilitaryAddApplicationsController::class, 'store'])->name('user.military.store');
     Route::get('/military/{application}/edit', [MilitaryViewApplicationController::class, 'edit'])->name('user.military.edit');
+    Route::get('military/account/{user}/edit_photo', [EditMilitaryImageController::class, 'edit'])->name('user.military.account.edit_photo');
+    Route::post('military/account/{user}/update_photo', [EditMilitaryImageController::class, 'update'])->name('user.military.account.update_photo');
 
 
     Route::put('/appl/{application}', [MilitaryViewApplicationController::class, 'update'])->name('user.military.update');
@@ -133,6 +137,16 @@ Route::prefix('auth')->group(function () {
     Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+});
+
+
+Route::prefix('auth')->group(function () {
+
+    Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+    Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+    Route::post('password/reset', [ForgotPasswordController::class, 'reset'])->name('password.update');
+    Route::get('password/reset/{token}', [ForgotPasswordController::class, 'showResetForm'])->name('password.reset');
 
 });
 

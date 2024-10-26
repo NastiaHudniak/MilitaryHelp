@@ -88,18 +88,6 @@ class ApplicationController extends Controller
         $applications->delete();
         return redirect()->route('admin.applications.index')->with('error', 'Заявка видалена успішно!');
     }
-
-    public function search(Request $request)
-    {
-        $query = $request->input('query');
-        $applications = Application::with(['category', 'volunteer', 'millitary'])
-            ->where('title', 'like', "%{$query}%")
-            ->orWhere('description', 'like', "%{$query}%")
-            ->get();
-
-        return response()->json(['applications' => $applications]);
-    }
-
     public function filter(Request $request)
     {
         $query = $request->input('query');
@@ -121,4 +109,16 @@ class ApplicationController extends Controller
 
         return response()->json(['applications' => $applications]);
     }
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+        $applications = Application::with(['category', 'volunteer', 'millitary'])
+            ->where('title', 'like', "%{$query}%")
+            ->orWhere('description', 'like', "%{$query}%")
+            ->get();
+
+        return response()->json(['applications' => $applications]);
+    }
+
+
 }

@@ -9,6 +9,7 @@ use App\Models\UserImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -50,17 +51,15 @@ class AuthController extends Controller
             'role_id' => $role_id, // Використовуємо змінну $role_id
         ]);
 
-        // Обробка зображення
-        if ($request->hasFile('image_url')) {
-            $file = $request->file('image_url');
-            $filePath = $file->store('uploads/users', 'public');
 
-            // Додаємо запис у таблицю user_image
+
+        $imagePath = Storage::url('images/acc.jpg');
+
             UserImage::create([
                 'user_id' => $user->id,
-                'image_url' => $filePath,
+                'image_url' => $imagePath,
             ]);
-        }
+
 
         Auth::login($user);
 

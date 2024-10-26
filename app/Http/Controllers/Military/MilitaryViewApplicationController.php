@@ -82,21 +82,15 @@ class MilitaryViewApplicationController extends Controller
     public function search(Request $request)
     {
         $query = $request->input('query');
-        $category = $request->input('category');
         $user_id = Auth::user()->id;
 
         $applications = Application::with(['category', 'volunteer', 'millitary'])
+            ->where('military_id', $user_id) // Додайте фільтр за military_id
             ->when($query !== null && $query !== '', function($q) use ($query) {
-                $q->where('title', 'like', "%{$query}%")
-                    ->orWhere('description', 'like', "%{$query}%");
-            })
-            ->when($category, function($q) use ($category) {
-                $q->whereHas('category', function($q) use ($category) {
-                    $q->where('name', $category);
+                $q->where(function ($queryBuilder) use ($query) {
+                    $queryBuilder->where('title', 'like', "%{$query}%")
+                        ->orWhere('description', 'like', "%{$query}%");
                 });
-            })
-            ->when($query === null || $query === '', function($q) use ($user_id) {
-                $q->where('millitary_id', $user_id);
             })
             ->get();
 
@@ -109,22 +103,29 @@ class MilitaryViewApplicationController extends Controller
     public function filter(Request $request)
     {
         $query = $request->input('query');
-        $category = $request->input('category_id');
-        $status = $request->input('status');
+        $category = $request->input('category');
+        $sort = $request->input('sort');
 
-        $applications = Application::with(['category', 'volunteer', 'millitary'])
-            ->when($query, function($queryBuilder) use ($query) {
-                $queryBuilder->where('title', 'like', "%{$query}%")
-                    ->orWhere('description', 'like', "%{$query}%");
-            })
-            ->when($category, function($queryBuilder) use ($category) {
-                $queryBuilder->where('category_id', $category);
-            })
-            ->when($status, function($queryBuilder) use ($status) {
-                $queryBuilder->where('status', $status);
-            })
-            ->get();
+        $applications = Application::with('category', 'volunteer', 'millitary');
 
-        return response()->json(['applications' => $applications]);
+        if ($category) {
+            $applications->where('category_id', $category);
+        }
+
+        if ($query) {
+            $applications->where('title', 'LIKE', "%{$query}%");
+        }
+
+        // Додайте логіку для сортування
+        if ($sort === 'latest') {
+            $applications->orderBy('created_at', 'desc');
+        } elseif ($sort === 'oldest') {
+            $applications->orderBy('created_at', 'asc');
+        } elseif ($sort === 'status') {
+            $applications->orderBy('status', 'asc');
+        }
+
+        return response()->json(['applications' => $applications->get()]);
     }
+
 }
