@@ -62,10 +62,15 @@
                             <div class="divider-line"></div>
                         </div>
 
-                        <button type="submit" class="login-google-button">
-                            <img src="{{ asset('images/icon/socialmedia-4.svg') }}" alt="Google icon">
-                            Увійти за допомогою Google
-                        </button>
+{{--                        <button type="submit" class="login-google-button">--}}
+{{--                            <img src="{{ asset('images/icon/socialmedia-4.svg') }}" alt="Google icon">--}}
+{{--                            Увійти за допомогою Google--}}
+{{--                        </button>--}}
+
+                        <a class="btn-google" href="{{ route('google.redirect') }}">
+                            <img class="google-icon" alt="Google" src="{{ asset('images/icon/socialmedia-4.svg') }}">
+                            <span class="btn-google-text">Google</span>
+                        </a>
                         <div class="label-log">
                             <p>У Вас немає акаунта? </p>
                             <a href="{{ route('register') }}">Зареєструватися</a>

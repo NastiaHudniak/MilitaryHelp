@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\EditMilitaryImageController;
 use App\Http\Controllers\EditVolunteerImageController;
 use App\Http\Controllers\ForgotPasswordController;
@@ -163,6 +164,9 @@ Route::prefix('auth')->group(function () {
     Route::get('password/reset/{token}', [ForgotPasswordController::class, 'showResetForm'])->name('password.reset');
 
 });
+
+Route::get('auth/google', [GoogleAuthController::class, 'redirectToGoogle'])->name('google.redirect');
+Route::get('auth/google/callback', [GoogleAuthController::class, 'handleGoogleCallback'])->name('google.callback');
 
 
 
