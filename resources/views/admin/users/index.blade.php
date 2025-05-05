@@ -6,15 +6,21 @@
 
 
         <div class="row mb-4">
-            <div class="col-md-4 d-flex align-items-end">
+            <div class="d-flex align-items-end">
                 <a href="{{ route('admin.users.create') }}" class="btn" style="width: 260px; white-space: nowrap; background-color: var(--green-500);">
                     <i class="fas fa-plus"></i> Додати користувача
                 </a>
             </div>
+            <div class="d-flex align-items-end" style="margin-left:10px;">
+    
+                    <a href="{{ route('admin.users.export') }}" class="btn" style="width: 260px; white-space: nowrap; background-color: var(--yellow-400);">
+                    <i class="fas fa-file-pdf"></i> Експортувати в PDF
+                </a>
+                </div>
 
             <div class="col-md-4">
-                <label for="user-role-filter" class="form-label" style="margin-left: 200px; width: 250px;">Фільтр за типом користувача</label>
-                <div class="input-group" style="width: 250px; margin-left: 200px;">
+                <label for="user-role-filter" class="form-label" style=" width: 250px;">Фільтр за типом користувача</label>
+                <div class="input-group" style="width: 250px;">
                     <div class="input-group-prepend">
                 <span class="input-group-text">
                     <i class="fas fa-filter"></i>
@@ -34,8 +40,8 @@
                 </div>
             </div>
 
-            <div class="col-md-4 d-flex align-items-end">
-                <div class="input-group" style="width: 300px; margin-left: auto;">
+            <div class="d-flex align-items-end">
+                <div class="input-group" style="width: 250px; margin-left: auto;">
                     <input type="text" class="form-control" id="search" placeholder="Пошук за логіном">
                     <div class="input-group-append">
                 <span class="input-group-text">
@@ -52,7 +58,7 @@
             Користувачів не знайдено.
         </div>
 
-        <div class="table-responsive" style="max-height: 560px; overflow-y: auto;">
+        <div class="table-responsive" style="max-height: 440px; overflow-y: auto;">
             <table class="table table-bordered" style="background-color: var(--green-300);">
                 <thead class="thead-light" style="background-color: var(--green-500);">
                 <tr>
@@ -71,7 +77,7 @@
                     <th style="min-width: 100px; position: sticky; top: 0; z-index: 1; cursor: pointer;" onclick="sortTable(4)">
                         Телефон <i id="sortIcon4" class="fas fa-sort"></i>
                     </th>
-                    <th style="min-width: 200px; position: sticky; top: 0; z-index: 1; cursor: pointer;" onclick="sortTable(5)">
+                    <th style="min-width: 150px; position: sticky; top: 0; z-index: 1; cursor: pointer;" onclick="sortTable(5)">
                         Адреса <i id="sortIcon5" class="fas fa-sort"></i>
                     </th>
                     <th style="min-width: 100px; position: sticky; top: 0; z-index: 1; cursor: pointer;" onclick="sortTable(6)">

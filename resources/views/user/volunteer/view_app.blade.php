@@ -3,10 +3,19 @@
 
 @section('content')
     <div class="container" style="max-width: 1300px; padding: 50px 0px;">
-        <div class="row mb-4">
-            <div class="col-md-4">
-                <label for="application-category-filter" class="form-label" style="margin-left: 200px; width: 250px;">Фільтр за категорією заявки</label>
-                <div class="input-group" style="width: 250px; margin-left: 200px;">
+    <div class="naw">
+    <div class="nawb">
+                <label for="application-sort-filter" class="form-label" >Сортування за:</label>
+                <div class="input-group" style="width: 250px; ">
+                    <select id="sort-filter" class="form-control">
+                        <option value="latest">Останнi</option>
+                        <option value="oldest">Старіші</option>
+                    </select>
+                </div>
+            </div>
+    <div class="nawb">
+                <label for="application-category-filter" class="form-label" >Фільтр за категорією заявки</label>
+                <div class="input-group" style="width: 250px; ">
                     <div class="input-group-prepend">
                         <span class="input-group-text">
                             <i class="fas fa-filter"></i>
@@ -26,7 +35,8 @@
                 </div>
             </div>
 
-        </div>
+
+        </div>  
 
         <div id="no-results" class="alert alert-info" style="display: none; text-align: center;">
             Заявок не знайдено.
@@ -41,6 +51,11 @@
                             <h6 class="card-subtitle" style="color: #556155;">{{ $application->category->name }}</h6>
                         </div>
                         <div class="card-body d-flex flex-column" style="background-color: var(--green-300); color: var(--green-800);">
+                        <div class="image-scroll-container mb-3" style="overflow-x: auto; white-space: nowrap; padding-bottom: 10px;">
+        @foreach ($application->images as $image)
+            <img src="{{ asset('storage/' . $image->image_url) }}" alt="Зображення заявки" class="img-fluid" style="max-height: 150px; object-fit: cover; display: inline-block; margin-right: 10px;">
+        @endforeach
+    </div>
                             <p class="card-text flex-grow-1">{{ $application->description }}</p>
                             <p class="card-text">
                                 <strong style="color: #000000;">Статус:</strong>
@@ -58,6 +73,11 @@
                             <a href="javascript:void(0);" class="btn btn-sm"  data-toggle="modal" data-target="#applicationModal{{ $application->id }}" style="background-color: var(--yellow-500);" >
                                 <i class="fas fa-ellipsis-v" style="font-size: 15px;"></i> Переглянути більше
                             </a>
+                            <a href="{{ route('user.volunteer.confirm_application', ['id' => $application->id]) }}" class="btn btn-sm" style="background-color: var(--yellow-500);">
+                                <span class="lets-icons--done-ring-round"></span>
+                            </a>
+                            <a href="{{ route('user.volunteer.pdf', $application->id) }}" class="btn btn-sm" style="background-color: var(--yellow-500);">PDF</a>
+
                         </div>
                     </div>
                 </div>
@@ -94,27 +114,41 @@
     </div>
 
     <script>
-        // Функції для пошуку, фільтрації та підтвердження видалення
         document.getElementById('search').addEventListener('input', function() {
             const query = document.getElementById('search').value;
             const category = document.getElementById('category-filter').value;
-            fetchApplications(query, category);
+            const sort = document.getElementById('sort-filter').value;
+            fetchApplications(query,  category, sort);
         });
 
         document.getElementById('reset-filter').addEventListener('click', function() {
+            const query = document.getElementById('search').value;
+            const category = document.getElementById('category-filter').value;
+            const sort = document.getElementById('sort-filter').value;
             document.getElementById('search').value = '';
             document.getElementById('category-filter').value = '';
-            fetchApplications('', '');
+            fetchApplications(query,  '', sort);
         });
 
         document.getElementById('category-filter').addEventListener('change', function() {
             const query = document.getElementById('search').value;
             const category = document.getElementById('category-filter').value;
-            fetchApplications(query, category);
+            const sort = document.getElementById('sort-filter').value;
+            fetchApplications(query,  category, sort);
         });
 
-        function fetchApplications(query, category) {
-            const url = `{{ route('user.volunteer.filter') }}?query=${encodeURIComponent(query)}&category=${encodeURIComponent(category)}`;
+        
+        document.getElementById('sort-filter').addEventListener('change', function() {
+            const query = document.getElementById('search').value;
+            const category = document.getElementById('category-filter').value;
+            const sort = document.getElementById('sort-filter').value;
+
+            fetchApplications(query,  category, sort);
+        });
+
+
+        function fetchApplications(query, category, sort) {
+            const url = `{{ route('user.volunteer.search') }}?query=${encodeURIComponent(query)}&category=${encodeURIComponent(category)}&sort=${encodeURIComponent(sort)}`;
             console.log(url);
             fetch(url)
                 .then(response => response.json())
@@ -137,24 +171,24 @@
                                 <h6 class="card-subtitle" style="color: #556155;">${application.category.name}</h6>
                             </div>
                             <div class="card-body d-flex flex-column" style="background-color: var(--green-300); color: var(--green-800);">
-                                <p class="card-text flex-grow-1">${application.description}</p>
+                                <div class="image-scroll-container mb-3" style="overflow-x: auto; white-space: nowrap; padding-bottom: 10px;">
+                                    ${application.images.map(image => `
+                                        <img src="${'{{ asset('storage/') }}' + '/' + image.image_url}" alt="Зображення заявки" class="img-fluid" style="max-height: 150px; object-fit: cover; display: inline-block; margin-right: 10px;">
+                                    `).join('')}    
+                                </div>
+     <p class="card-text flex-grow-1">${application.description}</p>
                                 <p class="card-text"><strong style="color: #000000;">Статус:</strong> ${application.status}</p>
                             </div>
-                            <div class="card-footer" style="background-color: var(--green-200);">
-                                <a href="javascript:void(0);" class="btn btn-sm" data-toggle="modal" data-target="#applicationModal${application.id}" style="background-color: var(--yellow-500);">
-                                    <i class="fas fa-ellipsis-v" style="font-size: 15px;"></i> Переглянути більше
-                                </a>
-                                <a href="/user/military/edit/${application.id}" class="btn btn-sm" style="color: var(--green-500);">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <form action="/user/military/destroy/${application.id}" method="POST" style="display:inline;" onsubmit="return confirmDelete('${application.title}')">
-                                    @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-sm" style="color: var(--green-500);">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </form>
-                    </div>
+                           <div class="card-footer" style="background-color: var(--green-200);">
+                            <a href="javascript:void(0);" class="btn btn-sm"  data-toggle="modal" data-target="#applicationModal{{ $application->id }}" style="background-color: var(--yellow-500);" >
+                                <i class="fas fa-ellipsis-v" style="font-size: 15px;"></i> Переглянути більше
+                            </a>
+                            <a href="{{ route('user.volunteer.confirm_application', ['id' => $application->id]) }}" class="btn btn-sm" style="background-color: var(--yellow-500);">
+                                <span class="lets-icons--done-ring-round"></span>
+                            </a>
+                            <a href="{{ route('user.volunteer.pdf', $application->id) }}" class="btn btn-sm" style="background-color: var(--yellow-500);">PDF</a>
+
+                        </div>
                 </div>
 `;
                             cardContainer.appendChild(card);
@@ -167,6 +201,7 @@
 
 
     </script>
+     @include('layouts.footer_volunteer')
 @endsection
 
 <style>
@@ -219,4 +254,39 @@
     .h-100 {
         height: 100%;
     }
+
+    
+    .naw{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 30px 0;
+    }
+
+.image-scroll-container::-webkit-scrollbar {
+    height: 8px; 
+}
+
+.image-scroll-container::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+
+.image-scroll-container::-webkit-scrollbar-thumb {
+    background: var(--green-500); 
+    border-radius: 10px; 
+}
+
+.image-scroll-container::-webkit-scrollbar-thumb:hover {
+    background: #45a049; 
+}
+
+.image-scroll-container img {
+    height: 150px;
+    width: auto;
+    object-fit: cover; 
+    display: inline-block;
+    margin-right: 10px;
+}
+
+
 </style>

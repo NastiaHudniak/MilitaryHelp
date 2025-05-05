@@ -18,8 +18,24 @@ class VolunteerViewMilitaryController extends Controller
         $roles = Role::all();
 
         // Повернути вид з волонтерами та ролями
-        return view('user.volunteer.view_military', compact('militaries', 'roles'));
+        return view('user.volunteer.mil.view_military', compact('militaries', 'roles'));
     }
+
+    public function search(Request $request)
+{
+    $query = $request->input('query');
+
+    $militaries = User::where('role_id', 2)
+                            ->where(function ($q) use ($query) {
+                                $q->where('name', 'like', '%' . $query . '%')
+                                ->orWhere('surname', 'like', '%' . $query . '%');
+                            }) 
+                            ->with('images')                           
+                            ->get();
+
+    return response()->json(['militaries' => $militaries]);
+}
+
 
 
 }

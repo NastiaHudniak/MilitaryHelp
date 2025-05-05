@@ -7,146 +7,280 @@
 </head>
 
 @section('content')
-    <div class="container-fluid" style="padding: 0;">
-        <div class="row" style="height: 100vh; display: flex;">
-            <div class="col-md-6 p-0">
-                <div style="height: 100%; background-image: url('{{ asset('images/pattern-c.png') }}'); background-size: cover; background-position: center;">
-                </div>
+    <div class="reset-page">
+        <a  href="{{ route('user.landing.index') }}">
+            <img src="{{ asset('images/logo/logo.svg') }}"  alt="Логотип" class="logo">
+        </a>
+
+        <div class="card">
+            <div class="card-header">
+                <h2>Відновлення паролю</h2>
             </div>
-            <div class="col-md-6 d-flex justify-content-center align-items-center">
-                <div class="card" style="max-width: 400px; width: 100%; box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);">
-                    <div class="card-header" style="background-color: var(--yellow-200); color: var(--green-800);">
-                        <h2>Оновлення пароля</h2>
+            <form class="card-body" action="{{ route('password.update') }}" method="POST">
+                @csrf
+                <input type="hidden" name="token" value="{{ $token }}">
+                @if (session('status'))
+                    <div class="alert alert-success">{{ session('status') }}</div>
+                @endif
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
                     </div>
-                    <div class="card-body" style="background-color: #fcfde1;">
-                        <form action="{{ route('password.update') }}" method="POST">
-                            @csrf
-                            <input type="hidden" name="token" value="{{ $token }}">
+                @endif
 
-                            @if (session('status'))
-                                <div class="alert alert-success">{{ session('status') }}</div>
-                            @endif
-
-                            @if ($errors->any())
-                                <div class="alert alert-danger">
-                                    <ul>
-                                        @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            @endif
-
-                            <div class="form-group" style="color: var(--green-800);">
-                                <label for="email">Електронна пошта</label>
-                                <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" required autofocus>
-                            </div>
-
-                            <div class="form-group" style="color: var(--green-800);">
-                                <label for="password">Новий пароль</label>
-                                <div class="input-group">
-                                    <input type="password" class="form-control" id="password" name="password" required style="border-radius: 5px;">
-                                    <span class="toggle-password" style="cursor: pointer;">
-                                        <i class="fas fa-eye-slash"></i>
-                                    </span>
-                                </div>
-                                @error('password')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="form-group" style="color: var(--green-800);">
-                                <label for="password_confirmation">Підтвердити новий пароль</label>
-                                <div class="input-group">
-                                    <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required style="border-radius: 5px;">
-                                    <span class="toggle-password-confirmation" style="cursor: pointer;">
-                                        <i class="fas fa-eye-slash"></i>
-                                    </span>
-                                </div>
-                                @error('password_confirmation')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <button type="submit" class="btn btn-login">Оновити пароль</button>
-
-                            <div style="margin-top: 20px; text-align: center;">
-                                <p>Згадали пароль? <a style="color: var(--green-500);" href="{{ route('login') }}">Увійти</a></p>
-                            </div>
-                        </form>
+                <div class="form-group">
+                    <label class="label" for="email">Електронна пошта</label>
+                    <div class="input-group">
+                        <input type="email" class="form-input" id="email" name="email" value="{{ old('email') }}" required autofocus>
                     </div>
                 </div>
-            </div>
+
+                <div class="form-group" >
+                    <label class="label" for="password">Новий пароль</label>
+                    <div class="input-group">
+                        <input type="password" class="form-input" id="password" name="password" placeholder="Введіть пароль" required>
+                        <span class="toggle-password">
+                                <img src="{{ asset('images/icon/eye-close.svg') }}" alt="Send">
+                            </span>
+                    </div>
+                    @error('password')
+                    <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label class="label" for="password_confirmation">Підтвердити новий пароль</label>
+                    <div class="input-group">
+                        <input type="password" class="form-input" id="password_confirmation" name="password_confirmation" placeholder="Введіть пароль"  required >
+                        <span class="toggle-password-confirmation">
+                                <img src="{{ asset('images/icon/eye-close.svg') }}" alt="Send">
+                            </span>
+                    </div>
+                    @error('password_confirmation')
+                    <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="form-buttons">
+                    <button type="submit" class="reset-button">Оновити пароль</button>
+                    <div class="label-reset">
+                        <p>Згадали пароль? </p>
+                        <a href="{{ route('login') }}">Увійти</a>
+                    </div>
+                </div>
+
+
+
+
+
+            </form>
         </div>
     </div>
 
     <style>
-        .btn-login {
-            background-color: var(--green-500);
+        body, html {
+            height: 100%;
+            margin: 0;
+        }
+
+        .reset-page {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            background: linear-gradient(180deg, #FDFDF6 40%, #A3B18A 40%);
+            padding: 20px;
+            gap: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .reset-page {
+                flex-direction: row;
+                justify-content: center;
+                gap: 80px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .reset-page {
+                display: flex;
+                justify-content: center;
+            }
+        }
+
+        .logo {
+            width: 150px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .logo {
+                position: absolute;
+                top: 40px;
+                left: 40px;
+                margin: 0;
+            }
+        }
+
+
+        .card {
             width: 100%;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-            border-radius: 5px;
-            color: var(--yellow-200);
+            max-width: 400px;
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            background-color: transparent;
+            margin-bottom: 80px;
         }
 
-        .btn-login:hover {
-            background-color: var(--green-800);
-            color: var(--yellow-200);
+        .card-header {
+            text-align: center;
+            color: var(--black-my);
+            font-size: 2rem;
+            font-weight: 700;
+            background-color: transparent;
+            border: none;
         }
 
-        .form-control:focus {
-            border-color: var(--green-500);
-            box-shadow: 0 0 5px var(--green-800);
-            opacity: 0.5;
+        .card-body {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            background-color: var(--yellow-my);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 0;
         }
 
-        .form-control {
-            background-color: var(--yellow-200);
+        .label {
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--black-my);
+            margin: 0;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin: 0;
         }
 
         .input-group {
-            position: relative;
+            display: flex;
+            align-items: center;
+            background-color: var(--main-white);
+            border-radius: 16px;
+            padding: 0 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
-        .input-group .toggle-password,
-        .input-group .toggle-password-confirmation {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
+        .form-input {
+            flex-grow: 1;
+            padding: 0.5rem;
+            font-size: 1rem;
+            border: none;
+            outline: none;
+            background: transparent;
+            color: var(--greey-my);
+        }
+
+        .form-input::placeholder {
+            color: var(--greey-my);
+        }
+
+        .form-input:hover::placeholder {
+            color: var(--green-dark);
+        }
+
+        .toggle-password {
+            background: transparent;
+            border: none;
+            padding: 0.5rem;
             cursor: pointer;
         }
 
-        .toggle-password i,
-        .toggle-password-confirmation i {
-            color: #dc3545;
+        .form-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
         }
 
-        .toggle-password i.fa-eye-slash,
-        .toggle-password-confirmation i.fa-eye-slash {
-            color: #555555;
+        .reset-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0.75rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 16px;
+            transition: all 0.3s ease-in-out;
+            background-color: var(--main-green-dark);
+            color: var(--main-white);
+            border: none;
         }
+
+
+        .reset-button:hover {
+            background-color: var(--green-dark);
+            transform: scale(1.05);
+        }
+
+
+        .label-reset{
+            display: flex;
+            justify-content: center;
+            gap: 0.25rem;
+            font-size: 0.875rem;
+        }
+
+        .label-reset p{
+            margin: 0;
+            color: var(--green-dark);
+        }
+        .label-reset a{
+            color: var(--green-light);
+            text-decoration: none;
+        }
+        .label-reset a:hover {
+            text-decoration: underline;
+        }
+
+
+
     </style>
-
     <script>
-        document.querySelector('.toggle-password').addEventListener('click', function() {
+        document.querySelector('.toggle-password').addEventListener('click', function () {
             const passwordField = document.getElementById('password');
             const passwordFieldType = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
             passwordField.setAttribute('type', passwordFieldType);
 
-            const icon = this.querySelector('i');
-            icon.classList.toggle('fa-eye-slash');
-            icon.classList.toggle('fa-eye');
+            const img = this.querySelector('img');
+            if (passwordFieldType === 'text') {
+                img.src = "{{ asset('images/icon/eye-open.svg') }}";
+            } else {
+                img.src = "{{ asset('images/icon/eye-close.svg') }}";
+            }
         });
 
-        document.querySelector('.toggle-password-confirmation').addEventListener('click', function() {
+        document.querySelector('.toggle-password-confirmation').addEventListener('click', function () {
             const passwordConfirmationField = document.getElementById('password_confirmation');
             const passwordFieldType = passwordConfirmationField.getAttribute('type') === 'password' ? 'text' : 'password';
             passwordConfirmationField.setAttribute('type', passwordFieldType);
 
-            const icon = this.querySelector('i');
-            icon.classList.toggle('fa-eye-slash');
-            icon.classList.toggle('fa-eye');
+            const img = this.querySelector('img');
+            if (passwordFieldType === 'text') {
+                img.src = "{{ asset('images/icon/eye-open.svg') }}";
+            } else {
+                img.src = "{{ asset('images/icon/eye-close.svg') }}";
+            }
         });
     </script>
+
 @endsection

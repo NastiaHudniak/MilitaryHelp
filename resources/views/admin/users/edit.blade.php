@@ -83,6 +83,7 @@
                         <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
+                    
 
                     <div class="form-group text-right">
                         <button type="submit" class="btn btn-warning" style="background-color: var(--yellow-500);">Зберегти зміни</button>

@@ -12,27 +12,117 @@
     <link href="{{ asset('css/global.css') }}" rel="stylesheet">
     <style>
         body {
+            font-family: 'Open Sans', sans-serif;
             margin: 0;
             padding: 0;
             width: 100%;
         }
         .header-military {
-            background-color: var(--green-800);
+            font-family: 'Open Sans', sans-serif;
+            width: 100%;
+            background-color: var(--yellow-opasity);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            color: white;
-            font-family: 'Jura', sans-serif;
-            position: sticky; /* Робимо хедер прикріпленим */
+            padding: 16px 24px;
+            backdrop-filter: blur(20px);
+            position: sticky;
             top: 0;
             z-index: 1000;
+            flex-wrap: wrap;
         }
-        .logo-and-home {
+
+        .header-left {
             display: flex;
             align-items: center;
-            gap: 24px;
-            margin: 10px 20px;
+            gap: 18px;
         }
+
+        .logo img {
+            height: 50px;
+            width: auto;
+        }
+
+        .logo img {
+            background-color: var(--orange-my);
+            border-radius: 50px;
+            padding: 4px;
+        }
+
+        .header-center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+            margin: 0;
+        }
+
+        .navbar-custom {
+            display: flex;
+            gap: 32px;
+            flex-wrap: wrap;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 27px;
+        }
+
+        .navbar-custom .nav-link {
+            color: var(--green-dark);
+            position: relative;
+            text-decoration: none;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .navbar-custom .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background-color: var(--black-my);
+            left: 0;
+            bottom: -2px;
+            transition: width 0.3s ease-in-out;
+        }
+
+        .navbar-custom .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .navbar-custom .nav-link:hover {
+            color: var(--black-my);
+        }
+
+        .navbar-custom .nav-link.active {
+            transform: scale(0.95);
+            color: var(--orange-my);
+        }
+
+        .navbar-custom .nav-link.active::after {
+            width: 100%;
+            background-color: var(--orange-my);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .text-log{
+            color: var(--black-my);
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 27px;
+            word-wrap: break-word
+        }
+
+
+
+
+
+
+
         .navbar-search {
             display: flex;
             justify-content: space-around;
@@ -62,17 +152,6 @@
         }
 
         .search {
-            width: 100px;
-            position: relative;
-            letter-spacing: 0.08em;
-            line-height: 30px;
-            display: flex;
-            align-items: center;
-            flex-shrink: 0;
-            color: var(--green-500);
-        }
-
-        .searcht {
             position: relative;
             letter-spacing: 0.08em;
             line-height: 30px;
@@ -179,36 +258,46 @@
 
 <!-- Admin Header -->
 <header class="header-military">
-    <nav class="logo-and-home">
-        <img src="{{ asset('images/logo.jpg') }}" alt="Logo" class="mr" style="width: 70px; height: auto; border-radius: 50%;">
-        <a id="home-icon"  class="fluent--home-20-regular" style="color: var(--yellow-400);  font-size: 37px; " href="{{ route('user.military.index') }}"></a>
-    </nav>
-
-    <nav class="navbar-search">
-        <div class="search-title">
-                <input type="text" class="searcht" style="background-color: var(--green-300); " id="search" placeholder="Пошук за назвою">
-{{--            <a class="search">Пошук</a>--}}
-         <span class="mynaui--search"  style="color: var(--green-800); font-size: 32px; "></span>
-        </div>
-    </nav>
-
-    <nav class="navbar-right">
-        <a id="add-icon" class="gridicons--add-outline" style="color: var(--yellow-400); font-size: 37px;" href="{{ route('user.military.create') }}"></a>
-        <a id="history-icon" class="solar--history-bold-duotone" style="color: var(--yellow-400); font-size: 37px; " href="{{ route('user.military.view_app') }}"></a>
-        @if (!empty(Auth::user()->login))
-            <span class="mr-3" style="font-size: 22px; color: var(--yellow-400);">
-                {{ Auth::user()->login }}
-               <i class="fas fa-circle-check" style="color: var(--green-500); margin-left: 5px;"></i>
-            </span>
-        @endif
-        <a class="material-symbols-light--account-circle-outline"
-           id="burger-icon"
-           style="color: var(--yellow-400); font-size: 37px; cursor: pointer;">
-            &#xE853;
+    <div class="header-left">
+        <a class="logo" href="#logos">
+            <img src="{{ asset('images/logo/logo_mini.svg') }}" alt="Logo">
+        </a>
+        <a id="add-icon" href="{{ route('user.military.create') }}">
+            <img src="{{ asset('images/icon/znak.svg') }}" alt="Додати" >
         </a>
 
-        <!-- Бургер-меню -->
-        <!-- Бургер-меню -->
+        <a id="history-icon" href="{{ route('user.military.view_app') }}">
+            <img src="{{ asset('images/icon/history.svg') }}" alt="Історія" >
+        </a>
+
+    </div>
+    <div class="header-center">
+        <nav class="navbar-custom">
+            <a href="#help-section" class="nav-link active">Головна</a>
+            <a href="#about-section" class="nav-link">Про нас</a>
+            <a href="#volunteers-section" class="nav-link">Допомога</a>
+        </nav>
+    </div>
+
+    <div class="header-right">
+        @if (!empty(Auth::user()->login))
+            <span class="text-log">
+                {{ Auth::user()->login }}
+            </span>
+        @endif
+            <a id="burger-icon" style="cursor: pointer;">
+                <img src="{{ asset('images/icon/user-fill.svg') }}">
+            </a>
+    </div>
+
+
+    <!--   <nav class="navbar-search">
+        <div class="search-title">
+                <input type="text" class="search" style="background-color: var(--green-300); " id="search" placeholder="Пошук за назвою">
+         <span class="mynaui--search"  style="color: var(--green-800); font-size: 32px; "></span>
+        </div>
+    </nav>    -->
+    <nav class="navbar-right">
         <div id="burger-menu" class="burger-menu">
             <div class="details">
                 <a class="details-item" id="account-info-toggle" style="font-size:20px; color: var(--yellow-400); cursor: pointer;">
@@ -227,15 +316,15 @@
                     </a>
                 </div>
                 <a class="details-item" href="{{ route('user.military.create') }}" style="font-size:20px; color: var(--yellow-400);">
-                    <span class="fluent-mdl2--add-to" style="color: var(--yellow-400); font-size:40px">></span>
+                    <span class="fluent-mdl2--add-to" style="color: var(--yellow-400); font-size:40px"></span>
                     <p>Додати заявку</p>
                 </a>
                 <a class="details-item"href="{{ route('user.military.view_app') }}" style="font-size:20px;color: var(--yellow-400);">
-                    <span class="solar--history-bold-duotone" style="color: var(--yellow-400); font-size:40px">></span>
+                    <span class="solar--history-bold-duotone" style="color: var(--yellow-400); font-size:42px"></span>
                     <p>Переглянути усі заявки</p>
                 </a>
-                <a class="details-item"href="{{ route('user.military.view_volunteer') }}" style="font-size:20px;color: var(--yellow-400);">
-                    <span class="solar--history-bold-duotone" style="color: var(--yellow-400); font-size:40px">></span>
+                <a class="details-item"href="{{ route('user.military.vol.view_volunteer') }}" style="font-size:20px;color: var(--yellow-400);">
+                    <span class="solar--history-bold-duotone" style="color: var(--yellow-400); font-size:60px"></span>
                     <p>Переглянути список волонтерів</p>
                 </a>
                 <div class="divider"></div>
@@ -248,10 +337,6 @@
                 <p>Вийти з акаунту</p>
             </div>
         </div>
-
-
-
-
     </nav>
 </header>
 

@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@include('layouts.header_admin')
 <head>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <link href="{{ asset('css/icon.css') }}" rel="stylesheet">
@@ -69,32 +70,35 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="volunteer_id">Волонтер</label>
-                        <select class="form-control" id="volunteer_id" name="volunteer_id" required>
-                            @foreach ($users as $user)
-                                <option value="{{ $user->id }}" {{ old('volunteer_id', $applications->volunteer_id) == $user->id ? 'selected' : '' }}>
-                                    {{ $user->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('volunteer_id')
-                        <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
+    <label for="volunteer_id">Волонтер</label>
+    <select class="form-control" id="volunteer_id" name="volunteer_id" required>
+        <option value="">Виберіть волонтера</option>
+        @foreach ($volunteers as $volunteer)
+            <option value="{{ $volunteer->id }}" {{ old('volunteer_id', $applications->volunteer_id) == $volunteer->id ? 'selected' : '' }}>
+                {{ $volunteer->name }}
+            </option>
+        @endforeach
+    </select>
+    @error('volunteer_id')
+    <div class="text-danger">{{ $message }}</div>
+    @enderror
+</div>
 
-                    <div class="form-group">
-                        <label for="millitary_id">Військовий</label>
-                        <select class="form-control" id="millitary_id" name="millitary_id" required>
-                            @foreach ($users as $user)
-                                <option value="{{ $user->id }}" {{ old('millitary_id', $applications->millitary_id) == $user->id ? 'selected' : '' }}>
-                                    {{ $user->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('millitary_id')
-                        <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
+<div class="form-group">
+    <label for="millitary_id">Військовий</label>
+    <select class="form-control" id="millitary_id" name="millitary_id" required>
+        <option value="">Виберіть військового</option>
+        @foreach ($militaries as $military)
+            <option value="{{ $military->id }}" {{ old('millitary_id', $applications->millitary_id) == $military->id ? 'selected' : '' }}>
+                {{ $military->name }}
+            </option>
+        @endforeach
+    </select>
+    @error('millitary_id')
+    <div class="text-danger">{{ $message }}</div>
+    @enderror
+</div>
+
 
                     <div class="form-group text-right">
                         <button type="submit" class="btn btn-warning" style="background-color: var(--yellow-500);">Зберегти зміни</button>

@@ -8,7 +8,7 @@ use App\Models\Category;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-
+use Barryvdh\DomPDF\Facade\Pdf;
 class ApplicationController extends Controller
 {
     public function index()
@@ -24,7 +24,10 @@ class ApplicationController extends Controller
         $applications = Application::all();
         $users = User::all();
         $categories = Category::all();
-        return view('admin.applications.create', compact('applications','users','categories', ));
+        $volunteers = User::where('role_id', 3)->get(); 
+        $militaries = User::where('role_id', 2)->get(); 
+    
+        return view('admin.applications.create', compact('applications','users','categories', 'volunteers', 'militaries'));
     }
 
     public function store(Request $request)
@@ -61,7 +64,9 @@ class ApplicationController extends Controller
         $applications = Application::findOrFail($id);
         $categories = Category::all();
         $users = User::all();
-        return view('admin.applications.edit', compact('applications', 'categories', 'users'));
+        $volunteers = User::where('role_id', 3)->get(); 
+    $militaries = User::where('role_id', 2)->get();
+        return view('admin.applications.edit', compact('applications', 'categories', 'users', 'volunteers', 'militaries'));
     }
 
     public function update(Request $request, $id)
@@ -83,32 +88,12 @@ class ApplicationController extends Controller
         return redirect()->route('admin.applications.index')->with('success', 'Заявка оновлена успішно!');
     }
 
-    public function destroy(Application $applications)
+    public function destroy(Application $application)
     {
-        $applications->delete();
+        $application->delete();
         return redirect()->route('admin.applications.index')->with('error', 'Заявка видалена успішно!');
-    }
-    public function filter(Request $request)
-    {
-        $query = $request->input('query');
-        $category = $request->input('category_id');
-        $status = $request->input('status');
-
-        $applications = Application::with(['category', 'volunteer', 'millitary'])
-            ->when($query, function($queryBuilder) use ($query) {
-                $queryBuilder->where('title', 'like', "%{$query}%")
-                    ->orWhere('description', 'like', "%{$query}%");
-            })
-            ->when($category, function($queryBuilder) use ($category) {
-                $queryBuilder->where('category_id', $category);
-            })
-            ->when($status, function($queryBuilder) use ($status) {
-                $queryBuilder->where('status', $status);
-            })
-            ->get();
-
-        return response()->json(['applications' => $applications]);
-    }
+    }   
+    
     public function search(Request $request)
     {
         $query = $request->input('query');
@@ -119,6 +104,32 @@ class ApplicationController extends Controller
 
         return response()->json(['applications' => $applications]);
     }
+    
+    function filter(Request $request)
+{
+    $query = $request->input('query');
+    $category = $request->input('category');
+    $applications = Application::with(['category'])
+        ->when($query, function ($q) use ($query) {
+            $q->where('title', 'like', "%{$query}%")
+              ->orWhere('description', 'like', "%{$query}%");
+        })  
+        ->when($category, function($q) use ($category) {
+            $q->where('category_id', $category);
+        })
+        ->get();
 
+    return response()->json(['applications' => $applications]);
+}
+
+public function exportPDF()
+    {
+        $applications = Application::all();
+        
+        $totalApplications = $applications->count();
+        $pdf = Pdf::loadView('admin.applications.pdf', compact('applications', 'totalApplications'));
+
+        return $pdf->download('applications.pdf');
+    }
 
 }

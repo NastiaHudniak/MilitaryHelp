@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+ 
+use Barryvdh\DomPDF\Facade\Pdf;
+
 
 class CategoryController extends Controller
 {
@@ -61,4 +64,28 @@ class CategoryController extends Controller
         $category->delete();
         return redirect()->route('admin.categories.index')->with('error', 'Категорія видалена успішно!');
     }
+
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+    
+        // Пошук категорій за назвою
+        $categories = Category::where('name', 'like', "%{$query}%")->get();
+    
+        return response()->json(['categories' => $categories]);
+    }
+
+
+    public function exportPDF()
+    {
+        $categories = Category::all(); 
+        
+        $totalCategories = $categories->count();
+    
+        $pdf = Pdf::loadView('admin.categories.pdf', compact('categories', 'totalCategories'));
+    
+        return $pdf->download('categories.pdf');
+    }
+    
+
 }

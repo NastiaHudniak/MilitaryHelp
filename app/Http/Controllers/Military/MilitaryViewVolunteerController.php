@@ -3,52 +3,56 @@
 namespace App\Http\Controllers\Military;
 
 use App\Http\Controllers\Controller;
+use App\Models\Application;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MilitaryViewVolunteerController extends Controller
 {
     public function index()
     {
-        // Отримати тільки волонтерів, де role_id = 3
-        $volunteers = User::where('role_id', 3)->with('role')->get();
+        $volunteers = User::where('role_id', 3)->with('images')->with('role')->get();
 
-        // Якщо хочете отримати також усі ролі для фільтрації чи іншої мети
         $roles = Role::all();
 
-        // Повернути вид з волонтерами та ролями
-        return view('user.military.view_volunteer', compact('volunteers', 'roles'));
+        return view('user.military.vol.view_volunteer', compact('volunteers', 'roles'));
     }
 
-    public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'login' => 'required|unique:users|max:255',
-            'surname' => 'required|string|max:255',
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8|confirmed',
-            'phone' => 'required|string|max:255',
-            'address' => 'required|string|max:255',
-            'role_id' => 'required|exists:roles,id',
-        ]);
+    public function search(Request $request)
+{
+    $query = $request->input('query');
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
+    $volunteers = User::where('role_id', 3)
+                            ->where(function ($q) use ($query) {
+                                $q->where('name', 'like', '%' . $query . '%')
+                                ->orWhere('surname', 'like', '%' . $query . '%');
+                            }) 
+                            ->with('images')                           
+                            ->get();
 
-        User::create([
-            'login' => $request->input('login'),
-            'surname' => $request->input('surname'),
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'password' => Hash::make($request->input('password')),
-            'phone' => $request->input('phone'),
-            'address' => $request->input('address'),
-            'role_id' => $request->input('role_id'),
-        ]);
+    return response()->json(['volunteers' => $volunteers]);
+}
 
-        return redirect()->route('user.military.view_volunteer')->with('success', 'Користувач створений успішно !!!');
-    }
+
+    
+
+//    public function search(Request $request)
+//    {
+//        $query = $request->input('query');
+//
+//        // Пошук серед користувачів з role_id = 3 (волонтери)
+//        $volunteers = User::where('role_id', 3)
+//            ->when($query !== null && $query !== '', function ($q) use ($query) {
+//                $q->where(function ($queryBuilder) use ($query) {
+//                    $queryBuilder->where('name', 'like', "%{$query}%")
+//                        ->orWhere('surname', 'like', "%{$query}%");
+//                });
+//            })
+//            ->get();
+//
+//        return response()->json(['volunteers' => $volunteers]);
+//    }
+
 }

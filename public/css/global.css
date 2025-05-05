@@ -8,7 +8,7 @@ body {
 :root {
 
     /* fonts */
-    --bold-28-8: Jura;
+    --bold-28-8: OpenSans;
 
     /* font sizes */
     --medium-24-8-size: 24px;
@@ -18,7 +18,26 @@ body {
     --font-size-57xl: 76px;
 
     /* Colors */
-    --green-200: #e3eee0;
+    --green-dark: #3A5A40;
+    --main-green-dark: #556B2F;
+    --green-light: #A3B18A;
+
+    --main-beige: #D9CAB3;
+    --beige-light: #E1D8C0;
+    --main-white: #FDFDF6;
+    --yellow: #F1F1DE;
+    --yellow-my: #F1F1DE;
+    --yellow-opasity: rgba(241, 241, 222, 0.8);
+
+    --orange-my: #D97706;
+    --orange-dark: #a85c05;
+    --greey-my: #B8B8B8;
+    --black-my: #373737;
+    --blue-my: #AEC6CF;
+
+
+
+    /*--green-200: #e3eee0;
     --green-300:#CDE1C7;
     --green-400:#B1D0A8;
     --green-500: #8fbc82;
@@ -26,7 +45,7 @@ body {
     --yellow-200: #fafbc9;
     --yellow-400: #f8f9ab;
     --yellow-500: #F5F786;
-    --color: #2e363e;
+    --color: #2e363e;*/
 
 
     /* Gaps */

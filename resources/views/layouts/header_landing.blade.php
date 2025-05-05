@@ -4,46 +4,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Лендінг')</title>
+    <title>@yield('title', 'Landing Page')</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jura:wght@600&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
     <link href="{{ asset('css/icon.css') }}" rel="stylesheet">
     <link href="{{ asset('css/global.css') }}" rel="stylesheet">
     <style>
         body {
+            font-family: 'Open Sans', sans-serif;
             margin: 0;
             padding: 0;
             width: 100%;
         }
         .header-admin {
+            font-family: 'Open Sans', sans-serif;
             width: 100%;
-            background-color: var(--green-800);
+            background-color: var(--yellow-opasity);
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            padding: 8px 24px; /* Додано padding */
-            color: var(--green-200);
-            font-family: 'Jura', sans-serif;
-            position: sticky; /* Робимо хедер прикріпленим */
+            padding: 16px 24px;
+            backdrop-filter: blur(20px);
+            position: sticky;
             top: 0;
             z-index: 1000;
+            flex-wrap: wrap;
         }
 
-
-        .logo {
-            margin-right: 24px; /* Відстань між лого та навігацією */
+        .header-left {
+            display: flex;
+            align-items: center;
         }
+
+        .logo img {
+            height: 40px;
+            width: auto;
+        }
+
+        .header-center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+            margin: 12px 0;
+        }
+
         .navbar-custom {
             display: flex;
-            justify-content: space-around; /* Розподіл елементів по всій ширині */
-            flex-grow: 1; /* Дозволяє навігації займати доступний простір */
+            gap: 32px;
+            flex-wrap: wrap;
+            justify-content: center;
+            font-size: 16px;
             font-weight: 600;
-            letter-spacing: 0.12em;
-            font-size: 24px;
+            line-height: 27px;
         }
+
         .navbar-custom .nav-link {
-            color: var(--green-200);
+            color: var(--green-dark);
             position: relative;
             text-decoration: none;
             transition: color 0.3s ease-in-out;
@@ -54,7 +73,7 @@
             position: absolute;
             width: 0;
             height: 2px;
-            background-color: var(--yellow-200);
+            background-color: var(--black-my);
             left: 0;
             bottom: -2px;
             transition: width 0.3s ease-in-out;
@@ -65,62 +84,82 @@
         }
 
         .navbar-custom .nav-link:hover {
-            color: var(--yellow-200);
-        }
-
-        .navbar-custom .nav-link:active {
-            transform: scale(0.95);
+            color: var(--black-my);
         }
 
         .navbar-custom .nav-link.active {
-            color: var(--green-200);
+            transform: scale(0.95);
+            color: var(--orange-my);
         }
 
         .navbar-custom .nav-link.active::after {
             width: 100%;
+            background-color: var(--orange-my);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            margin-top: 12px;
         }
 
         .login-button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 133px;
-            height: 52px;
-            background-color: var(--yellow-500);
-            border-radius: 10px;
-            color: var(--green-800);
+            background-color: var(--orange-my);
+            border-radius: 16px;
+            color: var(--main-white);
+            font-size: 16px;
+            font-weight: 600;
+            padding: 10px 20px;
             text-align: center;
-            font-weight: 500;
-            cursor: pointer;
             text-decoration: none;
-            line-height: 36px;
-            transition: background-color 0.3s ease, color 0.3s ease; /* Анімація зміни кольору */
+            transition: background-color 0.5s ease, transform 0.3s ease;
         }
 
         .login-button:hover {
-            background-color: var(--green-500);
-            color: var(--yellow-200);
-            text-decoration: none; /* Без підкреслення при наведенні */
-            transform: scale(1.1);
+            background-color: var(--orange-dark);
+            color: var(--main-white);
+            transform: scale(1.05);
         }
+
+        /* === Мобільна адаптація === */
+        @media (max-width: 768px) {
+
+            .header-admin {
+                flex-direction: column;
+            }
+            .header-center {
+                flex-direction: row;
+            }
+
+            .login-button {
+                width: 100%;
+            }
+        }
+
     </style>
 </head>
 <body>
 
 <!-- Admin Header -->
 <header class="header-admin">
-    <a class="logo" href="#logos">
-        <img src="{{ asset('images/logo.jpg') }}"   alt="Logo" style="width: 70px; height: auto; border-radius: 50%;">
-    </a>
+    <div class="header-left">
+        <a class="logo" href="#logos">
+            <img src="{{ asset('images/logo/logo_mini.svg') }}" alt="Logo">
+        </a>
+    </div>
+    <div class="header-center">
+        <nav class="navbar-custom">
+            <a href="#help-section" class="nav-link active">Головна</a>
+            <a href="#about-section" class="nav-link">Про нас</a>
+            <a href="#volunteers-section" class="nav-link">Допомога</a>
+        </nav>
+    </div>
 
-    <nav class="navbar-custom">
-        <a href="#help-section" class="nav-link">Допомога</a>
-        <a href="#about-section" class="nav-link">Про нас</a>
-        <a href="#volunteers-section" class="nav-link">Волонтери</a>
+    <div class="header-right">
         <a class="login-button" href="{{ url('auth/login') }}">
             Увійти
         </a>
-    </nav>
+    </div>
 </header>
 
 <!-- Основний Контент -->

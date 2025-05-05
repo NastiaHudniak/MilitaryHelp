@@ -29,17 +29,15 @@ class AuthController extends Controller
             'password' => 'required|string|min:8|confirmed',
             'phone' => 'required|string|max:255',
             'address' => 'required|string|max:255',
-            'role_id' => 'required|in:1,2', // role_id повинно бути 1 або 2
+            'role_id' => 'required|in:1,2', 
         ]);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        // Призначаємо правильний role_id на основі вибору
         $role_id = $request->input('role_id') == 1 ? 2 : 3;
 
-        // Створюємо нового користувача з правильним role_id
         $user = User::create([
             'login' => $request->login,
             'password' => Hash::make($request->input('password')),
@@ -48,21 +46,16 @@ class AuthController extends Controller
             'email' => $request->email,
             'phone' => $request->phone,
             'address' => $request->address,
-            'role_id' => $role_id, // Використовуємо змінну $role_id
+            'role_id' => $role_id, 
         ]);
 
-
-
-        $imagePath = Storage::url('images/acc.jpg');
+        $imagePath = 'images/acc.jpg';
 
             UserImage::create([
                 'user_id' => $user->id,
                 'image_url' => $imagePath,
-            ]);
-
-
+            ]);     
         Auth::login($user);
-
         return redirect()->route('login')->with('success', 'Реєстрація успішна!');
     }
 
@@ -74,7 +67,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'login' => 'required|string|max:255',  // правило для поля login
+            'login' => 'required|string|max:255', 
             'password' => 'required|string|min:8',
         ]);
 
@@ -101,7 +94,7 @@ class AuthController extends Controller
         $request->session()->regenerate();
 
         if ($user->role_id == 1) {
-            return redirect()->route('admin.admin')->with('success', 'Авторизація успішна!');
+            return redirect()->route('admin.home.index')->with('success', 'Авторизація успішна!');
         }
         elseif ($user->role_id == 2) {
             return redirect()->route('user.military.index')->with('success', 'Авторизація успішна!');

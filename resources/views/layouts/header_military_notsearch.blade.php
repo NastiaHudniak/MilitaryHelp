@@ -228,15 +228,15 @@
                     </a>
                 </div>
                 <a class="details-item" href="{{ route('user.military.create') }}" style="font-size:20px; color: var(--yellow-400);">
-                    <span class="fluent-mdl2--add-to" style="color: var(--yellow-400); font-size:40px">></span>
+                    <span class="fluent-mdl2--add-to" style="color: var(--yellow-400); font-size:40px"></span>
                     <p>Додати заявку</p>
                 </a>
                 <a class="details-item"href="{{ route('user.military.view_app') }}" style="font-size:20px;color: var(--yellow-400);">
-                    <span class="solar--history-bold-duotone" style="color: var(--yellow-400); font-size:40px">></span>
+                    <span class="solar--history-bold-duotone" style="color: var(--yellow-400); font-size:42px"></span>
                     <p>Переглянути усі заявки</p>
                 </a>
-                <a class="details-item"href="{{ route('user.military.view_volunteer') }}" style="font-size:20px;color: var(--yellow-400);">
-                    <span class="solar--history-bold-duotone" style="color: var(--yellow-400); font-size:40px">></span>
+                <a class="details-item"href="{{ route('user.military.vol.view_volunteer') }}" style="font-size:20px;color: var(--yellow-400);">
+                    <span class="solar--history-bold-duotone" style="color: var(--yellow-400); font-size:60px"></span>
                     <p>Переглянути список волонтерів</p>
                 </a>
                 <div class="divider"></div>

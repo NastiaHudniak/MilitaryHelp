@@ -1,45 +1,77 @@
     @extends('layouts.app')
-    @include('layouts.header_military_notsearch')
+    @include('layouts.header_military')
     @section('content')
-        <img class="background" src="{{ asset('images/back-image.png') }}" alt="">
-        <div class="main-content" style="font-family: 'Jura', sans-serif;">
-            <div class="block">
-                <div class="infos">
-                    <div class="info">
-                        <div class="info-block">
-                            <h1 class="title"  >Подання заявки</h1>
-                            <h3 class="subtitle">Ви можете оформити заявку про допомогу </h3>
-                        </div>
-                        <img class="info-image" alt="" src="{{ asset('images/info-image-1.png') }}">
-                    </div>
-                    <a class="ic--round-play-arrow" style="color: var(--green-800); font-size: 47px; " href="{{ route('user.military.create') }}" ></a>
 
-                </div>
-                <div class="infos">
-                    <div class="info">
-                        <div class="info-block">
-                            <h1 class="title">Перегляд історії заявок</h1>
-                            <h3 class="subtitle">Ви можете переглядати свої опубліковані заявки</h3>
-                        </div>
-                        <img class="info-image" alt="" src="{{ asset('images/info-image-2.png') }}">
+        <div class="main-content" style="font-family: 'Open Sans', sans-serif;">
+            <div class="block-one" style="font-family: 'Open Sans', sans-serif;">
+                <div class="left-title">
+                    <div class="title">
+                        <h2 class="title-one">Косметологічна допомога</h2>
+                        <h2 class="title-two">військовим</h2>
                     </div>
-                    <a class="ic--round-play-arrow" style="color: var(--green-800); font-size: 47px; " href="{{ route('user.military.view_app') }}"></a>
-                </div>
-                <div class="infos">
-                    <div class="info">
-                        <div class="info-block">
-                            <h1 class="title">Перегляд списку волонтерів</h1>
-                            <h3 class="subtitle">Ви можете переглядати список усіх волонтерів</h3>
-                        </div>
-                        <img class="info-image" alt="" src="{{ asset('images/info-image-3.png') }}">
+                    <p class="subtitle">Солідарність у боротьбі: ваша підтримка - наша сила.</p>
+                    <div class="button-row">
+                        <a class="btn-create" href="{{ route('user.military.create') }}"> Створити заявку </a>
                     </div>
-                    <a class="ic--round-play-arrow" style="color: var(--green-800); font-size: 47px; "  href="{{ route('user.military.view_volunteer')}}"></a>
+                </div>
+                <div class="right-image">
+                    <img src="{{ asset('images/logo/image_military.svg') }}" alt="Image-Military">
                 </div>
             </div>
+
+            <div class="block-two">
+                <div class="action-block" style="border-bottom: 1px solid var(--blue-my);">
+                    <a type="submit" class="action-button" href="{{ route('user.military.create') }}">
+                        <img src="{{ asset('images/icon/znak.svg') }}" >
+                        Створення нової заявки
+                    </a>
+                    <div class="title-action-block" style="text-align: right">
+                        Ви можете <span class="highlight-action">оформити заявку</span> про допомогу
+                    </div>
+                </div>
+                <div class="action-block-2" style="border-bottom: 1px solid var(--blue-my);">
+
+                    <a type="submit" class="action-button" href="{{ route('user.military.view_app') }}">
+                        <img src="{{ asset('images/icon/history.svg') }}" >
+                        Створення нової заявки
+                    </a>
+                    <div class="title-action-block" style="text-align: left">
+                        Перегляньте <span class="highlight-action">свою історію</span> створених заявок
+                    </div>
+                </div>
+                <div class="action-block">
+                    <a type="submit" class="action-button" href="{{ route('user.military.vol.view_volunteer')}}">
+                        <img src="{{ asset('images/icon/list.svg') }}" >
+                        Створення нової заявки
+                    </a>
+                    <div class="title-action-block" style="text-align: right">
+                        Перегляньте <span class="highlight-action">список волонтерів</span> які можуть вам допомогти
+                    </div>
+                </div>
+            </div>
+
+            <div class="block-three" id="analytics-section">
+                <h2 class="title-analytics">Досягнення</h2>
+                <div class="analytics">
+                    <div class="analytics-block">
+                        <p class="analytics-number" data-target="{{ $totalApplications }}">0</p>
+                        <p class="analytics-label">заявки я опублікував</p>
+                    </div>
+                    <div class="analytics-block">
+                        <p class="analytics-number" data-target="{{ $acceptedApplications }}">0</p>
+                        <p class="analytics-label">заявок виконано</p>
+                    </div>
+                    <div class="analytics-block">
+                        <p class="analytics-number" data-target="2">0%</p>
+                        <p class="analytics-label">заявки відхилено</p>
+                    </div>
+                </div>
+            </div>
+
+
+
+
             <div class="title-name">
-                <b style=" color: var(--green-800); text-shadow: 0.5px 0 0 var(--green-800), 0 0.5px 0 var(--green-800), -0.5px 0 0 var(--green-800), 0 -0.5px 0 var(--green-800);" class="b">КОСМЕТОЛОГІЧНА </b>
-                <b style=" color: var(--green-500); text-shadow: 0.5px 0 0 var(--green-500), 0 0.5px 0 var(--green-500), -0.5px 0 0 var(--green-500), 0 -0.5px 0 var(--green-500);" class="b1">ДОПОМОГА</b>
-                <b style=" color: var(--green-800); text-shadow: 0.5px 0 0 var(--green-800), 0 0.5px 0 var(--green-800), -0.5px 0 0 var(--green-800), 0 -0.5px 0 var(--green-800);" class="b2">ВІЙСЬКОВИМ</b>
                 <div class="info-container">
                     <div class="bl-info">
                         <div class="info-number-circle">
@@ -75,198 +107,309 @@
         * {
             box-sizing: border-box;
         }
-        .background {
-            position: absolute; /* Абсолютне позиціонування, щоб залишалась зверху */
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh; /* Висота в 100% висоти видимої частини екрану */
-            object-fit: cover; /* Збереження пропорцій зображення */
-            z-index: -1; /* Фон залишається за контентом */
-        }
-
-        .title-name {
-            position: relative;
-            width: 45%;
-            font-size: 76px;
-            padding: 48px 0px ;
-
-        }
-        .b, .b1, .b2 {
-            font-weight: bold;
-            margin-bottom: 10px; /* Зменшуємо відступи між елементами */
-        }
 
         .main-content {
-            font-family: 'Arial', sans-serif;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            margin: 0; /* Відмінити відступи з боків */
-            max-width: 1400px; /* Встановіть максимальну ширину */
-            gap: 50px;
+            background-color: var(--main-white);
+            max-width: 100%;
+            margin: 0 auto;
         }
 
-        .info-block {
+        .block-one {
             width: 100%;
-            position: relative;
-            border-radius: 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            text-align: left;
-            font-size: var(--medium-24-8-size);
-            color: var(--green-800);
-        }
-
-        .info {
-            width: 100%;
-            position: relative;
-            border-radius: 10px;
-            padding: 10px;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: row;
+            margin: 0;
+            display: inline-flex;
+            background-image: linear-gradient(132deg, #F1F1DE 0%, #FDFDF6 69%);
             justify-content: space-between;
             align-items: center;
-            font-size: var(--bold-28-8-size);
-            background-color: var(--green-300);
-            gap: 10px;
-            margin-left: 20px;
-            margin-bottom: 15px;transition: background-color 0.3s ease, color 0.3s ease; /* Анімація зміни кольору */
+            padding: 64px 190px;
+            flex-wrap: wrap;
         }
 
-        .info:hover {
-            background-color: var(--green-500);
-            text-decoration: none;
-            transform: scale(1.05);
-        }
-
-        .infos {
-            width: 100%;
-            position: relative;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-            font-size: var(--bold-28-8-size);
-            gap: 10px;
-        }
-
-        .info-image {
-            width: 30%;
-            height: 30%;
-            border-radius: 10px;
-        }
-
-        .block {
-            width: 55%;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            font-size: var(--bold-28-8-size);
-            gap: 10px;
-            padding: 48px 0px ;
-        }
-
-
-
-
-        .info-container {
-            display: flex;
-            gap: 20px;
+        .left-title {
+            display: inline-flex;
             justify-content: flex-start;
-            padding: 10px;
-            margin-top: 35px;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 32px;
         }
 
-        .bl-info {
-            width: 40%;
-            height: 160px;
-            position: relative;
-            border-radius: 10px;
-            padding: 0 20px;
-
-            font-size: var(--bold-28-8-size);
-            background-color: var(--green-300);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-            transition: background-color 0.3s ease, color 0.3s ease;
-            overflow: hidden;
+        .title {
+            display: inline-flex;
+            justify-content: flex-start;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0;
         }
 
-        .bl-info:hover {
-            background-color: var(--green-500);
-            text-decoration: none;
-            transform: scale(1.05);
+        .title-one {
+            background-image: linear-gradient(90deg, #556B2F 0%, #D97706 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+            font-size: 48px;
+            font-weight: 600;
+            line-height: 56px;
+            margin: 0;
         }
 
-        .info-number-circle {
-            position: absolute;
-            bottom: -10px; /* Розміщення знизу */
-            right: -17px; /* Розміщення праворуч */
-            width: 78px;
-            height: 78px;
-            background-color: var(--yellow-200);
-            border-radius: 50%;
+        .title-two {
+            color: var(--black-my);
+            display: inline-block;
+            font-size: 48px;
+            font-weight: 600;
+            line-height: 56px;
+            margin: 0;
+        }
+
+        .subtitle {
+            color: var(--green-dark);
+            display: inline-block;
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .button-row {
+            display: inline-flex;
+            justify-content: flex-start;
+            flex-direction: row;
+            align-items: flex-start;
+            gap: 24px;
+        }
+
+        .btn-create {
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 36px;
-            font-weight: bold;
-            color: var(--green-800);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: auto;
+            height: auto;
+            background-color: var(--main-green-dark);
+            border-radius: 16px;
+            color: var(--main-white);
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 24px;
+            padding: 12px 24px;
+            text-align: center;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.5s ease, color 0.5s ease;
         }
 
-        .info-text {
-            color: var(--green-800);
+        .btn-create:hover {
+            background-color: var(--green-dark);
+            color: var(--main-white);
+            text-decoration: none;
+            transform: scale(1.1);
+        }
+
+
+        @media (max-width: 768px) {
+            .block-one {
+                flex-direction: column;
+                padding: 32px 24px;
+            }
+
+            .left-title {
+                align-items: center;
+                text-align: center;
+                gap: 24px;
+            }
+
+            .title {
+                align-items: center;
+                justify-content: center;
+            }
+
+            .title-one,
+            .title-two {
+                font-size: 36px;
+            }
+
+            .subtitle {
+                font-size: 16px;
+            }
+
+            .button-row {
+                flex-direction: column;
+                align-items: center;
+                gap: 16px;
+            }
+
+            .btn-create{
+                width: 100%;
+                text-align: center;
+            }
+
+            .right-image {
+                width: 100%;
+                margin-top: 24px;
+                display: flex;
+                justify-content: center;
+            }
+
+            .right-image img {
+                width: 80%;
+                height: auto;
+            }
+        }
+
+
+        .block-two {
+            width: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 64px 190px;
+            flex-wrap: wrap;
+            flex-direction: column;
+        }
+
+        .action-block{
+            width: 100%;
+            padding: 24px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            flex-direction: row;
+        }
+        .action-block-2{
+            width: 100%;
+            padding: 24px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            flex-direction: row-reverse;
+        }
+        .action-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0.75rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 16px;
+            transition: all 0.3s ease-in-out;
+            background-color: var(--main-beige);
+            color: var(--green-dark);
+            gap: 0.75rem;
+        }
+
+        .action-button:hover {
+            background-color: var(--green-light);
+            transform: scale(1.05);
+            text-decoration: none;
+            color: var(--green-dark);
+        }
+
+        .title-action-block {
+            width: 550px;
+            font-size: 32px;
+            font-weight: 600;
+            line-height: 48px;
+            word-wrap: break-word;
+            color: var(--main-green-dark);
+            text-align: left;
+        }
+        .title-action-block .highlight-action {
+            background-image: linear-gradient(90deg, #556B2F 0%, #D97706 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+
+
+        .block-three {
+            width: 100%;
+            margin: 64px 0;
+            display: inline-flex;
+            background-color: var(--orange-my);
+            justify-content: space-between;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 190px;
+            gap: 32px;
+        }
+        .title-analytics{
+            color: var(--black-my);
+            display: inline-block;
+            font-size: 48px;
+            font-weight: 600;
+            line-height: 56px;
+            margin: 0;
+        }
+
+
+        .analytics {
+            display: flex;
+            justify-content: space-between;
+            padding: 0px 116px;
+            align-items: center;
+            width: 100%;
+        }
+        .analytics-block {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .analytics-number {
+            font-size: 58px;
+            font-weight: 600;
+            line-height: 75.40px;
+            color: var(--black-my);
+        }
+        .analytics-label {
             font-size: 24px;
-            font-weight: 500;
-            margin-top: 20px;
+            font-weight: 400;
+            line-height: 31.20px;
+            color: var(--black-my);
+            word-wrap: break-word;
+            width: 183px;
         }
-
-        .bl-info::before {
-            content: "";
-            position: absolute;
-            top: 10px; /* Відступ зверху */
-            left: 10px; /* Відступ зліва */
-            height: 4px; /* Товщина лінії */
-            width: 60px; /* Довжина горизонтальної лінії */
-            background-color: var(--yellow-200);
-        }
-
-        .bl-info::after {
-            content: "";
-            position: absolute;
-            top: 10px; /* Відступ зверху */
-            left: 10px; /* Відступ зліва */
-            width: 4px; /* Товщина лінії */
-            height: 60px; /* Довжина вертикальної лінії */
-            background-color: var(--yellow-200);
-        }
-
-
-
 
 
     </style>
 
     <script>
-        // Масив фонових зображень
-        const backgrounds = [
-            '{{ asset('images/лендінг/background1.png') }}',
-            '{{ asset('images/лендінг/background2.png') }}',
-            '{{ asset('images/лендінг/background3.png') }}'
-        ];
+        document.addEventListener("DOMContentLoaded", () => {
+            const animateNumber = (element, target, suffix = "", duration = 2000) => {
+                let start = 0;
+                const startTime = performance.now();
 
-        let currentIndex = 0;
+                const update = (now) => {
+                    const elapsed = now - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const value = Math.floor(progress * target);
+                    element.textContent = value + suffix;
+                    if (progress < 1) {
+                        requestAnimationFrame(update);
+                    }
+                };
 
-        function changeBackground() {
-            currentIndex = (currentIndex + 1) % backgrounds.length; // Змінюємо індекс
-            document.querySelector('.background-icon').src = backgrounds[currentIndex]; // Змінюємо фонове зображення
-        }
+                requestAnimationFrame(update);
+            };
 
-        // Змінюємо фон кожні 5 секунд
-        setInterval(changeBackground, 5000);
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        const numbers = entry.target.querySelectorAll(".analytics-number");
+                        numbers.forEach((num) => {
+                            const target = parseInt(num.dataset.target, 10);
+                            const suffix = num.dataset.suffix || "";
+                            animateNumber(num, target, suffix);
+                        });
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            const analyticsSection = document.getElementById("analytics-section");
+            if (analyticsSection) {
+                observer.observe(analyticsSection);
+            }
+        });
     </script>

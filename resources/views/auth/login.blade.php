@@ -7,119 +7,293 @@
 </head>
 
 @section('content')
-    <div class="container-fluid" style="padding: 0;">
-        <div class="row" style="height: 100vh; display: flex;">
-            <div class="col-md-6 p-0">
-                <div style="height: 100%; background-image: url('{{ asset('images/pattern-c.png') }}'); background-size: cover; background-position: center;">
-                </div>
+    <div class="auth-page">
+        <a  href="{{ route('user.landing.index') }}">
+            <img src="{{ asset('images/logo/logo.svg') }}"  alt="Логотип" class="logo">
+        </a>
+
+        <div class="card">
+            <div class="card-header" style="margin: 0">
+                <h2>Вхід в акаунт</h2>
             </div>
-            <div class="col-md-6 d-flex justify-content-center align-items-center">
-                <div class="card" style="max-width: 400px; width: 100%; box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);">
-                    <div class="card-header" style="background-color:  var(--yellow-200); color:  var(--green-800);">
-                        <h2>Авторизація</h2>
+            <form class="card-body" action="{{ route('login') }}" method="POST">
+                    @csrf
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
+                    <div class="form-group">
+                        <label class="label" for="login">Логін</label>
+                        <div class="input-group">
+                            <input type="login" class="form-input" id="login" name="login" placeholder="Введіть логін" required>
+
+                        </div>
+                        @error('login')
+                        <div class="text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
-                    <div class="card-body" style="background-color: #fcfde1;">
-                        <form action="{{ route('login') }}" method="POST">
-                            @csrf
-                            @if ($errors->any())
-                                <div class="alert alert-danger">
-                                    <ul>
-                                        @foreach ($errors->all() as $error)
-                                               <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            @endif
-                            <div class="form-group" style=" color:  var(--green-800);">
-                                <label for="login">Логін</label>
-                                <input type="login" class="form-control" id="login" name="login" required>
-                                @error('login')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="form-group" style=" color:  var(--green-800);">
-                                <label for="password">Пароль</label>
-                                <div class="input-group">
-                                    <input type="password" class="form-control" id="password" name="password" required style="border-radius: 5px;">
-                                    <span class="toggle-password">
-                                        <i class="fas fa-eye-slash"></i>
-                                    </span>
-                                </div>
-                                @error('password')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div>
-                                <a style=" color:var(--green-500);" href="{{ route('password.request') }}" class="btn">Забули пароль?</a>
-                            </div>
-                            <button type="submit" class="btn btn-login" >Увійти</button>
-{{--                            <div class="divider">Або</div>--}}
-                            <div style="margin-top: 20px; text-align: center;">
-                                <p>У Вас немає акаунта? <a style=" color:var(--green-500);" href="{{ route('register') }}">Зареєструватися</a></p>
-                            </div>
-                        </form>
+
+                    <div class="form-group">
+                        <label class="label" for="password">Пароль</label>
+                        <div class="input-group">
+                            <input type="password" class="form-input" id="password" name="password" placeholder="Введіть пароль" required>
+                            <span class="toggle-password">
+                                <img src="{{ asset('images/icon/eye-close.svg') }}" alt="Send">
+                            </span>
+                        </div>
+                        @error('password')
+                        <div class="text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
-                </div>
-            </div>
+
+                    <div> <a href="{{ route('password.request') }}" class="forgot">Забули пароль?</a> </div>
+
+                    <div class="form-buttons">
+                        <button type="submit" class="login-button">Увійти</button>
+                        <div class="login-divider">
+                            <div class="divider-line"></div>
+                            <span class="divider-text">Або</span>
+                            <div class="divider-line"></div>
+                        </div>
+
+                        <button type="submit" class="login-google-button">
+                            <img src="{{ asset('images/icon/socialmedia-4.svg') }}" alt="Google icon">
+                            Увійти за допомогою Google
+                        </button>
+                        <div class="label-log">
+                            <p>У Вас немає акаунта? </p>
+                            <a href="{{ route('register') }}">Зареєструватися</a>
+                        </div>
+                    </div>
+                </form>
         </div>
     </div>
 
     <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            font-size: 16px;
+        }
 
-        .btn-login {
-            background-color: var(--green-500);
+        .auth-page {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(180deg, #FDFDF6 40%, #A3B18A 40%);
+            padding: 20px;
+            gap: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .auth-page {
+                flex-direction: row;
+                justify-content: center;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .auth-page {
+                display: flex;
+                justify-content: center;
+            }
+        }
+
+        .logo {
+            width: 150px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .logo {
+                position: absolute;
+                top: 40px;
+                left: 40px;
+                margin: 0;
+            }
+        }
+
+        .card {
             width: 100%;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-            border-radius: 5px;
-            color:  var(--yellow-200);
+            max-width: 400px;
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            background-color: transparent;
         }
 
-        .btn-login:hover {
-            background-color:  var(--green-800);
-            color:  var(--yellow-200);
+        .card-header {
+            text-align: center;
+            color: var(--black-my);
+            font-size: 2rem;
+            font-weight: 700;
+            background-color: transparent;
+            border: none;
         }
 
-            .form-control:focus {
-                border-color:  var(--green-500);
-                box-shadow: 0 0 5px  var(--green-800);
-                opacity: 0.5;
-            }
+        .card-body {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            background-color: var(--yellow-my);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 0;
+        }
 
-            .form-control{
-                background-color: var(--yellow-200);
-            }
+        .label {
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--black-my);
+            margin: 0;
+        }
 
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin: 0;
+        }
 
         .input-group {
-            position: relative;
+            display: flex;
+            align-items: center;
+            background-color: var(--main-white);
+            border-radius: 16px;
+            padding: 0 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
-        .input-group .toggle-password {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
+        .form-input {
+            flex-grow: 1;
+            padding: 0.5rem;
+            font-size: 1rem;
+            border: none;
+            outline: none;
+            background: transparent;
+            color: var(--greey-my);
+        }
+
+        .form-input::placeholder {
+            color: var(--greey-my);
+        }
+
+        .form-input:hover::placeholder {
+            color: var(--green-dark);
+        }
+
+        .toggle-password {
+            background: transparent;
+            border: none;
+            padding: 0.5rem;
             cursor: pointer;
         }
 
-        .toggle-password i {
-            color: #dc3545;
+        .forgot {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--main-green-dark);
+            display: inline-block;
+            margin-top: -10px;
         }
 
-        .toggle-password i.fa-eye-slash {
-            color: #555555;
+        .form-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .login-button,
+        .login-google-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0.75rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 16px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .login-button {
+            background-color: var(--main-green-dark);
+            color: var(--main-white);
+            border: none;
+        }
+
+        .login-button:hover {
+            background-color: var(--green-dark);
+            transform: scale(1.05);
+        }
+
+        .login-google-button {
+            background-color: var(--main-white);
+            color: var(--main-green-dark);
+            border: 2px solid var(--main-green-dark);
+            gap: 0.75rem;
+        }
+
+        .login-google-button:hover {
+            background-color: var(--green-light);
+            transform: scale(1.05);
+        }
+
+        .login-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--greey-my);
+            font-size: 0.875rem;
+            gap: 0.5rem;
+        }
+
+        .divider-line {
+            flex-grow: 1;
+            border-top: 1px solid var(--greey-my);
+        }
+
+        .label-log {
+            display: flex;
+            justify-content: center;
+            gap: 0.25rem;
+            font-size: 0.875rem;
+        }
+
+        .label-log p {
+            margin: 0;
+            color: var(--green-dark);
+        }
+
+        .label-log a {
+            color: var(--green-light);
+            text-decoration: none;
+        }
+
+        .label-log a:hover {
+            text-decoration: underline;
         }
     </style>
 
-    <script>
-        document.querySelector('.toggle-password').addEventListener('click', function() {
-            const passwordField = document.getElementById('password');
-            const passwordFieldType = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordField.setAttribute('type', passwordFieldType);
 
-            const icon = this.querySelector('i');
-            icon.classList.toggle('fa-eye-slash');
-            icon.classList.toggle('fa-eye');
+    <script>
+        document.querySelector('.toggle-password').addEventListener('click', function () {
+            const passwordField = document.getElementById('password');
+            const isPasswordHidden = passwordField.getAttribute('type') === 'password';
+            passwordField.setAttribute('type', isPasswordHidden ? 'text' : 'password');
+
+            const img = this.querySelector('img');
+            img.src = isPasswordHidden
+                ? "{{ asset('images/icon/eye-open.svg') }}"
+                : "{{ asset('images/icon/eye-close.svg') }}";
         });
     </script>
+
 @endsection

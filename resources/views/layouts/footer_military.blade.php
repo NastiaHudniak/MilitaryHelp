@@ -26,8 +26,8 @@
             <h5 style="color: var(--yellow-500)">Навігація по сторінці</h5>
             <div class="list" style="color: var(--yellow-200)" >
                 <a style="color: var(--yellow-200)" href="{{ route('user.military.create') }}" >Додати заявки</a>
-                <a style="color: var(--yellow-200)" href="#about-section" >Переглянути заявки</a>
-                <a style="color: var(--yellow-200)" href="#volunteers-section" >Переглянути список волонтерів</a>
+                <a style="color: var(--yellow-200)" href="{{ route('user.military.view_app') }}">Переглянути заявки</a>
+                <a style="color: var(--yellow-200)" href="{{ route('user.military.vol.view_volunteer') }}" >Переглянути список волонтерів</a>
             </div>
         </div>
 

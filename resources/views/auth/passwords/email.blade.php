@@ -7,89 +7,210 @@
 </head>
 
 @section('content')
-    <div class="container-fluid" style="padding: 0;">
-        <div class="row" style="height: 100vh; display: flex;">
-            <div class="col-md-6 p-0">
-                <div style="height: 100%; background-image: url('{{ asset('images/pattern-c.png') }}'); background-size: cover; background-position: center;">
-                </div>
+    <div class="email-page">
+        <a  href="{{ route('user.landing.index') }}">
+            <img src="{{ asset('images/logo/logo.svg') }}"  alt="Логотип" class="logo">
+        </a>
+
+        <div class="card">
+            <div class="card-header">
+                <h2>Скидання пароля</h2>
             </div>
-            <div class="col-md-6 d-flex justify-content-center align-items-center">
-                <div class="card" style="max-width: 400px; width: 100%; box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);">
-                    <div class="card-header" style="background-color: var(--yellow-200); color: var(--green-800);">
-                        <h2>Скидання пароля</h2>
+            <form class="card-body" action="{{ route('password.email') }}" method="POST">
+                @csrf
+                @if (session('status'))
+                    <div class="alert alert-success">{{ session('status') }}</div>
+                @endif
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
                     </div>
-                    <div class="card-body" style="background-color: #fcfde1;">
-                        <form action="{{ route('password.email') }}" method="POST">
-                            @csrf
-                            @if (session('status'))
-                                <div class="alert alert-success">{{ session('status') }}</div>
-                            @endif
+                @endif
 
-                            @if ($errors->any())
-                                <div class="alert alert-danger">
-                                    <ul>
-                                        @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            @endif
-
-                            <div class="form-group" style="color: var(--green-800);">
-                                <label for="email">Електронна пошта</label>
-                                <input type="email" class="form-control" id="email" name="email" required>
-                            </div>
-
-                            <button type="submit" class="btn btn-email">Надіслати посилання для скидання пароля</button>
-
-                            <div style="margin-top: 20px; text-align: center;">
-                                <p>Згадали пароль? <a style="color: var(--green-500);" href="{{ route('login') }}">Увійти</a></p>
-                            </div>
-                        </form>
+                <div class="form-group">
+                    <label class="label" for="email">Електронна пошта</label>
+                    <div class="input-group">
+                        <input type="email" class="form-input" id="email" name="email" placeholder="Введіть електронну пошту" required>
                     </div>
                 </div>
-            </div>
+
+                <div class="form-buttons">
+                    <button type="submit" class="email-button">Надіслати</button>
+                    <div class="label-email">
+                        <p>Згадали пароль? </p>
+                        <a href="{{ route('login') }}">Увійти</a>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 
+
     <style>
-        .btn-email {
-            background-color: var(--green-500);
+        body, html {
+            height: 100%;
+            margin: 0;
+        }
+
+        .email-page {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            background: linear-gradient(180deg, #FDFDF6 40%, #A3B18A 40%);
+            padding: 20px;
+            gap: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .email-page {
+                flex-direction: row;
+                justify-content: center;
+                gap: 80px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .email-page {
+                display: flex;
+                justify-content: center;
+            }
+        }
+
+        .logo {
+            width: 150px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .logo {
+                position: absolute;
+                top: 40px;
+                left: 40px;
+                margin: 0;
+            }
+        }
+
+
+        .card {
             width: 100%;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-            border-radius: 5px;
-            color: var(--yellow-200);
+            max-width: 400px;
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            background-color: transparent;
+            margin-bottom: 80px;
         }
 
-        .btn-email:hover {
-            background-color: var(--green-800);
-            color: var(--yellow-200);
+        .card-header {
+            text-align: center;
+            color: var(--black-my);
+            font-size: 2rem;
+            font-weight: 700;
+            background-color: transparent;
+            border: none;
         }
 
-        .form-control:focus {
-            border-color: var(--green-500);
-            box-shadow: 0 0 5px var(--green-800);
-            opacity: 0.5;
+        .card-body {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            background-color: var(--yellow-my);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 0;
         }
 
-        .form-control {
-            background-color: var(--yellow-200);
+        .label {
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--black-my);
+            margin: 0;
         }
 
-        a {
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin: 0;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            background-color: var(--main-white);
+            border-radius: 16px;
+            padding: 0 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .form-input {
+            flex-grow: 1;
+            padding: 0.5rem;
+            font-size: 1rem;
+            border: none;
+            outline: none;
+            background: transparent;
+            color: var(--greey-my);
+        }
+
+        .form-input::placeholder {
+            color: var(--greey-my);
+        }
+
+        .form-input:hover::placeholder {
+            color: var(--green-dark);
+        }
+
+        .form-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .email-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0.75rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 16px;
+            transition: all 0.3s ease-in-out;
+            background-color: var(--main-green-dark);
+            color: var(--main-white);
+            border: none;
+        }
+
+        .email-button:hover {
+            background-color: var(--green-dark);
+            transform: scale(1.05);
+        }
+
+        .label-email{
+            display: flex;
+            justify-content: center;
+            gap: 0.25rem;
+            font-size: 0.875rem;
+        }
+
+        .label-email p{
+            margin: 0;
+            color: var(--green-dark);
+        }
+        .label-email a{
+            color: var(--green-light);
             text-decoration: none;
-            font-size: 14px;
+        }
+        .label-email a:hover {
+            text-decoration: underline;
         }
 
-        a:hover {
-            text-decoration: none;
-            color: #c53727;
-        }
-
-        p {
-            text-decoration: none;
-            font-size: 14px;
-            color: #666;
-        }
     </style>
 @endsection

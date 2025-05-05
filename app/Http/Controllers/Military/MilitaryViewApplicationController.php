@@ -10,6 +10,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
+use Barryvdh\DomPDF\Facade\Pdf;
+
+
 class MilitaryViewApplicationController extends Controller
 {
     public function index()
@@ -17,8 +20,9 @@ class MilitaryViewApplicationController extends Controller
         $users = User::all();
         $categories = Category::all();
         $user_id = Auth::user()->id;
-        $applications = Application::where('millitary_id',  $user_id)->get();
-        return view('user.military.view_app', compact('applications','users', 'categories'));
+        $applications = Application::with('images') 
+        ->where('millitary_id',  $user_id)->get();
+        return view('user.military.view_app', compact('applications','users', 'categories'));      
     }
 
     public function store(Request $request)
@@ -82,41 +86,32 @@ class MilitaryViewApplicationController extends Controller
     public function search(Request $request)
     {
         $query = $request->input('query');
+        $category = $request->input('category');
+        $status = $request->input('status');
+        $sort = $request->input('sort');
         $user_id = Auth::user()->id;
 
-        $applications = Application::with(['category', 'volunteer', 'millitary'])
-            ->where('military_id', $user_id) // Додайте фільтр за military_id
-            ->when($query !== null && $query !== '', function($q) use ($query) {
-                $q->where(function ($queryBuilder) use ($query) {
-                    $queryBuilder->where('title', 'like', "%{$query}%")
-                        ->orWhere('description', 'like', "%{$query}%");
-                });
+        if($status == "created") $status = "створено";
+        if($status == "accept") $status = "прийнято";
+        if($status == "cancel") $status = "відхилено";
+
+        $applications = Application::with(['category', 'volunteer', 'millitary', 'images'])
+            // ->when($user_id, function($q) use ($user_id) {
+            //     $q->where('millitary_id', $user_id);
+            // })
+            ->where('millitary_id', $user_id)
+            // ->where('category_id', $category)
+            ->when(!is_null($category), function($q) use ($category) {
+                $q->where('category_id', $category);
             })
-            ->get();
-
-        return response()->json(['applications' => $applications]);
-    }
-
-
-
-
-    public function filter(Request $request)
-    {
-        $query = $request->input('query');
-        $category = $request->input('category');
-        $sort = $request->input('sort');
-
-        $applications = Application::with('category', 'volunteer', 'millitary');
-
-        if ($category) {
-            $applications->where('category_id', $category);
-        }
-
-        if ($query) {
-            $applications->where('title', 'LIKE', "%{$query}%");
-        }
-
-        // Додайте логіку для сортування
+            ->when(!is_null($status), function($q) use ($status) {
+                $q->where('status', $status);
+            })
+            ->where(function ($q) use ($query) {
+                $q->where('title', 'like', "%{$query}%")
+                ->orWhere('description', 'like', "%{$query}%");
+            });
+            
         if ($sort === 'latest') {
             $applications->orderBy('created_at', 'desc');
         } elseif ($sort === 'oldest') {
@@ -126,6 +121,14 @@ class MilitaryViewApplicationController extends Controller
         }
 
         return response()->json(['applications' => $applications->get()]);
+    }
+
+    public function generatePDF($id)
+    {
+        $application = Application::with('images')->findOrFail($id);
+        $pdf = Pdf::loadView('user.military.pdf', compact('application'));
+        
+        return $pdf->download('application-'.$application->id.'.pdf');
     }
 
 }

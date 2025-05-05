@@ -5,9 +5,14 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\UserImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage; 
+use Barryvdh\DomPDF\Facade\Pdf;
+
+
 
 
 class UserController extends Controller
@@ -26,35 +31,47 @@ class UserController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'login' => 'required|unique:users|max:255',
-            'surname' => 'required|string|max:255',
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8|confirmed',
-            'phone' => 'required|string|max:255',
-            'address' => 'required|string|max:255',
-            'role_id' => 'required|exists:roles,id',
-        ]);
+{
+    $validator = Validator::make($request->all(), [
+        'login' => 'required|unique:users|max:255',
+        'surname' => 'required|string|max:255',
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email',
+        'password' => 'required|string|min:8|confirmed',
+        'phone' => 'required|string|max:255',
+        'address' => 'required|string|max:255',
+        'role_id' => 'required|exists:roles,id',
+    ]);
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
-        User::create([
-            'login' => $request->input('login'),
-            'surname' => $request->input('surname'),
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'password' => Hash::make($request->input('password')),
-            'phone' => $request->input('phone'),
-            'address' => $request->input('address'),
-            'role_id' => $request->input('role_id'),
-        ]);
-
-        return redirect()->route('admin.users.index')->with('success', 'Користувач створений успішно !!!');
+    if ($validator->fails()) {
+        return redirect()->back()->withErrors($validator)->withInput();
     }
+
+    // Створюємо користувача і зберігаємо його у змінній $user
+    $user = User::create([
+        'login' => $request->input('login'),
+        'surname' => $request->input('surname'),
+        'name' => $request->input('name'),
+        'email' => $request->input('email'),
+        'password' => Hash::make($request->input('password')),
+        'phone' => $request->input('phone'),
+        'address' => $request->input('address'),
+        'role_id' => $request->input('role_id'),
+    ]);
+
+    
+        $imagePath = 'images/acc.jpg';
+
+            UserImage::create([
+                'user_id' => $user->id,
+                'image_url' => $imagePath,
+            ]);
+
+
+
+    return redirect()->route('admin.users.index')->with('success', 'Користувач створений успішно !!!');
+}
+
 
 
     public function edit($id)
@@ -125,5 +142,15 @@ class UserController extends Controller
             ->get();
 
         return response()->json(['users' => $users]);
+    }
+
+
+    public function exportPDF()
+    {
+        $users = User::with('role')->get(); 
+        $totalUsers = $users->count();
+        $pdf = Pdf::loadView('admin.users.pdf', compact('users', 'totalUsers'));
+
+        return $pdf->download('users.pdf');
     }
 }

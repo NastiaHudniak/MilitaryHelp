@@ -3,18 +3,22 @@
 use App\Http\Controllers\Admin\ApplicationController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\EditMilitaryImageController;
+use App\Http\Controllers\EditVolunteerImageController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\LabController;
 use App\Http\Controllers\Landing\LandingController;
 use App\Http\Controllers\Military\Account\MilitaryEditUserController;
 use App\Http\Controllers\Military\Account\MilitaryViewAccountController;
 use App\Http\Controllers\Military\MilitaryAddApplicationsController;
+use App\Http\Controllers\Military\MilitaryApplicationImageController;
 use App\Http\Controllers\Military\MilitaryHomeController;
 use App\Http\Controllers\Military\MilitaryViewApplicationController;
 use App\Http\Controllers\Military\MilitaryViewVolunteerController;
 use App\Http\Controllers\UserImageController;
+use App\Http\Controllers\ApplicationImageController;
 use App\Http\Controllers\Volunteer\Account\VolunteerEditUserController;
 use App\Http\Controllers\Volunteer\Account\VolunteerViewAccountController;
 use App\Http\Controllers\Volunteer\VolunteerConfirmationApplicationController;
@@ -30,11 +34,18 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/', [LabController::class, 'main']);
+Route::get('/', [LandingController::class, 'index'])->name('user.landing.index');
 Route::get('/lab1', [LabController::class, 'index']);
 Route::get('/about', [LabController::class, 'about']);
 Route::get('/contact', [LabController::class, 'contact']);
 Route::get('/hobbies', [LabController::class, 'hobbies']) -> middleware(Check::class);
+
+Route::prefix('admin')->group(function () {
+    Route::get('/home', [HomeController::class, 'index'])->name('admin.home.index');
+
+});
+Route::get('/', [LandingController::class, 'index'])->name('user.landing.index');
+
 
 
 Route::prefix('admin')->group(function () {
@@ -46,6 +57,7 @@ Route::prefix('admin')->group(function () {
     Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
     Route::get('/users/search', [UserController::class, 'search'])->name('admin.users.search');
     Route::get('/users/filter', [UserController::class, 'filter'])->name('admin.users.filter');
+    Route::get('/admin/users/export', [UserController::class, 'exportPDF'])->name('admin.users.export');
 });
 
 Route::prefix('admin')->group(function () {
@@ -57,7 +69,7 @@ Route::prefix('admin')->group(function () {
     Route::delete('/applications/{application}', [ApplicationController::class, 'destroy'])->name('admin.applications.destroy');
     Route::get('/applications/search', [ApplicationController::class, 'search'])->name('admin.applications.search');
     Route::get('/applications/filter', [ApplicationController::class, 'filter'])->name('admin.applications.filter');
-    Route::get('/applications/export', [ApplicationController::class, 'export'])->name('admin.applications.export');
+    Route::get('/admin/applications/export', [ApplicationController::class, 'exportPDF'])->name('admin.applications.export');
 });
 
 
@@ -70,17 +82,17 @@ Route::prefix('admin')->group(function () {
     Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('admin.categories.destroy');
     Route::get('/categories/search', [CategoryController::class, 'search'])->name('admin.categories.search');
     Route::get('/categories/filter', [CategoryController::class, 'filter'])->name('admin.categories.filter');
-    Route::get('/categories/export', [CategoryController::class, 'export'])->name('admin.categories.export');
+    Route::get('/admin/categories/export', [CategoryController::class, 'exportPDF'])->name('admin.categories.export');
 });
 
-//
-//Route::prefix('admin/products/{product}')->group(function () {
-//    Route::get('/images/add', [ProductImageController::class, 'create'])->name('admin.products.images.add');
-//    Route::post('/images', [ProductImageController::class, 'store'])->name('admin.products.images.store');
-//    Route::get('/images/edit', [ProductImageController::class, 'edit'])->name('admin.products.images.edit');
-//    Route::put('/images/{image}', [ProductImageController::class, 'update'])->name('admin.products.images.update');
-//    Route::delete('/images/{image}', [ProductImageController::class, 'destroy'])->name('admin.products.images.delete');
-//});
+
+Route::prefix('admin/applications/{application}')->group(function () {
+    Route::get('/images/create', [ApplicationImageController::class, 'create'])->name('admin.applications.images.create');
+    Route::post('/images', [ApplicationImageController::class, 'store'])->name('admin.applications.images.store');
+    Route::get('/images/edit', [ApplicationImageController::class, 'edit'])->name('admin.applications.images.edit');
+    Route::put('/images/{image}', [ApplicationImageController::class, 'update'])->name('admin.applications.images.update');
+    Route::delete('/images/{image}', [ApplicationImageController::class, 'destroy'])->name('admin.applications.images.delete');
+});
 
 
 
@@ -93,22 +105,24 @@ Route::prefix('admin/users/{user}')->group(function () {
 });
 
 
-Route::prefix('user')->group(function () {
-    Route::get('/landing', [LandingController::class, 'index'])->name('user.landing.index');
-});
-
 
 Route::prefix('user')->group(function () {
     Route::get('/military/view_app', [MilitaryViewApplicationController::class, 'index'])->name('user.military.view_app');
     Route::get('/military/view_account', [MilitaryViewAccountController::class, 'index'])->name('user.military.view_account');
     Route::get('/military/{user}/edit_account', [MilitaryEditUserController::class, 'edit'])->name('user.military.edit_account');
     Route::put('/military/{user}', [MilitaryEditUserController::class, 'update'])->name('user.military.update_account');
-
-    Route::get('/military/view_volunteer', [MilitaryViewVolunteerController::class, 'index'])->name('user.military.view_volunteer');
-
-
-
+    Route::get('/military/vol/view_volunteer', [MilitaryViewVolunteerController::class, 'index'])->name('user.military.vol.view_volunteer');
+    Route::get('/military/vol/search', [MilitaryViewVolunteerController::class, 'search'])->name('user.military.vol.search');
 });
+
+Route::prefix('user/military/{application}')->group(function () {
+    Route::get('/images/create', [MilitaryApplicationImageController::class, 'create'])->name('user.military.images.create');
+    Route::post('/images', [MilitaryApplicationImageController::class, 'store'])->name('user.military.images.store');
+    Route::get('/images/edit', [MilitaryApplicationImageController::class, 'edit'])->name('user.military.images.edit');
+    Route::put('/images/{image}', [MilitaryApplicationImageController::class, 'update'])->name('user.military.images.update');
+    Route::delete('/images/{image}', [MilitaryApplicationImageController::class, 'destroy'])->name('user.military.images.delete');
+});
+
 
 Route::prefix('user')->group(function () {
     Route::get('/military/index', [MilitaryHomeController::class, 'index'])->name('user.military.index');
@@ -124,8 +138,8 @@ Route::prefix('user')->group(function () {
 
     Route::delete('/military/{application}', [MilitaryViewApplicationController::class, 'destroy'])->name('user.military.destroy');
     Route::get('/military/search', [MilitaryViewApplicationController::class, 'search'])->name('user.military.search');
-    Route::get('/military/filter', [MilitaryViewApplicationController::class, 'filter'])->name('user.military.filter');
     Route::get('/military/export', [MilitaryViewApplicationController::class, 'export'])->name('user.military.export');
+    Route::get('military/pdf/{id}', [MilitaryViewApplicationController::class, 'generatePDF'])->name('user.military.pdf');
 
 });
 
@@ -157,21 +171,29 @@ Route::prefix('user')->group(function () {
     Route::get('/volunteer/view_account', [VolunteerViewAccountController::class, 'index'])->name('user.volunteer.view_account');
     Route::get('/volunteer/{user}/edit_account', [VolunteerEditUserController::class, 'edit'])->name('user.volunteer.edit_account');
     Route::put('/volunteer/{user}', [VolunteerEditUserController::class, 'update'])->name('user.volunteer.update_account');
-    Route::get('/volunteer/view_military', [VolunteerViewMilitaryController::class, 'index'])->name('user.volunteer.view_military');
+    Route::get('/volunteer/mil/view_military', [VolunteerViewMilitaryController::class, 'index'])->name('user.volunteer.mil.view_military');
+    Route::get('/volunteer/mil/search', [VolunteerViewMilitaryController::class, 'search'])->name('user.volunteer.mil.search');
     Route::get('/volunteer/view_app', [VolunteerViewApplicationController::class, 'index'])->name('user.volunteer.view_app');
     Route::get('/volunteer/search', [VolunteerViewApplicationController::class, 'search'])->name('user.volunteer.search');
     Route::get('/volunteer/filter', [VolunteerViewApplicationController::class, 'filter'])->name('user.volunteer.filter');
-    Route::get('/volunteer/view_confirm_app', [VolunteerViewConfirmApplicationController::class, 'index'])->name('user.volunteer.view_confirm_app');
+    Route::get('/volunteer/confirm/view_confirm_app', [VolunteerViewConfirmApplicationController::class, 'index'])->name('user.volunteer.confirm.view_confirm_app');
     Route::get('/volunteer/view_info_military/{id}', [VolunteerViewInfoMilitaryController::class, 'index'])->name('user.volunteer.view_info_military');
     Route::get('/volunteer/confirm_application/{id}', [VolunteerConfirmationApplicationController::class, 'index'])->name('user.volunteer.confirm_application');
     Route::post('/volunteer/confirm_application/{id}', [VolunteerConfirmationApplicationController::class, 'confirm'])->name('user.volunteer.confirm_application.confirm');
 
+    Route::get('/volunteer/confirm/search', [VolunteerViewConfirmApplicationController::class, 'search'])->name('user.volunteer.confirm.search');
     Route::get('/volunteer/confirm/{id}/edit_confirm_app', [VolunteerViewConfirmApplicationController::class, 'edit'])->name('user.volunteer.confirm.edit_confirm_app');
     Route::put('/volunteer/confirm/{id}', [VolunteerViewConfirmApplicationController::class, 'update'])->name('user.volunteer.confirm.update_app');
 
 // Додайте ці маршрути
     Route::put('/volunteer/confirm/{id}/delete_comment', [VolunteerViewConfirmApplicationController::class, 'deleteComment'])->name('user.volunteer.confirm.delete_comment');
     Route::put('/volunteer/confirm/{id}/reject_application', [VolunteerViewConfirmApplicationController::class, 'rejectApplication'])->name('user.volunteer.confirm.reject_application');
+
+
+    Route::get('volunteer/account/{user}/edit_photo', [EditVolunteerImageController::class, 'edit'])->name('user.volunteer.account.edit_photo');
+    Route::post('volunteer/account/{user}/update_photo', [EditVolunteerImageController::class, 'update'])->name('user.volunteer.account.update_photo');
+
+    Route::get('volunteer/pdf/{id}', [VolunteerViewApplicationController::class, 'generatePDF'])->name('user.volunteer.pdf');
 
 });
 

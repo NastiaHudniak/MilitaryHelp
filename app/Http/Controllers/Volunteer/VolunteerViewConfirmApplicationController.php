@@ -10,6 +10,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
+use Barryvdh\DomPDF\Facade\Pdf;
+
+
 class VolunteerViewConfirmApplicationController extends Controller
 {
     public function index()
@@ -17,9 +20,11 @@ class VolunteerViewConfirmApplicationController extends Controller
         $volunteer_id = Auth::id();
         $users = User::all();
         $categories = Category::all();
-        $applications = Application::where('volunteer_id', $volunteer_id)->get();
+        $applications = Application::with('images') 
+            ->where('volunteer_id', $volunteer_id)
+            ->get();
 
-        return view('user.volunteer.view_confirm_app', compact('applications', 'users', 'categories'));
+        return view('user.volunteer.confirm.view_confirm_app', compact('applications', 'users', 'categories'));
     }
 
     public function edit($id)
@@ -42,7 +47,7 @@ class VolunteerViewConfirmApplicationController extends Controller
         $application->save();
 
         // Перенаправлення на сторінку перегляду підтверджених заявок
-        return redirect()->route('user.volunteer.view_confirm_app')->with('success', 'Коментар оновлено.');
+        return redirect()->route('user.volunteer.confirm.view_confirm_app')->with('success', 'Коментар оновлено.');
     }
 
 
@@ -53,18 +58,18 @@ class VolunteerViewConfirmApplicationController extends Controller
         $application->comment = 'немає';
         $application->save();
 
-        return redirect()->route('user.volunteer.view_confirm_app')->with('success', 'Коментар видалено.');
+        return redirect()->route('user.volunteer.confirm.view_confirm_app')->with('success', 'Коментар видалено.');
     }
 
     public function rejectApplication($applicationId)
     {
         $application = Application::find($applicationId);
-        $application->status = 'створено'; // Змінюємо статус на "створено"
-        $application->volunteer_id = null; // Встановлюємо volunteer_id в null
+        $application->status = 'створено'; 
+        $application->volunteer_id = null; 
         $application->comment = 'немає';
         $application->save();
 
-        return redirect()->route('user.volunteer.view_confirm_app')->with('success', 'Заявка відхилена.');
+        return redirect()->route('user.volunteer.confirm.view_confirm_app')->with('success', 'Заявка відхилена.');
     }
 
 
@@ -76,25 +81,33 @@ class VolunteerViewConfirmApplicationController extends Controller
     {
         $query = $request->input('query');
         $category = $request->input('category');
-        $user_id = Auth::user()->id;
+        $sort = $request->input('sort');
+        $volunteer_id = Auth::id();
 
-        $applications = Application::with(['category', 'volunteer', 'millitary'])
-            ->when($query !== null && $query !== '', function($q) use ($query) {
+        $applications = Application::with(['category', 'volunteer', 'millitary', 'images'])
+            // ->when($user_id, function($q) use ($user_id) {
+            //     $q->where('millitary_id', $user_id);
+            // })
+            ->where('volunteer_id', $volunteer_id)
+            // ->where('category_id', $category)
+            ->when(!is_null($category), function($q) use ($category) {
+                $q->where('category_id', $category);
+            })
+            ->where(function ($q) use ($query) {
                 $q->where('title', 'like', "%{$query}%")
-                    ->orWhere('description', 'like', "%{$query}%");
-            })
-            ->when($category, function($q) use ($category) {
-                $q->whereHas('category', function($q) use ($category) {
-                    $q->where('name', $category);
-                });
-            })
-            ->when($query === null || $query === '', function($q) use ($user_id) {
-                $q->where('millitary_id', $user_id);
-            })
-            ->get();
+                ->orWhere('description', 'like', "%{$query}%");
+            });
 
-        return response()->json(['applications' => $applications]);
+        if ($sort === 'latest') {
+            $applications->orderBy('created_at', 'desc');
+        } elseif ($sort === 'oldest') {
+            $applications->orderBy('created_at', 'asc');
+        } 
+
+        return response()->json(['applications' => $applications->get()]);
     }
+
+
 //
 //
 //
@@ -119,5 +132,13 @@ class VolunteerViewConfirmApplicationController extends Controller
             ->get();
 
         return response()->json(['applications' => $applications]);
+    }
+
+    public function generatePDF($id)
+    {
+        $application = Application::findOrFail($id);
+        $pdf = Pdf::loadView('user.volunteer.pdf', compact('application'));
+        
+        return $pdf->download('application-'.$application->id.'.pdf');
     }
 }

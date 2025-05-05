@@ -8,60 +8,57 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jura:wght@600&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+
 
 </head>
 <body>
-<footer class="footer ">
-    <div class="row">
-        <div class="col-lg-4 col-md-6 mb-4">
-            <div class="footer-logo">
-                <img src="{{ asset('images/logo.jpg') }}" alt="Logo" style="width: 80px; height: auto; border-radius: 50%;">
-                <h4 class="help" style="color: var(--yellow-500)">Military Help</h4>
-                <p style="color: var(--yellow-200)">Ми допомагаємо військовим та волонтерам знайти необхідну допомогу.</p>
-            </div>
-        </div>
-
-        <div class="col-lg-4 col-md-6 mb-4">
-            <h5 style="color: var(--yellow-500)">Навігація по сторінці</h5>
-            <div class="list" style="color: var(--yellow-200)" >
-                <a style="color: var(--yellow-200)" href="#help-section" >Допомога</a>
-                <a style="color: var(--yellow-200)" href="#about-section" >Про нас</a>
-                <a style="color: var(--yellow-200)" href="#volunteers-section" >Волонтери</a>
-            </div>
-        </div>
-
-        <!-- Social Media Links -->
-        <div class="col-lg-4 col-md-12 mb-4">
-            <h5 style="color: var(--yellow-500)">Соціальні мережі</h5>
-            <div class="com">
-                <a href="https://www.instagram.com/___aanastaasia___"  >
-                    <span class="iconoir--instagram" style=" font-size: 37px;"></span>
-                </a>
-                <a href="https://www.facebook.com/profile.php?id=100013498512633" >
-                    <span class="mdi--facebook" style=" font-size: 37px;"></span>
-                </a>
-                <a href="https://t.me/nas_tia_a" >
-                    <span class="ic--twotone-telegram" style=" font-size: 37px;"></span>
-                </a>
-                <a href="https://github.com/NastiaHudniak/MilitaryHelp" >
-                    <span class="bi--github" style=" font-size: 30px;"></span>
-                </a>
-            </div>
+<footer class="footer">
+    <div class="left-block" style="width: 340px;">
+       <div class="logo-social-block">
+           <a class="logo" href="#logos">
+               <img src="{{ asset('images/logo/logo.svg') }}" alt="Logo">
+           </a>
+           <div class="social-media">
+               <a href="https://www.instagram.com/___aanastaasia___"  style="height: 40px">
+                   <img src="{{ asset('images/icon/socialmedia.svg') }}">
+               </a>
+               <a href="https://www.facebook.com/profile.php?id=100013498512633" style="height: 40px">
+                   <img src="{{ asset('images/icon/socialmedia-1.svg') }}">
+               </a>
+               <a href="https://t.me/nas_tia_a" style="height: 40px">
+                   <img src="{{ asset('images/icon/socialmedia-2.svg') }}">
+               </a>
+               <a href="https://github.com/NastiaHudniak/MilitaryHelp" style="height: 40px">
+                   <img src="{{ asset('images/icon/socialmedia-3.svg') }}">
+               </a>
+           </div>
+       </div>
+        <div class="text-block">
+            <p class="one-text">Розроблено</p>
+            <p class="two-text">Hudniak Anastasiia</p>
+            <p class="two-text">Military Help</p>
+            <p class="one-text">Усі права захищені.2025</p>
         </div>
     </div>
-
-    <hr class="bg-white">
-
-    <!-- Footer Bottom Text -->
-    <div class="row">
-        <div class="col-md-6">
-            <p class="text-white-50">&copy; 2024 Наша Компанія. Усі права захищено.</p>
+    <div class="right-block" >
+        <div class="navigation-block">
+            <h5 class="navigation-title">Навігація</h5>
+            <div class="list-navigation">
+                <a href="#help-section" >Головна</a>
+                <a href="#about-section" >Про нас</a>
+                <a href="#volunteers-section" >Волонтери</a>
+            </div>
         </div>
-        <div class="col-md-6 text-md-right">
-            <a href="{{ url('/privacy') }}" class="text-white-50">Політика конфіденційності</a>
-            <span class="text-white-50 mx-2">|</span>
-            <a href="{{ url('/terms') }}" class="text-white-50">Умови використання</a>
+        <div class="connection-block" style="width: 300px;">
+            <h5 class="connection-title">Зворотній зв'язок</h5>
+            <div class="connection-form">
+                <input type="text" class="input-message" placeholder="Введіть ваше повідомлення...">
+                <button class="send-button">
+                    <img src="{{ asset('images/icon/phone.svg') }}" alt="Send">
+                </button>
+            </div>
+            <p class="connection-text">Якщо виникли проблеми, будь ласка, зверніться до нас</p>
         </div>
     </div>
 </footer>
@@ -69,51 +66,250 @@
 <!-- Styles for Footer -->
 <style>
     .footer {
-        background-color: var(--green-800);
-        padding: 20px 40px;
+        background-color: var(--green-light);
+        padding: 64px 190px;
+        display: flex;
+        justify-content: space-between;
+        flex-direction: row;
     }
 
-    .footer-logo img {
-        margin-bottom: 12px;
+
+    .logo-social-block{
+        display: flex;
+        justify-content: start;
+        flex-direction: row;
+        align-items: center;
+        gap: 48px;
     }
-    .footer p, .footer a {
+
+    .social-media{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 16px;
+        width: 96px;
+        height: 96px;
+    }
+
+    .text-block{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: left;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .one-text{
+        color: var(--green-dark);
         font-size: 16px;
-        color: var(--yellow-200);
+        font-weight: 400;
+        line-height: 24px;
+        word-wrap: break-word;
+        margin: 0;
+    }
+    .two-text{
+        color: var(--main-white);
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 24px;
+        word-wrap: break-word;
+        margin: 0;
+    }
+
+    .left-block{
+        display: flex;
+        justify-content: start;
+        flex-direction: column;
+        align-items: start;
+        gap: 16px;
+    }
+
+    .right-block{
+        display: flex;
+        justify-content: start;
+        flex-direction: row;
+        align-items: start;
+        gap: 96px;
+    }
+
+    .navigation-block, .connection-block{
+        display: flex;
+        justify-content: start;
+        flex-direction: column;
+        align-items: start;
+        gap: 32px;
+    }
+
+    .navigation-title, .connection-title{
+        color: var(--main-white);
+        font-size: 24px;
+        font-weight: 600;
+        line-height: 36px;
+        word-wrap: break-word;
+        margin: 0;
+    }
+
+    .list-navigation{
         text-decoration: none;
-    }
-    .footer a:hover {
-        color: var(--yellow-400);
-        text-decoration: underline;
-    }
-    .footer hr {
-        border-color: var(--yellow-200);
-    }
+        margin: 0;
+        display: flex;
+        justify-content: start;
+        flex-direction: column;
+        align-items: start;
+        gap: 16px;
 
-    .com{
-        display: flex; /* Вмикаємо Flexbox */
-        flex-direction: row; /* Розташовуємо елементи вертикально */
-        gap: 30px;
-    }
-
-    .list{
-        display: flex; /* Вмикаємо Flexbox */
-        flex-direction: column; /* Розташовуємо елементи вертикально */
-        gap: 30px;
 
     }
 
-
-    .ic--twotone-telegram, .iconoir--instagram, .mdi--facebook, .bi--github{
-        color: var(--yellow-200);
-        transition: background-color 0.3s ease, color 0.3s ease; /* Анімація зміни кольору */
-
+    .list-navigation a, .connection-text{
+        color: var(--main-white);
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 27px;
+        word-wrap: break-word;
     }
 
-    .ic--twotone-telegram:hover, .iconoir--instagram:hover, .mdi--facebook:hover, .bi--github:hover {
-        color: var(--yellow-500);
-        text-decoration: none; /* Без підкреслення при наведенні */
-        transform: scale(1.1);
+
+    .connection-form {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        background-color: var(--main-white);
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
+
+    .input-message {
+        flex-grow: 1;
+        padding: 8px;
+        border: none;
+        outline: none;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 21px;
+        word-wrap: break-word;
+        color: var(--greey-my);
+    }
+
+    .input-message::placeholder {
+        color: var(--greey-my);
+        transition: color 0.3s ease;
+    }
+
+    .input-message:hover::placeholder {
+        color: var(--green-dark);
+    }
+
+    .send-button {
+        background: transparent;
+        border: none;
+        padding: 12px;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+    }
+
+         /* Для екранів до 1200px */
+    @media (max-width: 1200px) {
+        .footer {
+            padding: 48px 80px;
+            gap: 64px;
+        }
+        .right-block {
+            gap: 64px;
+        }
+    }
+
+    /* Для екранів до 992px (планшети) */
+    @media (max-width: 992px) {
+        .footer {
+            flex-direction: column;
+            align-items: center;
+            padding: 48px 40px;
+            gap: 48px;
+        }
+
+        .left-block, .right-block {
+            width: 100%;
+            align-items: center;
+        }
+
+        .logo-social-block {
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .social-media {
+            width: auto;
+            height: auto;
+            justify-content: center;
+        }
+
+        .text-block {
+            justify-content: center;
+            text-align: center;
+        }
+
+        .navigation-block, .connection-block {
+            align-items: center;
+            text-align: center;
+        }
+
+        .list-navigation {
+            align-items: center;
+        }
+
+        .connection-form {
+            max-width: 400px;
+        }
+    }
+
+    /* Для екранів до 768px (мобільні) */
+    @media (max-width: 768px) {
+        .footer {
+            padding: 32px 24px;
+        }
+
+        .right-block {
+            flex-direction: column;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .navigation-block, .connection-block {
+            width: 100%;
+            gap: 24px;
+        }
+
+        .connection-form {
+            width: 100%;
+        }
+    }
+
+    /* Для екранів до 576px (маленькі мобільні) */
+    @media (max-width: 576px) {
+        .input-message {
+            font-size: 12px;
+            padding: 8px 12px;
+        }
+
+        .send-button {
+            padding: 8px;
+        }
+
+        .navigation-title, .connection-title {
+            font-size: 20px;
+            line-height: 30px;
+        }
+
+        .list-navigation a, .connection-text {
+            font-size: 16px;
+        }
+    }
+</style>
+
+
+
 
 </style>
 

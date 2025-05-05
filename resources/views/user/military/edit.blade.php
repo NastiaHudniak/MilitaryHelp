@@ -48,6 +48,7 @@
 
                     <div class="form-group">
                         <label for="description">Опис</label>
+                        <p style="color:red;">*Якщо допомога потрібна терміново, ви можете вказати в кінці опису слово ТЕРМІНОВО</p>
                         <input type="text" class="form-control" id="description" name="description" value="{{ old('description', $applications->description) }}" required>
                         @error('description')
                         <div class="text-danger">{{ $message }}</div>
@@ -89,6 +90,8 @@
             </div>
         </div>
     </div>
+    
+    @include('layouts.footer_military')
 @endsection
 
 <style>

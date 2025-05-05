@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@include('layouts.header_military_notsearch')
 <head>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <link href="{{ asset('css/icon.css') }}" rel="stylesheet">
@@ -138,5 +139,7 @@
             </div>
         </div>
     </div>
+    
+    @include('layouts.footer_military')
 @endsection
 

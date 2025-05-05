@@ -17,6 +17,7 @@
             padding: 0;
             width: 100%;
         }
+        
         .header-admin {
             width: 100%;
             background-color: var(--green-800);
@@ -26,6 +27,9 @@
             padding: 8px;
             color: var(--yellow-200);
             font-family: 'Jura', sans-serif;
+            position: sticky; /* Робимо хедер прикріпленим */
+            top: 0;
+            z-index: 1000;
         }
         .logo-and-home {
             display: flex;
@@ -89,7 +93,7 @@
 <header class="header-admin">
     <div class="logo-and-home">
         <img src="{{ asset('images/logo.jpg') }}" alt="Logo" class="mr-3" style="width: 70px; height: auto; border-radius: 50%;">
-        <i class="bi bi-house" style="color: var(--yellow-200); font-size: 2rem; "></i>
+        <a href="{{ route('admin.home.index') }}" class="bi bi-house" style="color: var(--yellow-200); font-size: 2rem; "></a>
     </div>
 
     <nav class="navbar-custom">
@@ -104,9 +108,12 @@
         </a>
     </nav>
 
-    <div class="account">
-        <i class="bi bi-person-circle" style="color: var(--yellow-200); font-size: 2rem; "></i>
-    </div>
+    <div class="logout-container" style="color: var(--yellow-400); font-size: 20px;">
+                <form action="{{ route('logout') }}" method="POST" style="width: 37px; height: 37px; ">
+                    @csrf
+                    <a class="ic--outline-logout" onClick="confirmLogout()" style="color: var(--yellow-400); font-size: 37px;"></a>
+                </form>
+            </div>
 </header>
 
 <!-- Основний Контент -->
@@ -117,5 +124,13 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+function confirmLogout() {
+        if (confirm("Ви дійсно бажаєте вийти з акаунта?")) {
+            document.querySelector('form').submit();
+        }
+    }
+</script>
 </body>
 </html>

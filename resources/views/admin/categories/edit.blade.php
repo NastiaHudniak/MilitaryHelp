@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@include('layouts.header_admin')
 <head>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <link href="{{ asset('css/icon.css') }}" rel="stylesheet">
@@ -6,10 +7,10 @@
 </head>
 @section('content')
 
-    <div class="container" style="max-width: 500px; margin: 0 auto; padding: 50px 0px;">
+    <div class="container" style="max-width: 500px; margin: 0 auto; padding: 100px 0px;">
         <div class="card" style="box-shadow: 0 6px 15px rgba(0, 0, 0, 0.8);">
             <div class="card-header" style="background-color: var(--yellow-400); color: var(--green-800);">
-                <h2>Редагування заявки "{{$categories->name}}"</h2>
+                <h2>Редагування категорії "{{$categories->name}}"</h2>
             </div>
             <div class="card-body" style="background-color: var(--yellow-200);">
                 <form id="category-form" action="{{ route('admin.categories.update', $categories->id) }}" method="POST">

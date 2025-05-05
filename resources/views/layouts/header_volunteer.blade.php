@@ -61,18 +61,18 @@
             gap: 30px;
         }
 
-        .search {
-            width: 100px;
-            position: relative;
-            letter-spacing: 0.08em;
-            line-height: 30px;
-            display: flex;
-            align-items: center;
-            flex-shrink: 0;
-            color: var(--green-500);
-        }
+        /*.search {*/
+        /*    width: 100px;*/
+        /*    position: relative;*/
+        /*    letter-spacing: 0.08em;*/
+        /*    line-height: 30px;*/
+        /*    display: flex;*/
+        /*    align-items: center;*/
+        /*    flex-shrink: 0;*/
+        /*    color: var(--green-500);*/
+        /*}*/
 
-        .searcht {
+        .search {
             position: relative;
             letter-spacing: 0.08em;
             line-height: 30px;
@@ -186,12 +186,10 @@
 
     <nav class="navbar-search">
         <div class="search-title">
-            <input type="text" class="searcht" style="background-color: var(--green-300); " id="search" placeholder="Пошук за назвою">
+            <input type="text" class="search" style="background-color: var(--green-300); " id="search" placeholder="Пошук за назвою">
             {{--            <a class="search">Пошук</a>--}}
             <span class="mynaui--search"  style="color: var(--green-800); font-size: 32px; "></span>
         </div>
-
-        <span id="filter-icon" class="streamline--filter-2" style="color: var(--yellow-400); font-size: 37px; " ></span>
     </nav>
 
     <nav class="navbar-right">
@@ -228,16 +226,16 @@
                     </a>
 
                 </div>
-                <a class="details-item" href="{{ route('user.military.create') }}" style="font-size:20px; color: var(--yellow-400);">
-                    <span class="fluent-mdl2--add-to" style="color: var(--yellow-400); font-size:40px">></span>
+                <a class="details-item" href="{{ route('user.volunteer.confirm.view_confirm_app') }}" style="font-size:20px; color: var(--yellow-400);">
+                    <span class="fluent-mdl2--add-to" style="color: var(--yellow-400); font-size:54px">></span>
                     <p>Переглянути прийняті заявки</p>
                 </a>
-                <a class="details-item" href="{{ route('user.military.view_app') }}" style="font-size:20px;color: var(--yellow-400);">
-                    <span class="solar--history-bold-duotone" style="color: var(--yellow-400); font-size:40px">></span>
+                <a class="details-item" href="{{ route('user.volunteer.view_app') }}" style="font-size:20px;color: var(--yellow-400);">
+                    <span class="solar--history-bold-duotone" style="color: var(--yellow-400); font-size:45px">></span>
                     <p>Переглянути усі заявки</p>
                 </a>
-                <a class="details-item" href="{{ route('user.military.view_volunteer') }}" style="font-size:20px;color: var(--yellow-400);">
-                    <span class="solar--history-bold-duotone" style="color: var(--yellow-400); font-size:40px">></span>
+                <a class="details-item" href="{{ route('user.volunteer.mil.view_military') }}" style="font-size:20px;color: var(--yellow-400);">
+                    <span class="solar--history-bold-duotone" style="color: var(--yellow-400); font-size:60px">></span>
                     <p>Переглянути список військових</p>
                 </a>
                 <div class="divider"></div>

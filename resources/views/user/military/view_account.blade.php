@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@include('layouts.header_military')
+@include('layouts.header_military_notsearch')
 
 @section('content')
 
@@ -24,18 +24,22 @@
                                 <p style=" margin-bottom: 0;" class="card-text"><strong style="color: var(--green-800);">Прізвище:</strong> {{$user->surname }}</p>
                                 <p style=" margin-bottom: 0;" class="card-text"><strong style="color: var(--green-800);">Ім'я:</strong> {{$user->name }}</p>
                             </div>
-                            <div class="col-md-4" style="width: 100%;  align-items: flex-start; font-size: 25px;">
+                            <div class="col-md-5" style="width: 100%;  align-items: flex-start; font-size: 25px;">
                                 <p style=" margin-bottom: 0;" class="card-text"><strong style=" margin-bottom: 0; color: var(--green-800);">Електронна пошта:</strong> {{$user->email }}</p>
                                 <p style=" margin-bottom: 0;" class="card-text"><strong style="color: var(--green-800);">Телефон:</strong> {{$user->phone }}</p>
                                 <p style=" margin-bottom: 0;" class="card-text"><strong style="color: var(--green-800);">Адреса:</strong> {{$user->address }}</p>
                             </div>
-                            <div class="col-md-4" style="width: 100%; align-items: flex-start; font-size: 25px;">
+                            <div class="col-md-3" style="width: 100%; font-size: 25px; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between;">
                                 @if ($userImage)
-                                    <img src="{{ asset('storage/' . $userImage->image_url) }}" alt="User Image" style="width: 30%; height: auto;">
+                                    @if(str_contains($userImage->image_url,'images/acc.jpg'))
+                                        <img src="{{  url('/').'/'.$userImage->image_url }}" alt="User Image" style="width: 100px; height: 100px; border-radius: 50px;">
+                                    @else
+                                        <img src="{{ asset('storage/' . $userImage->image_url) }}" alt="User Image" style="width: 100px; height: 100px; border-radius: 50px;">
+                                    @endif
                                 @else
                                     <p>No image available.</p>
                                 @endif
-                                    <button onclick="window.location.href='{{ route('user.military.account.edit_photo', $user->id) }}'" class="btn btn-primary mt-3">
+                                    <button onclick="window.location.href='{{ route('user.military.account.edit_photo', $user->id) }}'" class="btn btn-outline " style="color: var(--green-500);border-color: var(--green-500);">
                                         Редагувати фото
                                     </button>
 
@@ -51,7 +55,7 @@
                 <div class="info">
                     <div class="title_info">
                         <p style="margin-bottom: 0; color: var(--green-800); font-size: 30px;">Ваші заявки</p>
-                        <span class="cuida--edit-outline" style="color: var(--green-800); font-size: 35px;"></span>
+                        <a id="history-icon" class="solar--history-bold-duotone" style="color: var(--green-800); font-size: 37px; " href="{{ route('user.military.view_app') }}"></a>
                     </div>
                     <div class="info-body" style="color: var(--green-500);">
                         <div class="row d-flex" style="width: 100%; align-items: flex-start; font-size: 25px;">
@@ -74,6 +78,7 @@
         </div>
     </div>
 
+    @include('layouts.footer_military')
 @endsection
 
 <style>

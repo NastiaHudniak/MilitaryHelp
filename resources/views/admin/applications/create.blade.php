@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@include('layouts.header_admin')
 <head>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <link href="{{ asset('css/icon.css') }}" rel="stylesheet">
@@ -52,9 +53,13 @@
                         <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
+
                     <div class="form-group">
                         <label for="status">Статус</label>
-                        <input type="text" class="form-control" id="status" name="status" value="{{ old('status') }}" required>
+                        <select class="form-control" id="status" name="status" required>
+                            <option value="створено" {{ old('status') == 'створено' ? 'selected' : '' }}>Створено</option>
+                            <option value="прийнято" {{ old('status') == 'прийнято' ? 'selected' : '' }}>Прийнято</option>
+                        </select>
                         @error('status')
                         <div class="text-danger">{{ $message }}</div>
                         @enderror
@@ -62,60 +67,75 @@
 
                     <div class="form-group">
                         <label for="comment">Коментар</label>
-                        <input type="text" class="form-control" id="comment" name="comment" value="{{ old('comment') }}">
+                        <input type="text" class="form-control" id="comment" name="comment" value="немає" readonly>
                         @error('comment')
                         <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
-                    <div class="form-group">
-                        <label for="volunteer_id">Волонтер</label>
-                        <select class="form-control" id="volunteer_id" name="volunteer_id" required>
-                            @foreach ($users as $user)
-                                <option value="{{ $user->id }}" {{ old('volunteer_id') == $user->id ? 'selected' : '' }}>
-                                    {{ $user->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('volunteer_id')
-                        <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
 
                     <div class="form-group">
-                        <label for="millitary_id">Військовий</label>
-                        <select class="form-control" id="millitary_id" name="millitary_id" required>
-                            @foreach ($users as $user)
-                                <option value="{{ $user->id }}" {{ old('millitary_id') == $user->id ? 'selected' : '' }}>
-                                    {{ $user->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('millitary_id')
-                        <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
+    <label for="volunteer_id">Волонтер</label>
+    <select class="form-control" id="volunteer_id" name="volunteer_id" disabled>
+        <option value="">Виберіть волонтера</option>
+        @foreach ($volunteers as $volunteer)
+            <option value="{{ $volunteer->id }}" {{ old('volunteer_id') == $volunteer->id ? 'selected' : '' }}>
+                {{ $volunteer->name }}
+            </option>
+        @endforeach
+    </select>
+    @error('volunteer_id')
+    <div class="text-danger">{{ $message }}</div>
+    @enderror
+</div>
 
+<div class="form-group">
+    <label for="millitary_id">Військовий</label>
+    <select class="form-control" id="millitary_id" name="millitary_id" required>
+        <option value="">Виберіть військового</option>
+        @foreach ($militaries as $military)
+            <option value="{{ $military->id }}" {{ old('millitary_id') == $military->id ? 'selected' : '' }}>
+                {{ $military->name }}
+            </option>
+        @endforeach
+    </select>
+    @error('millitary_id')
+    <div class="text-danger">{{ $message }}</div>
+    @enderror
+</div>
 
 
                     <div class="form-group text-right">
                         <button type="submit" class="btn btn-warning" style="background-color: var(--yellow-500);">Створити заявку</button>
                         <button type="button" class="btn btn-outline mx-3" style="color: var(--green-500);border-color: var(--green-500);" id="back-button">
-                            <i class="fas fa-arrow-left"></i> Назад</button>
+                            <i class="fas fa-arrow-left"></i> Назад
+                        </button>
                     </div>
 
-                    <script>
-                        document.getElementById('back-button').addEventListener('click', function() {
-                            window.location.href = "{{ route('admin.applications.index') }}";
-                        });
-
-
-
-
-
-                    </script>
                 </form>
             </div>
         </div>
     </div>
-@endsection
 
+    <script>
+        document.getElementById('back-button').addEventListener('click', function() {
+            window.location.href = "{{ route('admin.applications.index') }}";
+        });
+
+        document.getElementById('status').addEventListener('change', function() {
+            const commentField = document.getElementById('comment');
+            const volunteerField = document.getElementById('volunteer_id');
+
+            if (this.value === 'створено') {
+                commentField.value = 'немає';
+                commentField.readOnly = true;
+                volunteerField.value = '';
+                volunteerField.disabled = true;
+            } else {
+                commentField.value = '';
+                commentField.readOnly = false;
+                volunteerField.disabled = false;
+            }
+        });
+    </script>
+
+@endsection

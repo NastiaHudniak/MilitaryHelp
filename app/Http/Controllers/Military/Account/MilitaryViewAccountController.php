@@ -14,15 +14,9 @@ class MilitaryViewAccountController extends Controller
 {
     public function index()
     {
-        $user = auth()->user()->load('role'); // Отримуємо авторизованого користувача з роллю
-
-        // Отримати зображення користувача
-        $userImage = $user->images()->first(); // Отримаємо перше зображення
-
-        // Отримати загальну кількість заявок авторизованого користувача
+        $user = auth()->user()->load('role'); 
+        $userImage = $user->images()->first();
         $totalApplications = Application::where('millitary_id', $user->id)->count();
-
-        // Отримати кількість прийнятих заявок (де volunteer_id не є порожнім)
         $acceptedApplications = Application::where('millitary_id', $user->id)
             ->whereNotNull('volunteer_id')
             ->count();
