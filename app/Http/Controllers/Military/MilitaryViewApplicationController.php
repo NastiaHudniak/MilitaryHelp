@@ -20,9 +20,9 @@ class MilitaryViewApplicationController extends Controller
         $users = User::all();
         $categories = Category::all();
         $user_id = Auth::user()->id;
-        $applications = Application::with('images') 
+        $applications = Application::with('images')
         ->where('millitary_id',  $user_id)->get();
-        return view('user.military.view_app', compact('applications','users', 'categories'));      
+        return view('user.military.view_app', compact('applications','users', 'categories'));
     }
 
     public function store(Request $request)
@@ -111,7 +111,7 @@ class MilitaryViewApplicationController extends Controller
                 $q->where('title', 'like', "%{$query}%")
                 ->orWhere('description', 'like', "%{$query}%");
             });
-            
+
         if ($sort === 'latest') {
             $applications->orderBy('created_at', 'desc');
         } elseif ($sort === 'oldest') {
@@ -127,7 +127,7 @@ class MilitaryViewApplicationController extends Controller
     {
         $application = Application::with('images')->findOrFail($id);
         $pdf = Pdf::loadView('user.military.pdf', compact('application'));
-        
+
         return $pdf->download('application-'.$application->id.'.pdf');
     }
 

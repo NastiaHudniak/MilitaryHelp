@@ -20,7 +20,7 @@ body {
     /* Colors */
     --green-dark: #3A5A40;
     --main-green-dark: #556B2F;
-    --green-light: #A3B18A;
+    --green-light: rgba(163, 177, 138, 0.6);
 
     --main-beige: #D9CAB3;
     --beige-light: #E1D8C0;
@@ -29,11 +29,22 @@ body {
     --yellow-my: #F1F1DE;
     --yellow-opasity: rgba(241, 241, 222, 0.8);
 
-    --orange-my: #D97706;
+
+    --orange-my:#D97706;
     --orange-dark: #a85c05;
     --greey-my: #B8B8B8;
     --black-my: #373737;
     --blue-my: #AEC6CF;
+    --white-my: #FEFEFE;
+
+    --green-100:#0BBF0B;
+    --green-15: rgba(11, 191, 11, 0.15);
+
+    --blue-100:#0B65BF;
+    --blue-15: rgba(11, 101, 191, 0.15);
+
+    --red-100:#FF1D4E;
+    --red-15: rgba(255, 29, 78, 0.15);
 
 
 

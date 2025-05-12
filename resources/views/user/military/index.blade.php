@@ -67,36 +67,9 @@
                     </div>
                 </div>
             </div>
-
-
-
-
-            <div class="title-name">
-                <div class="info-container">
-                    <div class="bl-info">
-                        <div class="info-number-circle">
-                            <span>{{ $totalApplications }}</span>
-                        </div>
-                        <p class="info-text">
-                            <strong>Загальна кількість заявок:</strong>
-                        </p>
-                    </div>
-
-                    <div class="bl-info">
-                        <div class="info-number-circle">
-                            <span>{{ $acceptedApplications }}</span>
-                        </div>
-                        <p class="info-text">
-                            <strong>Прийняті заявки волонтерами:</strong>
-                        </p>
-                    </div>
-                </div>
-
-
-            </div>
         </div>
 
-        @include('layouts.footer_military')
+        @include('layouts.footer_landing')
     @endsection
 
     <style>

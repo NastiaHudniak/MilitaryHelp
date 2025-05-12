@@ -291,53 +291,48 @@
     </div>
 
 
-    <!--   <nav class="navbar-search">
-        <div class="search-title">
-                <input type="text" class="search" style="background-color: var(--green-300); " id="search" placeholder="Пошук за назвою">
-         <span class="mynaui--search"  style="color: var(--green-800); font-size: 32px; "></span>
-        </div>
-    </nav>    -->
-    <nav class="navbar-right">
-        <div id="burger-menu" class="burger-menu">
-            <div class="details">
-                <a class="details-item" id="account-info-toggle" style="font-size:20px; color: var(--yellow-400); cursor: pointer;">
-                    <span class="si--info-line" style="color: var(--yellow-400); font-size:40px"></span>
-                    <p>Інформація про акаунт</p>
-                </a>
-                <!-- Додаткові елементи, які будуть показані при натисканні -->
-                <div id="account-info-extra" style="display: none;">
-                    <a href="{{ route('user.military.view_account') }}" class="details-items" style="font-size:18px; color: var(--green-500); cursor: pointer;">
-                        <span class="material-symbols-light--view-cozy-outline" style="color: var(--green-500);"></span>
-                        <p>Переглянути</p>
-                    </a>
-                    <a href="{{ route('user.military.edit_account', Auth::user() ) }}"  class="details-items" style="font-size:18px; color: var(--green-500); cursor: pointer;">
-                        <span class="cuida--edit-outline" style="color: var(--green-500);"></span>
-                        <p>Редагувати</p>
-                    </a>
-                </div>
-                <a class="details-item" href="{{ route('user.military.create') }}" style="font-size:20px; color: var(--yellow-400);">
-                    <span class="fluent-mdl2--add-to" style="color: var(--yellow-400); font-size:40px"></span>
-                    <p>Додати заявку</p>
-                </a>
-                <a class="details-item"href="{{ route('user.military.view_app') }}" style="font-size:20px;color: var(--yellow-400);">
-                    <span class="solar--history-bold-duotone" style="color: var(--yellow-400); font-size:42px"></span>
-                    <p>Переглянути усі заявки</p>
-                </a>
-                <a class="details-item"href="{{ route('user.military.vol.view_volunteer') }}" style="font-size:20px;color: var(--yellow-400);">
-                    <span class="solar--history-bold-duotone" style="color: var(--yellow-400); font-size:60px"></span>
-                    <p>Переглянути список волонтерів</p>
-                </a>
-                <div class="divider"></div>
-            </div>
-            <div class="logout-container" style="color: var(--yellow-400); font-size: 20px;">
-                <form action="{{ route('logout') }}" method="POST" style="width: 37px; height: 37px; ">
-                    @csrf
-                    <a class="ic--outline-logout" onClick="confirmLogout()" style="color: var(--yellow-400); font-size: 37px;"></a>
-                </form>
-                <p>Вийти з акаунту</p>
-            </div>
-        </div>
-    </nav>
+
+{{--    <nav class="navbar-right">--}}
+{{--        <div id="burger-menu" class="burger-menu">--}}
+{{--            <div class="details">--}}
+{{--                <a class="details-item" id="account-info-toggle" style="font-size:20px; color: var(--yellow-400); cursor: pointer;">--}}
+{{--                    <span class="si--info-line" style="color: var(--yellow-400); font-size:40px"></span>--}}
+{{--                    <p>Інформація про акаунт</p>--}}
+{{--                </a>--}}
+{{--                <!-- Додаткові елементи, які будуть показані при натисканні -->--}}
+{{--                <div id="account-info-extra" style="display: none;">--}}
+{{--                    <a href="{{ route('user.military.view_account') }}" class="details-items" style="font-size:18px; color: var(--green-500); cursor: pointer;">--}}
+{{--                        <span class="material-symbols-light--view-cozy-outline" style="color: var(--green-500);"></span>--}}
+{{--                        <p>Переглянути</p>--}}
+{{--                    </a>--}}
+{{--                    <a href="{{ route('user.military.edit_account', Auth::user() ) }}"  class="details-items" style="font-size:18px; color: var(--green-500); cursor: pointer;">--}}
+{{--                        <span class="cuida--edit-outline" style="color: var(--green-500);"></span>--}}
+{{--                        <p>Редагувати</p>--}}
+{{--                    </a>--}}
+{{--                </div>--}}
+{{--                <a class="details-item" href="{{ route('user.military.create') }}" style="font-size:20px; color: var(--yellow-400);">--}}
+{{--                    <span class="fluent-mdl2--add-to" style="color: var(--yellow-400); font-size:40px"></span>--}}
+{{--                    <p>Додати заявку</p>--}}
+{{--                </a>--}}
+{{--                <a class="details-item"href="{{ route('user.military.view_app') }}" style="font-size:20px;color: var(--yellow-400);">--}}
+{{--                    <span class="solar--history-bold-duotone" style="color: var(--yellow-400); font-size:42px"></span>--}}
+{{--                    <p>Переглянути усі заявки</p>--}}
+{{--                </a>--}}
+{{--                <a class="details-item"href="{{ route('user.military.vol.view_volunteer') }}" style="font-size:20px;color: var(--yellow-400);">--}}
+{{--                    <span class="solar--history-bold-duotone" style="color: var(--yellow-400); font-size:60px"></span>--}}
+{{--                    <p>Переглянути список волонтерів</p>--}}
+{{--                </a>--}}
+{{--                <div class="divider"></div>--}}
+{{--            </div>--}}
+{{--            <div class="logout-container" style="color: var(--yellow-400); font-size: 20px;">--}}
+{{--                <form action="{{ route('logout') }}" method="POST" style="width: 37px; height: 37px; ">--}}
+{{--                    @csrf--}}
+{{--                    <a class="ic--outline-logout" onClick="confirmLogout()" style="color: var(--yellow-400); font-size: 37px;"></a>--}}
+{{--                </form>--}}
+{{--                <p>Вийти з акаунту</p>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </nav>--}}
 </header>
 
 <!-- Основний Контент -->

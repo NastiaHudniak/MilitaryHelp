@@ -67,9 +67,9 @@
 {{--                            Увійти за допомогою Google--}}
 {{--                        </button>--}}
 
-                        <a class="btn-google" href="{{ route('google.redirect') }}">
-                            <img class="google-icon" alt="Google" src="{{ asset('images/icon/socialmedia-4.svg') }}">
-                            <span class="btn-google-text">Google</span>
+                        <a class="login-google-button" href="{{ route('google.redirect') }}">
+                            <img alt="Google icon" src="{{ asset('images/icon/socialmedia-4.svg') }}">
+                            <span>Увійти за допомогою Google</span>
                         </a>
                         <div class="label-log">
                             <p>У Вас немає акаунта? </p>
@@ -221,7 +221,6 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 0.75rem;
             font-size: 1rem;
             font-weight: 600;
             border-radius: 16px;
@@ -232,6 +231,7 @@
             background-color: var(--main-green-dark);
             color: var(--main-white);
             border: none;
+            padding: 0.83rem;
         }
 
         .login-button:hover {
@@ -244,11 +244,14 @@
             color: var(--main-green-dark);
             border: 2px solid var(--main-green-dark);
             gap: 0.75rem;
+            padding: 0.60rem;
         }
 
         .login-google-button:hover {
             background-color: var(--green-light);
             transform: scale(1.05);
+            text-decoration: none;
+            color: var(--main-white);
         }
 
         .login-divider {

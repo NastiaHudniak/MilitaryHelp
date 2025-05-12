@@ -133,7 +133,6 @@
         </div>
 
 
-
     </div>
 
         @include('layouts.footer_landing')
