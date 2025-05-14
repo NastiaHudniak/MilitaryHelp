@@ -39,12 +39,15 @@ body {
 
     --green-100:#0BBF0B;
     --green-15: rgba(11, 191, 11, 0.15);
+    --green-100-15: #D9F4D3;
 
     --blue-100:#0B65BF;
     --blue-15: rgba(11, 101, 191, 0.15);
+    --blue-100-15: #D9E6EE;
 
     --red-100:#FF1D4E;
     --red-15: rgba(255, 29, 78, 0.15);
+    --red-100-15: #FDDBDD;
 
 
 

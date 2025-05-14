@@ -1,8 +1,27 @@
     @extends('layouts.app')
     @include('layouts.header_military')
-    @section('content')
 
+
+    @section('content')
+        <link rel="stylesheet" href="{{ asset('css/alerts.css') }}">
         <div class="main-content" style="font-family: 'Open Sans', sans-serif;">
+            @if($confirmedApplications->count())
+                @php
+                    $latestApp = $confirmedApplications->last();
+                @endphp
+                <div class="alert-success-custom" id="confirmed-alert">
+                    <div class="alert-success-custom-text-block">
+                        <p class="alert-success-custom-text">
+                            Ваша заявка <strong>"{{ $latestApp->title }}"</strong> була підтверджена волонтером
+                            <strong>{{ $latestApp->volunteer?->surname }} {{ $latestApp->volunteer?->name }}</strong>.
+                        </p>
+                    </div>
+                    <button class="alert-ok-btn" onclick="document.getElementById('confirmed-alert').style.display='none'">OK</button>
+                </div>
+            @endif
+
+
+
             <div class="block-one" style="font-family: 'Open Sans', sans-serif;">
                 <div class="left-title">
                     <div class="title">

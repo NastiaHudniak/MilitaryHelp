@@ -15,12 +15,22 @@ class MilitaryHomeController extends Controller
 
         $totalApplications = Application::where('millitary_id', $user->id)->count();
 
-        // Отримати кількість прийнятих заявок (де volunteer_id не є порожнім)
         $acceptedApplications = Application::where('millitary_id', $user->id)
             ->whereNotNull('volunteer_id')
             ->count();
 
-        return view('user.military.index', compact('user', 'totalApplications', 'acceptedApplications')); // Повертає шаблон admin.users
+        $confirmedApplications = Application::with('volunteer')
+            ->where('millitary_id', auth()->id())
+            ->where('status', 'прийнято')
+            ->get();
+
+        return view('user.military.index', compact(
+            'user',
+            'totalApplications',
+            'acceptedApplications',
+            'confirmedApplications'
+        ));
+
     }
 
     // Метод для відображення сторінки заявок
