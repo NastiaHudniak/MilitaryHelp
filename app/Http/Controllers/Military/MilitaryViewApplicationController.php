@@ -125,10 +125,12 @@ class MilitaryViewApplicationController extends Controller
 
     public function generatePDF($id)
     {
-        $application = Application::with('images')->findOrFail($id);
+        $application = Application::with(['category', 'volunteer', 'images'])->findOrFail($id);
         $pdf = Pdf::loadView('user.military.pdf', compact('application'));
-
+        //return view('user.military.pdf', compact('application'));
         return $pdf->download('application-'.$application->id.'.pdf');
+
+
     }
 
 }
