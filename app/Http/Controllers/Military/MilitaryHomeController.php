@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Military;
 
 use App\Http\Controllers\Controller;
 use App\Models\Application;
+use App\Models\VolunteerRating;
+use Illuminate\Http\Request;
 
 class MilitaryHomeController extends Controller
 {
@@ -32,6 +34,36 @@ class MilitaryHomeController extends Controller
         ));
 
     }
+
+
+    public function rateVolunteer(Application $application)
+    {
+        // Перевірка, чи військовий може поставити рейтинг (якщо це підтверджена заявка)
+        if ($application->status === 'прийнято' && !$application->volunteerRating) {
+            return view('user.military.rate', compact('application'));
+        }
+
+        return redirect()->route('military.index')->with('message', 'Ви вже оцінили цього волонтера або не можете поставити рейтинг.');
+    }
+
+    public function storeRating(Request $request, Application $application)
+    {
+        $request->validate([
+            'rating' => 'required|in:1,2,3,4,5', // Оцінка від 1 до 5
+        ]);
+
+        // Створення рейтингу
+        VolunteerRating::create([
+            'user_id' => $application->volunteer_id,
+            'rating' => $request->rating,
+        ]);
+
+        // Оновлення статусу, що рейтинг вже поставлений
+        $application->update(['rating_given' => true]);
+
+        return redirect()->route('military.index')->with('message', 'Рейтинг успішно збережено!');
+    }
+
 
     // Метод для відображення сторінки заявок
     public function applications()

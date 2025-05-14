@@ -2,8 +2,9 @@
 
 use App\Http\Controllers\Admin\ApplicationController;
 use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\HomeController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\ApplicationImageController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\EditMilitaryImageController;
@@ -18,16 +19,16 @@ use App\Http\Controllers\Military\MilitaryApplicationImageController;
 use App\Http\Controllers\Military\MilitaryHomeController;
 use App\Http\Controllers\Military\MilitaryViewApplicationController;
 use App\Http\Controllers\Military\MilitaryViewVolunteerController;
+use App\Http\Controllers\Military\VolunteerRatingController;
 use App\Http\Controllers\UserImageController;
-use App\Http\Controllers\ApplicationImageController;
 use App\Http\Controllers\Volunteer\Account\VolunteerEditUserController;
 use App\Http\Controllers\Volunteer\Account\VolunteerViewAccountController;
 use App\Http\Controllers\Volunteer\VolunteerConfirmationApplicationController;
 use App\Http\Controllers\Volunteer\VolunteerHomeController;
 use App\Http\Controllers\Volunteer\VolunteerViewApplicationController;
 use App\Http\Controllers\Volunteer\VolunteerViewConfirmApplicationController;
-use App\Http\Controllers\Volunteer\VolunteerViewMilitaryController;
 use App\Http\Controllers\Volunteer\VolunteerViewInfoMilitaryController;
+use App\Http\Controllers\Volunteer\VolunteerViewMilitaryController;
 use App\Http\Middleware\Check;
 use Illuminate\Support\Facades\Route;
 
@@ -200,4 +201,11 @@ Route::prefix('user')->group(function () {
     Route::get('volunteer/pdf/{id}', [VolunteerViewApplicationController::class, 'generatePDF'])->name('user.volunteer.pdf');
 
 });
+
+
+
+
+Route::get('/military', [MilitaryHomeController::class, 'index'])->name('military.index');
+Route::get('/military/rate/{application}', [MilitaryHomeController::class, 'rateVolunteer'])->name('military.rate');
+Route::post('/military/rating/{application}', [MilitaryHomeController::class, 'storeRating'])->name('military.storeRating');
 

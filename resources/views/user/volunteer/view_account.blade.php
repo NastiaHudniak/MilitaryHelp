@@ -7,8 +7,56 @@
         <div class="title-name">
             <h style=" color: var(--green-800); font-size: 40px; text-shadow: 0.5px 0 0 var(--green-800), 0 0.5px 0 var(--green-800), -0.5px 0 0 var(--green-800), 0 -0.5px 0 var(--green-800);" class="b">Ваш особистий кабінет </h>
             <span class="mr-3" style=" color: var(--green-800); font-size: 40px; "> Вітаємо, {{ $user->login }}!</span>
-
         </div>
+
+        @if($averageRating !== null)
+            <div class="row mb-4">
+                <div class="infoblock" style="gap: 30px;">
+                    <div class="info">
+                        <div class="title_info">
+                            <p style="margin-bottom: 0; color: var(--green-800); font-size: 30px;">Ваш середній рейтинг</p>
+                        </div>
+                        <div class="info-body" style="color: var(--green-500);">
+                            <div style="font-size: 30px;">
+                                @for($i = 1; $i <= 5; $i++)
+                                    <div class="star">
+                                        @if($averageRating >= $i)
+                                            <!-- Повністю заповнена зірочка -->
+                                            <div class="full"></div>
+                                        @elseif($averageRating >= $i - 0.5 && $averageRating < $i)
+                                            <!-- Половинно заповнена зірочка -->
+                                            <div class="half"></div>
+                                        @else
+                                            <!-- Порожня зірочка -->
+                                            <div class="empty"></div>
+                                        @endif
+                                    </div>
+                                @endfor
+                                <p style="font-size: 25px;">Середній рейтинг: {{ number_format($averageRating, 1) }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @else
+            <div class="row mb-4">
+                <div class="infoblock" style="gap: 30px;">
+                    <div class="info">
+                        <div class="title_info">
+                            <p style="margin-bottom: 0; color: var(--green-800); font-size: 30px;">Ваш середній рейтинг</p>
+                        </div>
+                        <div class="info-body" style="color: var(--green-500);">
+                            <p style="font-size: 25px;">Рейтинг ще не встановлено.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+
+
+
+    </div>
+
         <div class="row mb-4">
             <div class="infoblock" style="gap: 30px;">
                 <div class="info">
@@ -123,4 +171,47 @@
     .card-text{
         text-align: left;
     }
+
+
+
+
+    .star {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        margin-right: 5px;
+        position: relative;
+        background: transparent;
+    }
+
+    .star .full {
+        border: 2px solid gold;
+        background-color: gold;
+        width: 100%;
+        height: 100%;
+        clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+        border-radius: 4px; /* Додаємо заокруглення */
+        box-shadow: 0 0 0 2px gold;
+    }
+
+    .star .half {
+        border: 2px solid gold;
+        background: linear-gradient(90deg, gold 50%, red 50%);
+        width: 100%;
+        height: 100%;
+        clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+        border-radius: 4px; /* Додаємо заокруглення */
+        box-shadow: 0 0 0 2px gold;
+    }
+
+    .star .empty {
+        background-color: red;
+        border: 2px solid gold;
+        width: 100%;
+        height: 100%;
+        clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+        border-radius: 4px; /* Додаємо заокруглення */
+        box-shadow: 0 0 0 2px gold;
+    }
+
 </style>

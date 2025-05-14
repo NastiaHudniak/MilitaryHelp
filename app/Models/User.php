@@ -66,4 +66,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserImage::class);
     }
+
+    public function volunteerRatings()
+    {
+        return $this->hasMany(VolunteerRating::class);
+    }
 }

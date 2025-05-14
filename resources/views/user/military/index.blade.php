@@ -15,6 +15,9 @@
                             Ваша заявка <strong>"{{ $latestApp->title }}"</strong> була підтверджена волонтером
                             <strong>{{ $latestApp->volunteer?->surname }} {{ $latestApp->volunteer?->name }}</strong>.
                         </p>
+                        <p>Чи хочете ви поставити рейтинг цьому волонтеру?</p>
+                        <a href="{{ route('military.rate', $latestApp) }}" class="btn btn-primary">Так, оцінити</a>
+                        <a href="{{ route('military.index') }}" class="btn btn-secondary">Ні, дякую</a>
                     </div>
                     <button class="alert-ok-btn" onclick="document.getElementById('confirmed-alert').style.display='none'">OK</button>
                 </div>

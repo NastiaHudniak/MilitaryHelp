@@ -28,6 +28,23 @@
                                 <h5 class="card-title" style="color: var(--green-800);">{{ $volunteer->surname }}</h5>
                             </div>
                         </div>
+                        <div class="star-rating">
+                            @for($i = 1; $i <= 5; $i++)
+                                <div class="star">
+                                    @if($volunteer->average_rating >= $i)
+                                        <!-- Повністю заповнена зірочка -->
+                                        <div class="full"></div>
+                                    @elseif($volunteer->average_rating >= $i - 0.5 && $volunteer->average_rating < $i)
+                                        <!-- Половинно заповнена зірочка -->
+                                        <div class="half"></div>
+                                    @else
+                                        <!-- Порожня зірочка -->
+                                        <div class="empty"></div>
+                                    @endif
+                                </div>
+                            @endfor
+                            <p>Середній рейтинг: {{ number_format($volunteer->average_rating, 1) }}</p>
+                        </div>
                         <div class="card-footer" style="background-color: var(--green-200);">
                             <a href="javascript:void(0);" class="btn btn-sm"  data-toggle="modal" data-target="#applicationModal{{ $volunteer->id }}" style="background-color: var(--yellow-500);" >
                                 <i class="fas fa-ellipsis-v" style="font-size: 15px;"></i> Переглянути більше
@@ -91,7 +108,7 @@ function fetchVolunteers(query) {
                                    <div class="image-scroll-container mb-3" style="overflow-x: auto; white-space: nowrap; padding-bottom: 10px;">
                                     ${volunteer.images.map(image => `
                                         <img src="${'{{ asset('storage/') }}' + '/' + image.image_url}" alt="User Image" class="img-fluid" style="width:70px; height:70px; object-fit: cover; display: inline-block; margin-right: 10px; border-radius: 50px;">
-                                    `).join('')}    
+                                    `).join('')}
                                 </div>
                             <div class="card-headers">
                                     <h5 class="card-title" style="color: var(--green-800);">${volunteer.name}</h5>
@@ -119,6 +136,50 @@ function fetchVolunteers(query) {
 @endsection
 
 <style>
+
+
+    .star {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        margin-right: 5px;
+        position: relative;
+        background: transparent;
+    }
+
+    .star .full {
+        border: 2px solid gold;
+        background-color: gold;
+        width: 100%;
+        height: 100%;
+        clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+        border-radius: 4px; /* Додаємо заокруглення */
+        box-shadow: 0 0 0 2px gold;
+    }
+
+    .star .half {
+        border: 2px solid gold;
+        background: linear-gradient(90deg, gold 50%, red 50%);
+        width: 100%;
+        height: 100%;
+        clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+        border-radius: 4px; /* Додаємо заокруглення */
+        box-shadow: 0 0 0 2px gold;
+    }
+
+    .star .empty {
+        background-color: red;
+        border: 2px solid gold;
+        width: 100%;
+        height: 100%;
+        clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+        border-radius: 4px; /* Додаємо заокруглення */
+        box-shadow: 0 0 0 2px gold;
+    }
+
+
+
+
     .btn {
         transition: background-color 0.3s ease, color 0.3s ease;
     }

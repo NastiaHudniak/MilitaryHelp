@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Application;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\VolunteerRating;
 
 class VolunteerViewAccountController extends Controller
 {
@@ -15,8 +16,12 @@ class VolunteerViewAccountController extends Controller
         $userImage = $user->images()->first();
         $totalApplications = Application::where('volunteer_id', $user->id)->count();
 
+        $ratings = VolunteerRating::where('user_id', $user->id)->pluck('rating');
 
-        return view('user.volunteer.view_account', compact('user', 'userImage',  'totalApplications'));
+        // Якщо є рейтинги, обчислюємо середнє значення
+        $averageRating = $ratings->isNotEmpty() ? $ratings->average() : null;
+
+        return view('user.volunteer.view_account', compact('user', 'userImage',  'totalApplications', 'averageRating'));
     }
 
     public function edit(User $user)
