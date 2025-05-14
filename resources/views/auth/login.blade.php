@@ -39,7 +39,7 @@
                         @enderror
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group" >
                         <label class="label" for="password">Пароль</label>
                         <div class="input-group">
                             <input type="password" class="form-input" id="password" name="password" placeholder="Введіть пароль" required>
@@ -165,7 +165,7 @@
             display: flex;
             flex-direction: column;
             gap: 8px;
-            margin: 0;
+            margin: 0 !important;
         }
 
         .input-group {
@@ -184,7 +184,7 @@
             border: none;
             outline: none;
             background: transparent;
-            color: var(--greey-my);
+            color: var(--black-my);
         }
 
         .form-input::placeholder {

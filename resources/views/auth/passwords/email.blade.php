@@ -157,7 +157,7 @@
             border: none;
             outline: none;
             background: transparent;
-            color: var(--greey-my);
+            color: var(--black-my);
         }
 
         .form-input::placeholder {

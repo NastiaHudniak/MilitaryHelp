@@ -283,7 +283,7 @@
             border: none;
             outline: none;
             background: transparent;
-            color: var(--greey-my);
+            color: var(--black-my);
             width: auto;
             min-width: 5ch; /* мінімальна ширина для кількох символів */
             max-width: 80%;
