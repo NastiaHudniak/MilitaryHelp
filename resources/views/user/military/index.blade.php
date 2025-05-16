@@ -16,10 +16,16 @@
                             <strong>{{ $latestApp->volunteer?->surname }} {{ $latestApp->volunteer?->name }}</strong>.
                         </p>
                         <p>Чи хочете ви поставити рейтинг цьому волонтеру?</p>
-                        <a href="{{ route('military.rate', $latestApp) }}" class="btn btn-primary">Так, оцінити</a>
-                        <a href="{{ route('military.index') }}" class="btn btn-secondary">Ні, дякую</a>
+                        <div class="buttons-all">
+                            <div class="buttons-mess">
+                                <a href="{{ route('military.rate', $latestApp) }}"  class="alert-ok-btn">Так, оцінити</a>
+                                <a href="{{ route('military.index') }}"  class="alert-no-btn">Ні, дякую</a>
+                            </div>
+                            <button class="alert-ok-btn" onclick="document.getElementById('confirmed-alert').style.display='none'">OK</button>
+                        </div>
+
                     </div>
-                    <button class="alert-ok-btn" onclick="document.getElementById('confirmed-alert').style.display='none'">OK</button>
+
                 </div>
             @endif
 
@@ -366,6 +372,20 @@
             width: 183px;
         }
 
+        .buttons-all{
+            display: flex;
+            justify-content: space-between;
+            flex-direction: row;
+            width: 100%;
+        }
+
+        .buttons-mess{
+            display: flex;
+            justify-content: start;
+            flex-direction: row;
+            gap: 16px;
+            padding: 6px 0;
+        }
 
     </style>
 

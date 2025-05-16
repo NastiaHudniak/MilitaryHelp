@@ -4,13 +4,16 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <link href="{{ asset('css/icon.css') }}" rel="stylesheet">
     <link href="{{ asset('css/global.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/alerts.css') }}">
 </head>
 
 @section('content')
     <div class="auth-page">
-        <a  href="{{ route('user.landing.index') }}">
-            <img src="{{ asset('images/logo/logo.svg') }}"  alt="Логотип" class="logo">
-        </a>
+        <div class="auth-logo">
+            <a href="{{ route('user.landing.index') }}">
+                <img src="{{ asset('images/logo/logo.svg') }}" alt="Логотип" class="logo">
+            </a>
+        </div>
 
         <div class="card">
             <div class="card-header" style="margin: 0">
@@ -18,41 +21,32 @@
             </div>
             <form class="card-body" action="{{ route('login') }}" method="POST">
                     @csrf
-                    @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
 
                     <div class="form-group">
                         <label class="label" for="login">Логін</label>
                         <div class="input-group">
-                            <input type="login" class="form-input" id="login" name="login" placeholder="Введіть логін" required>
+                            <input type="login" class="form-input" id="login" name="login" placeholder="Введіть логін" >
 
                         </div>
                         @error('login')
-                        <div class="text-danger">{{ $message }}</div>
+                        <div class="text_danger_after_input">{{ $message }}</div>
                         @enderror
                     </div>
 
                     <div class="form-group" >
                         <label class="label" for="password">Пароль</label>
                         <div class="input-group">
-                            <input type="password" class="form-input" id="password" name="password" placeholder="Введіть пароль" required>
+                            <input type="password" class="form-input" id="password" name="password" placeholder="Введіть пароль" >
                             <span class="toggle-password">
                                 <img src="{{ asset('images/icon/eye-close.svg') }}" alt="Send">
                             </span>
                         </div>
                         @error('password')
-                        <div class="text-danger">{{ $message }}</div>
+                        <div class="text_danger_after_input">{{ $message }}</div>
                         @enderror
                     </div>
 
-                    <div> <a href="{{ route('password.request') }}" class="forgot">Забули пароль?</a> </div>
+                    <a href="{{ route('password.request') }}" class="forgot">Забули пароль?</a>
 
                     <div class="form-buttons">
                         <button type="submit" class="login-button">Увійти</button>
@@ -61,11 +55,6 @@
                             <span class="divider-text">Або</span>
                             <div class="divider-line"></div>
                         </div>
-
-{{--                        <button type="submit" class="login-google-button">--}}
-{{--                            <img src="{{ asset('images/icon/socialmedia-4.svg') }}" alt="Google icon">--}}
-{{--                            Увійти за допомогою Google--}}
-{{--                        </button>--}}
 
                         <a class="login-google-button" href="{{ route('google.redirect') }}">
                             <img alt="Google icon" src="{{ asset('images/icon/socialmedia-4.svg') }}">
@@ -89,41 +78,25 @@
 
         .auth-page {
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
             background: linear-gradient(180deg, #FDFDF6 40%, #A3B18A 40%);
             padding: 20px;
             gap: 20px;
+
+            position: relative;
         }
 
-        @media (min-width: 768px) {
-            .auth-page {
-                flex-direction: row;
-                justify-content: center;
-            }
-        }
-
-        @media (min-width: 1024px) {
-            .auth-page {
-                display: flex;
-                justify-content: center;
-            }
+        .auth-logo {
+            text-align: center;
+            margin-bottom: 20px;
         }
 
         .logo {
             width: 150px;
             height: auto;
-            margin-bottom: 20px;
-        }
-
-        @media (min-width: 768px) {
-            .logo {
-                position: absolute;
-                top: 40px;
-                left: 40px;
-                margin: 0;
-            }
         }
 
         .card {
@@ -209,6 +182,11 @@
             display: inline-block;
             margin-top: -10px;
         }
+        .forgot:hover {
+
+            color: var(--green-dark);
+
+        }
 
         .form-buttons {
             display: flex;
@@ -251,7 +229,7 @@
             background-color: var(--green-light);
             transform: scale(1.05);
             text-decoration: none;
-            color: var(--main-white);
+            color: var(--main-green-dark);
         }
 
         .login-divider {
@@ -287,6 +265,27 @@
 
         .label-log a:hover {
             text-decoration: underline;
+        }
+
+        @media (min-width: 768px) {
+            .auth-page {
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                gap: 80px;
+            }
+
+            .auth-logo {
+                position: absolute;
+                top: 20px;
+                left: 20px;
+                margin-bottom: 0;
+                text-align: left;
+            }
+
+            .logo {
+                width: 140px;
+            }
         }
     </style>
 

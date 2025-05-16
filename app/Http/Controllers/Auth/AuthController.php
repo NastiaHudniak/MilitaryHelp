@@ -21,6 +21,39 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
+        $messages = [
+            'login.required' => 'Поле логін є обовʼязковим.',
+            'login.unique' => 'Цей логін уже зайнятий.',
+            'login.max' => 'Логін не може містити більше ніж 255 символів.',
+
+            'surname.required' => 'Поле прізвище є обовʼязковим.',
+            'surname.string' => 'Прізвище має бути рядком.',
+            'surname.max' => 'Прізвище не може бути довшим за 255 символів.',
+
+            'name.required' => 'Поле імʼя є обовʼязковим.',
+            'name.string' => 'Імʼя має бути рядком.',
+            'name.max' => 'Імʼя не може бути довшим за 255 символів.',
+
+            'email.required' => 'Поле електронної пошти є обовʼязковим.',
+            'email.email' => 'Введіть коректну електронну адресу.',
+            'email.unique' => 'Ця електронна адреса вже використовується.',
+
+            'password.required' => 'Пароль є обовʼязковим.',
+            'password.string' => 'Пароль має бути рядком.',
+            'password.min' => 'Пароль повинен містити щонайменше 8 символів.',
+            'password.confirmed' => 'Паролі не збігаються.',
+
+            'phone.required' => 'Поле телефон є обовʼязковим.',
+            'phone.string' => 'Телефон має бути рядком.',
+            'phone.max' => 'Телефон не може бути довшим за 255 символів.',
+
+            'address.required' => 'Поле адреса є обовʼязковим.',
+            'address.string' => 'Адреса має бути рядком.',
+            'address.max' => 'Адреса не може бути довшою за 255 символів.',
+
+            'role_id.required' => 'Оберіть роль користувача.',
+            'role_id.in' => 'Недопустиме значення ролі.',
+        ];
         $validator = Validator::make($request->all(), [
             'login' => 'required|unique:users|max:255',
             'surname' => 'required|string|max:255',
@@ -29,8 +62,8 @@ class AuthController extends Controller
             'password' => 'required|string|min:8|confirmed',
             'phone' => 'required|string|max:255',
             'address' => 'required|string|max:255',
-            'role_id' => 'required|in:1,2', 
-        ]);
+            'role_id' => 'required|in:1,2',
+        ], $messages);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
@@ -46,7 +79,7 @@ class AuthController extends Controller
             'email' => $request->email,
             'phone' => $request->phone,
             'address' => $request->address,
-            'role_id' => $role_id, 
+            'role_id' => $role_id,
         ]);
 
         $imagePath = 'images/acc.jpg';
@@ -54,7 +87,7 @@ class AuthController extends Controller
             UserImage::create([
                 'user_id' => $user->id,
                 'image_url' => $imagePath,
-            ]);     
+            ]);
         Auth::login($user);
         return redirect()->route('login')->with('success', 'Реєстрація успішна!');
     }
@@ -66,10 +99,19 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
+        $messages = [
+            'login.required' => '* Обов`язкове поле.',
+            'login.string' => '* Логін має бути рядком.',
+            'login.max' => '* Логін не може бути довшим за 255 символів.',
+
+            'password.required' => '* Обов`язкове поле.',
+            'password.string' => '* Пароль має бути рядком.',
+        ];
+
         $validator = Validator::make($request->all(), [
-            'login' => 'required|string|max:255', 
+            'login' => 'required|string|max:255',
             'password' => 'required|string|min:8',
-        ]);
+        ], $messages);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
@@ -80,13 +122,13 @@ class AuthController extends Controller
 
         if (!$user) {
             return back()->withErrors([
-                'login' => 'Користувача з такою електронною адресою не знайдено.',
+                'login' => '*Користувача з такою електронною адресою не знайдено.',
             ])->withInput();
         }
 
         if (!Hash::check($request->password, $user->password)) {
             return back()->withErrors([
-                'password' => 'Невірний пароль.',
+                'password' => '*Невірний пароль.',
             ])->withInput();
         }
 

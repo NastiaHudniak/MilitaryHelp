@@ -16,8 +16,6 @@ class VolunteerRating extends Model
         'rating',
     ];
 
-    // Валідація допустимих значень rating (1-5) — через кастомну логіку у FormRequest або контролері
-
     public function user()
     {
         return $this->belongsTo(User::class);

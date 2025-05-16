@@ -196,7 +196,7 @@
 
     .star .half {
         border: 2px solid gold;
-        background: linear-gradient(90deg, gold 50%, red 50%);
+        background: linear-gradient(90deg, gold 50%, lightgrey 50%);
         width: 100%;
         height: 100%;
         clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
@@ -205,7 +205,7 @@
     }
 
     .star .empty {
-        background-color: red;
+        background-color: lightgrey;
         border: 2px solid gold;
         width: 100%;
         height: 100%;

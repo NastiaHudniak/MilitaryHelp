@@ -1,3 +1,17 @@
+.text_danger_after_input{
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 21px;
+    margin: 0;
+    padding: 0;
+    word-wrap: break-word;
+    color: var(--red-100);
+}
+
+
+
+
+
 
 .alert-success-custom {
     position: fixed;
@@ -43,6 +57,19 @@
     background-color: var(--green-100);
     color: var(--green-100-15);
     border: none;
+    padding: 4px 12px;
+}
+
+/* Стилізація кнопки "OK" */
+.alert-success-custom .alert-no-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 16px;
+    transition: all 0.3s ease-in-out;
+    background-color: var(--green-100-15);
+    color: var(--green-100);
+    border: 1px solid var(--green-100) ;
     padding: 4px 12px;
 }
 
