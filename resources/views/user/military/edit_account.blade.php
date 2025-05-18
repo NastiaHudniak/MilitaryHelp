@@ -139,7 +139,7 @@
             </div>
         </div>
     </div>
-    
-    @include('layouts.footer_military')
+
+    @include('layouts.footer')
 @endsection
 

@@ -132,7 +132,7 @@ function fetchVolunteers(query) {
 
 </script>
 
-@include('layouts.footer_military')
+@include('layouts.footer')
 @endsection
 
 <style>

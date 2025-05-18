@@ -22,7 +22,7 @@
                     <p style=" margin-bottom: 0;" class="card-text"><strong style="color: var(--green-800);">Електронна пошта:</strong> {{$millitary->email }}</p>
                     <p style=" margin-bottom: 0;" class="card-text"><strong style="color: var(--green-800);">Телефон:</strong> {{$millitary->phone }}</p>
                     <p style=" margin-bottom: 0;" class="card-text"><strong style="color: var(--green-800);">Адреса:</strong> {{$millitary->address }}</p>
-                </div> 
+                </div>
             </div>
 
             <div class="col-md-7" style="display: flex;  flex-direction: column;  align-items: flex-start;  justify-content: space-between;">
@@ -37,7 +37,7 @@
         @foreach ($application->images as $image)
             <img src="{{ asset('storage/' . $image->image_url) }}" alt="Зображення заявки" class="img-fluid" style="max-height: 150px; object-fit: cover; display: inline-block; margin-right: 10px;">
         @endforeach
-    </div>    
+    </div>
                                 <p class="card-text flex-grow-1">{{ $application->description }}</p>
                                     <p class="card-text">
                                         <strong>Статус:</strong>
@@ -59,19 +59,19 @@
                     <label for="comment">Коментар</label>
                     <input style="width: 100%;" type="text" name="comment" class="form-control" value="{{ $application->comment === 'немає' ? '' : $application->comment }}">
                     <div class="butt" style="  padding-top: 10px; display: flex;  flex-direction: row;  align-items: flex-and;  justify-content: space-between; ">
-                        <button type="submit" class="btn btn-warning" style="background-color: var(--yellow-500);">Підтвердити заявку</button> 
+                        <button type="submit" class="btn btn-warning" style="background-color: var(--yellow-500);">Підтвердити заявку</button>
                         <a href="{{ route('user.volunteer.mil.view_military') }}" class="btn btn-outline " style="color: var(--green-500);border-color: var(--green-500);">Повернутись назад</a>
-                        
+
                     </div>
-                   
-       
+
+
                 </form>
             </div>
         </div>
 
-       
+
     </div>
-    @include('layouts.footer_volunteer') 
+    @include('layouts.footer')
 @endsection
 
 
@@ -95,9 +95,9 @@
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         display: flex;
         flex-direction: column;
-        align-items: flex-start; 
-        gap: 20px; 
-        transition: background-color 0.3s ease, color 0.3s ease; 
+        align-items: flex-start;
+        gap: 20px;
+        transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     .card {
@@ -126,28 +126,28 @@
         flex-direction: column;
     }
 
-  
+
 .image-scroll-container::-webkit-scrollbar {
-    height: 8px; 
+    height: 8px;
 }
 
 .image-scroll-container::-webkit-scrollbar-track {
-    background: #f1f1f1; 
+    background: #f1f1f1;
 }
 
 .image-scroll-container::-webkit-scrollbar-thumb {
-    background: var(--green-500); 
-    border-radius: 10px; 
+    background: var(--green-500);
+    border-radius: 10px;
 }
 
 .image-scroll-container::-webkit-scrollbar-thumb:hover {
-    background: #45a049; 
+    background: #45a049;
 }
 
 .image-scroll-container img {
     height: 150px;
     width: auto;
-    object-fit: cover; 
+    object-fit: cover;
     display: inline-block;
     margin-right: 10px;
 }

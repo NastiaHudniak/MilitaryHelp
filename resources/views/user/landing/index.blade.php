@@ -135,7 +135,7 @@
 
     </div>
 
-        @include('layouts.footer_landing')
+        @include('layouts.footer')
 
 
     <style>

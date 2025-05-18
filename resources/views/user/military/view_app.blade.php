@@ -285,7 +285,7 @@
     </script>
 
 
-    @include('layouts.footer_landing')
+    @include('layouts.footer')
 @endsection
 
 <style>

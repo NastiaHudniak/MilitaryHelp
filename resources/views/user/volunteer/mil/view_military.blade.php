@@ -48,14 +48,14 @@
 
 function fetchVolunteers(query) {
     const url = `{{ route('user.volunteer.mil.search') }}?query=${encodeURIComponent(query)}`;
-    console.log(url); 
+    console.log(url);
     fetch(url)
         .then(response => response.json())
         .then(data => {
             const cardContainer = document.getElementById('volunteer-card-container');
             const noResults = document.getElementById('no-results');
             cardContainer.innerHTML = '';
-                    
+
             if (data.volunteers.length === 0) {
                 noResults.style.display = 'block';
             } else {
@@ -69,7 +69,7 @@ function fetchVolunteers(query) {
                                     <div class="image-scroll-container mb-3" style="overflow-x: auto; white-space: nowrap; padding-bottom: 10px;">
                                     ${military.images.map(image => `
                                         <img src="${'{{ asset('storage/') }}' + '/' + image.image_url}" alt="User Image" class="img-fluid" style="width:70px; height:70px; object-fit: cover; display: inline-block; margin-right: 10px; border-radius: 50px;">
-                                    `).join('')}    
+                                    `).join('')}
                                 </div>
                                 </div>
                              <div class="card-body" style="background-color: var(--green-300); color: var(--green-800);">
@@ -85,12 +85,12 @@ function fetchVolunteers(query) {
                             `;
                             cardContainer.appendChild(card);
                 });
-            } 
+            }
                 })
                 .catch(error => console.error('Error:', error));
         }
     </script>
-    @include('layouts.footer_volunteer')
+    @include('layouts.footer')
 @endsection
 
 <style>

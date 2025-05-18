@@ -69,12 +69,12 @@
 
 </div>
 
-       
+
         </div>
-        
+
     </div>
 
-    @include('layouts.footer_volunteer')
+    @include('layouts.footer')
 @endsection
 
 <style>
@@ -155,7 +155,7 @@
 
 
 
-    
+
 
     .title-name {
         position: relative;
@@ -244,7 +244,7 @@
         padding: 48px 0px ;
     }
 
-    
+
     .info-container {
             display: flex;
             gap: 20px;
@@ -252,7 +252,7 @@
             padding: 10px;
             margin-top: 35px;
         }
-        
+
     .bl-info {
             width: 40%;
             height: 160px;

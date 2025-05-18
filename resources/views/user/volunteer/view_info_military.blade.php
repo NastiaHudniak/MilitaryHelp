@@ -23,7 +23,7 @@
                     <p style=" margin-bottom: 0;" class="card-text"><strong style="color: var(--green-800);">Електронна пошта:</strong> {{$millitary->email }}</p>
                     <p style=" margin-bottom: 0;" class="card-text"><strong style="color: var(--green-800);">Телефон:</strong> {{$millitary->phone }}</p>
                     <p style=" margin-bottom: 0;" class="card-text"><strong style="color: var(--green-800);">Адреса:</strong> {{$millitary->address }}</p>
-                </div> 
+                </div>
             </div>
 
             <!-- Right block: Military applications -->
@@ -43,7 +43,7 @@
             <img src="{{ asset('storage/' . $image->image_url) }}" alt="Зображення заявки" class="img-fluid" style="max-height: 150px; object-fit: cover; display: inline-block; margin-right: 10px; border-radius: 50px;">
         @endforeach
     </div>
-                         
+
                         <p class="card-text flex-grow-1">{{ $application->description }}</p>
                             <p class="card-text">
                                 <strong style="color: #000000;">Статус:</strong>
@@ -68,7 +68,7 @@
                             </div>
                         </div>
 
-            
+
                     @endforeach
 
                     @foreach ($applications as $application)
@@ -101,7 +101,7 @@
             </div>
         </div>
     </div>
-    @include('layouts.footer_volunteer')
+    @include('layouts.footer')
 @endsection
 
 <style>
@@ -109,7 +109,7 @@
         transition: background-color 0.3s ease, color 0.3s ease;
     }
 
-    
+
     .info {
         width: 100%; /* Розмір блоку */
         padding: 20px;
@@ -158,28 +158,28 @@
         justify-content: space-between;
     }
 
-    
+
 .image-scroll-container::-webkit-scrollbar {
-    height: 8px; 
+    height: 8px;
 }
 
 .image-scroll-container::-webkit-scrollbar-track {
-    background: #f1f1f1; 
+    background: #f1f1f1;
 }
 
 .image-scroll-container::-webkit-scrollbar-thumb {
-    background: var(--green-500); 
-    border-radius: 10px; 
+    background: var(--green-500);
+    border-radius: 10px;
 }
 
 .image-scroll-container::-webkit-scrollbar-thumb:hover {
-    background: #45a049; 
+    background: #45a049;
 }
 
 .image-scroll-container img {
     height: 150px;
     width: auto;
-    object-fit: cover; 
+    object-fit: cover;
     display: inline-block;
     margin-right: 10px;
 }

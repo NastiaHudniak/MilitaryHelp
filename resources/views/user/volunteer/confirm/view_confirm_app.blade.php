@@ -138,7 +138,7 @@
             fetchApplications(query,  category, sort);
         });
 
-        
+
         document.getElementById('sort-filter').addEventListener('change', function() {
             const query = document.getElementById('search').value;
             const category = document.getElementById('category-filter').value;
@@ -175,7 +175,7 @@
                                  <div class="image-scroll-container mb-3" style="overflow-x: auto; white-space: nowrap; padding-bottom: 10px;">
                                     ${application.images.map(image => `
                                         <img src="${'{{ asset('storage/') }}' + '/' + image.image_url}" alt="Зображення заявки" class="img-fluid" style="max-height: 150px; object-fit: cover; display: inline-block; margin-right: 10px;">
-                                    `).join('')}    
+                                    `).join('')}
                                 </div>
                                 <p class="card-text flex-grow-1">${application.description}</p>
                                 <p class="card-text"><strong style="color: #000000;">Статус:</strong> ${application.status}</p>
@@ -203,31 +203,31 @@
 
 
     </script>
-     @include('layouts.footer_volunteer')
+     @include('layouts.footer')
 @endsection
 
 <style>
 
 .image-scroll-container::-webkit-scrollbar {
-    height: 8px; 
+    height: 8px;
 }
 
 .image-scroll-container::-webkit-scrollbar-track {
-    background: #f1f1f1; 
+    background: #f1f1f1;
 }
 
 .image-scroll-container::-webkit-scrollbar-thumb {
-    background: var(--green-500); 
-    border-radius: 10px; 
+    background: var(--green-500);
+    border-radius: 10px;
 }
 
 .image-scroll-container::-webkit-scrollbar-thumb:hover {
-    background: #45a049; 
+    background: #45a049;
 }
 .image-scroll-container img {
     height: 150px;
     width: auto;
-    object-fit: cover; 
+    object-fit: cover;
     display: inline-block;
     margin-right: 10px;
 }

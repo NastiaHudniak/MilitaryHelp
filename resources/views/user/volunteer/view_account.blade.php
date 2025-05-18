@@ -119,7 +119,7 @@
             </div>
         </div>
     </div>
-    @include('layouts.footer_volunteer')
+    @include('layouts.footer')
 @endsection
 
 <style>

@@ -5,7 +5,7 @@
         <div class="card" style="box-shadow: 0 6px 15px rgba(0, 0, 0, 0.8);">
             <div class="card-header" style="background-color: var(--yellow-400); color: var(--green-800);">
                 <h2>Редагування фото профілю "{{$user->name}}"</h2>
-            </div> 
+            </div>
             <div class="card-body" style="background-color: var(--yellow-200); ">
                 @foreach($images as $image)
                     <div class="image-container mb-3" style="display: flex; align-items: center;">
@@ -36,6 +36,6 @@
             return confirm(`Ви точно бажаєте видалити зображення?`);
         }
     </script>
-    
-    @include('layouts.footer_volunteer')
+
+    @include('layouts.footer')
 @endsection

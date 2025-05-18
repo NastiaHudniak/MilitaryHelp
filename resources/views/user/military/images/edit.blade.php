@@ -44,5 +44,5 @@
             return confirm(`Ви точно бажаєте видалити зображення?`);
         }
     </script>
-     @include('layouts.footer_military')
+     @include('layouts.footer')
 @endsection
