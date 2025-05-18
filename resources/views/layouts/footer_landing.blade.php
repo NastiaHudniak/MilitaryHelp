@@ -10,13 +10,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
 
+    <link rel="stylesheet" href="{{ asset('css/loader.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/alerts.css') }}">
 
 </head>
 <body>
 <footer class="footer">
     <div class="left-block" style="width: 340px;">
        <div class="logo-social-block">
-           <a class="logo" href="#logos">
+           <a  href="#logos">
                <img src="{{ asset('images/logo/logo.svg') }}" alt="Logo">
            </a>
            <div class="social-media">
@@ -44,27 +46,102 @@
     <div class="right-block" >
         <div class="navigation-block">
             <h5 class="navigation-title">Навігація</h5>
-            <div class="list-navigation">
-                <a href="#help-section" >Головна</a>
-                <a href="#about-section" >Про нас</a>
-                <a href="#volunteers-section" >Волонтери</a>
-            </div>
+
+            @guest
+                <div class="list-navigation">
+                    <a href="#help-section">Головна</a>
+                    <a href="#about-section">Про нас</a>
+                    <a href="#volunteers-section">Волонтери</a>
+                </div>
+            @else
+                @if(Auth::user()->role_id == 2)
+                    <div class="list-navigation">
+                        <a href="{{ route('user.military.create') }}">Створити заявку</a>
+                        <a href="{{ route('user.military.view_app') }}">Переглянути всі заявки</a>
+                        <a href="{{ route('user.military.vol.view_volunteer') }}">Переглянути волонтерів</a>
+                    </div>
+                @else
+                    <div class="list-navigation">
+                        <a href="#help-section">Головна</a>
+                        <a href="#about-section">Про нас</a>
+                        <a href="#volunteers-section">Волонтери</a>
+                    </div>
+                @endif
+            @endguest
         </div>
         <div class="connection-block" style="width: 300px;">
             <h5 class="connection-title">Зворотній зв'язок</h5>
             <div class="connection-form">
-                <input type="text" class="input-message" placeholder="Введіть ваше повідомлення...">
-                <button class="send-button">
-                    <img src="{{ asset('images/icon/phone.svg') }}" alt="Send">
-                </button>
+                <input type="text" class="input-message" id="feedbackMessage" placeholder="Введіть ваше повідомлення...">
+                <a class="send-button" id="sendFeedback">
+                    <img src="{{ asset('images/icon/send.svg') }}" alt="Send">
+                </a>
             </div>
             <p class="connection-text">Якщо виникли проблеми, будь ласка, зверніться до нас</p>
         </div>
     </div>
 </footer>
 
-<!-- Styles for Footer -->
+<!-- Лоадер -->
+<div class="loader-overlay" id="loader" style="display: none;">
+    <div class="loader"></div>
+</div>
+
+<script>
+    document.getElementById('sendFeedback').addEventListener('click', function () {
+        const messageInput = document.getElementById('feedbackMessage');
+        const message = messageInput.value.trim();
+
+        if (!message) {
+            showError('Будь ласка, введіть повідомлення.');
+            return;
+        }
+
+        showLoader(true);
+
+        fetch("{{ route('feedback.send') }}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+            },
+            body: JSON.stringify({ message })
+        })
+            .then(res => {
+                showLoader(false);
+                if (!res.ok) throw new Error('Помилка мережі');
+                return res.json();
+            })
+            .then(data => {
+                showSuccess(data.success || 'Повідомлення надіслано!');
+                messageInput.value = '';
+            })
+            .catch(err => {
+                showError('Сталася помилка при надсиланні. Спробуйте пізніше.');
+                console.error(err);
+            });
+    });
+
+    function showLoader(show) {
+        document.getElementById('loader').style.display = show ? 'flex' : 'none';
+    }
+
+
+    window.addEventListener('DOMContentLoaded', () => {
+        const successAlert = document.getElementById('success-alert');
+        if (successAlert) {
+            successAlert.style.display = 'flex';
+        }
+    });
+
+</script>
+
+
 <style>
+
+    html {
+        scroll-behavior: smooth;
+    }
     .footer {
         background-color: var(--green-light);
         padding: 64px 190px;
@@ -209,6 +286,11 @@
         transition: transform 0.3s ease;
     }
 
+    .send-button:focus {
+        background: transparent;
+        border: none;
+    }
+
          /* Для екранів до 1200px */
     @media (max-width: 1200px) {
         .footer {
@@ -309,9 +391,6 @@
 </style>
 
 
-
-
-</style>
 
 
 <!-- Основний Контент -->

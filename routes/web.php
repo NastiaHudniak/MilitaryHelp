@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\EditMilitaryImageController;
 use App\Http\Controllers\EditVolunteerImageController;
+use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\LabController;
 use App\Http\Controllers\Landing\LandingController;
@@ -209,3 +210,6 @@ Route::get('/military', [MilitaryHomeController::class, 'index'])->name('militar
 Route::get('/military/rate/{application}', [MilitaryHomeController::class, 'rateVolunteer'])->name('military.rate');
 Route::post('/military/rating/{application}', [MilitaryHomeController::class, 'storeRating'])->name('military.storeRating');
 
+
+
+Route::post('/send-feedback', [FeedbackController::class, 'send'])->name('feedback.send');
