@@ -22,9 +22,14 @@ class ForgotPasswordController extends Controller
 
     public function sendResetLinkEmail(Request $request)
     {
+        $messages = [
+            'email.required' => '* Обов’язкове поле.',
+            'email.email' => '* Неправильний формат електронної пошти.',
+        ];
+
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
-        ]);
+        ], $messages);
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
@@ -40,11 +45,20 @@ class ForgotPasswordController extends Controller
 
     public function reset(Request $request)
     {
+        $messages = [
+            'email.required' => '* Обов’язкове поле.',
+            'email.email' => '* Неправильний формат електронної пошти.',
+            'password.required' => '* Обов’язкове поле.',
+            'password.confirmed' => '* Паролі не збігаються.',
+            'password.min' => '* Пароль має містити щонайменше 6 символів.',
+            'token.required' => '* Токен відсутній або недійсний.',
+        ];
+
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required|confirmed|min:6',
             'token' => 'required',
-        ]);
+        ], $messages);
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
@@ -56,7 +70,10 @@ class ForgotPasswordController extends Controller
         });
 
         return $response == Password::PASSWORD_RESET
-            ? redirect()->route('login')->with('status', 'Пароль оновлено успішно.')
+            ? redirect()->route('login')->with([
+                'status' => 'Пароль оновлено успішно.',
+                'success' => 'Пароль оновлено успішно.'
+            ])
             : back()->withErrors(['email' => trans($response)]);
     }
 }

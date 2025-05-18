@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intlTelInput.css">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
     <link href="{{ asset('css/icon.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/alerts.css') }}" rel="stylesheet">
 
     <style>
         .alert {
@@ -24,16 +25,23 @@
 </head>
 <body style="background-color: var(--green-200); font-family: 'Jura', sans-serif;">
 @if (session('success'))
-    <div class="alert alert-success" id="success-alert">
-        {{ session('success') }}
+    <div class="alert-success-custom" id="success-alert">
+        <div class="alert-success-custom-text-block">
+            <p class="alert-success-custom-text">{{ session('success') }}</p>
+            <button class="alert-ok-btn" onclick="document.getElementById('success-alert').style.display='none'">OK</button>
+        </div>
     </div>
 @endif
 
 @if (session('error'))
-    <div class="alert alert-danger" id="error-alert">
-        {{ session('error') }}
+    <div class="alert-danger-custom" id="error-alert">
+        <div class="alert-danger-custom-text-block">
+            <p class="alert-danger-custom-text">{{ session('error') }}</p>
+            <button class="alert-ok-btn" onclick="document.getElementById('error-alert').style.display='none'">OK</button>
+        </div>
     </div>
 @endif
+
 
 <div class="container" style="max-width: 1800px; margin: 0px; padding: 0px 0px;">
     @yield('content')

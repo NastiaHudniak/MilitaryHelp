@@ -4,13 +4,21 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <link href="{{ asset('css/icon.css') }}" rel="stylesheet">
     <link href="{{ asset('css/global.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/alerts.css') }}" rel="stylesheet">
+
+    <link href="{{ asset('css/loader.css') }}" rel="stylesheet">
 </head>
 
 @section('content')
+    <div class="loader-overlay" id="loader" style="display: none;">
+        <div class="loader"></div>
+    </div>
     <div class="email-page">
-        <a  href="{{ route('user.landing.index') }}">
-            <img src="{{ asset('images/logo/logo.svg') }}"  alt="Логотип" class="logo">
-        </a>
+        <div class="email-logo">
+            <a  href="{{ route('user.landing.index') }}">
+                <img src="{{ asset('images/logo/logo.svg') }}"  alt="Логотип" class="logo">
+            </a>
+        </div>
 
         <div class="card">
             <div class="card-header">
@@ -19,22 +27,13 @@
             <form class="card-body" action="{{ route('password.email') }}" method="POST">
                 @csrf
                 @if (session('status'))
-                    <div class="alert alert-success">{{ session('status') }}</div>
-                @endif
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
+                    <div class="alert-success-custom">{{ session('status') }}</div>
                 @endif
 
                 <div class="form-group">
                     <label class="label" for="email">Електронна пошта</label>
                     <div class="input-group">
-                        <input type="email" class="form-input" id="email" name="email" placeholder="Введіть електронну пошту" required>
+                        <input type="email" class="form-input" id="email" name="email" placeholder="Введіть електронну пошту" >
                     </div>
                 </div>
 
@@ -49,6 +48,11 @@
         </div>
     </div>
 
+    <script>
+        document.querySelector('form').addEventListener('submit', function () {
+            document.getElementById('loader').style.display = 'flex';
+        });
+    </script>
 
     <style>
         body, html {
@@ -60,43 +64,23 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
+            justify-content: center;
             min-height: 100vh;
             background: linear-gradient(180deg, #FDFDF6 40%, #A3B18A 40%);
             padding: 20px;
             gap: 20px;
+            position: relative;
         }
 
-        @media (min-width: 768px) {
-            .email-page {
-                flex-direction: row;
-                justify-content: center;
-                gap: 80px;
-            }
-        }
-
-        @media (min-width: 1024px) {
-            .email-page {
-                display: flex;
-                justify-content: center;
-            }
-        }
-
-        .logo {
-            width: 150px;
-            height: auto;
+        .email-logo {
+            text-align: center;
             margin-bottom: 20px;
         }
 
-        @media (min-width: 768px) {
-            .logo {
-                position: absolute;
-                top: 40px;
-                left: 40px;
-                margin: 0;
-            }
+        .logo {
+              width: 150px;
+              height: auto;
         }
-
 
         .card {
             width: 100%;
@@ -105,7 +89,6 @@
             border-radius: 16px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
             background-color: transparent;
-            margin-bottom: 80px;
         }
 
         .card-header {
@@ -210,6 +193,28 @@
         }
         .label-email a:hover {
             text-decoration: underline;
+        }
+
+
+        @media (min-width: 768px) {
+            .email-page {
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                gap: 80px;
+            }
+
+            .email-logo {
+                position: absolute;
+                top: 20px;
+                left: 20px;
+                margin-bottom: 0;
+                text-align: left;
+            }
+
+            .logo {
+                width: 140px;
+            }
         }
 
     </style>

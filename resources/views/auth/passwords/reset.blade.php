@@ -8,9 +8,11 @@
 
 @section('content')
     <div class="reset-page">
-        <a  href="{{ route('user.landing.index') }}">
-            <img src="{{ asset('images/logo/logo.svg') }}"  alt="Логотип" class="logo">
-        </a>
+        <div class="reset-logo">
+            <a  href="{{ route('user.landing.index') }}">
+                <img src="{{ asset('images/logo/logo.svg') }}"  alt="Логотип" class="logo">
+            </a>
+        </div>
 
         <div class="card">
             <div class="card-header">
@@ -22,27 +24,19 @@
                 @if (session('status'))
                     <div class="alert alert-success">{{ session('status') }}</div>
                 @endif
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
+
 
                 <div class="form-group">
                     <label class="label" for="email">Електронна пошта</label>
                     <div class="input-group">
-                        <input type="email" class="form-input" id="email" name="email" value="{{ old('email') }}" required autofocus>
+                        <input type="email" class="form-input" id="email" name="email" value="{{ old('email') }}" autofocus>
                     </div>
                 </div>
 
                 <div class="form-group" >
                     <label class="label" for="password">Новий пароль</label>
                     <div class="input-group">
-                        <input type="password" class="form-input" id="password" name="password" placeholder="Введіть пароль" required>
+                        <input type="password" class="form-input" id="password" name="password" placeholder="Введіть пароль">
                         <span class="toggle-password">
                                 <img src="{{ asset('images/icon/eye-close.svg') }}" alt="Send">
                             </span>
@@ -55,7 +49,7 @@
                 <div class="form-group">
                     <label class="label" for="password_confirmation">Підтвердити новий пароль</label>
                     <div class="input-group">
-                        <input type="password" class="form-input" id="password_confirmation" name="password_confirmation" placeholder="Введіть пароль"  required >
+                        <input type="password" class="form-input" id="password_confirmation" name="password_confirmation" placeholder="Введіть пароль">
                         <span class="toggle-password-confirmation">
                                 <img src="{{ asset('images/icon/eye-close.svg') }}" alt="Send">
                             </span>
@@ -91,41 +85,22 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
+            justify-content: center;
             min-height: 100vh;
             background: linear-gradient(180deg, #FDFDF6 40%, #A3B18A 40%);
             padding: 20px;
             gap: 20px;
+            position: relative;
         }
 
-        @media (min-width: 768px) {
-            .reset-page {
-                flex-direction: row;
-                justify-content: center;
-                gap: 80px;
-            }
-        }
-
-        @media (min-width: 1024px) {
-            .reset-page {
-                display: flex;
-                justify-content: center;
-            }
+        .reset-logo {
+            text-align: center;
+            margin-bottom: 20px;
         }
 
         .logo {
             width: 150px;
             height: auto;
-            margin-bottom: 20px;
-        }
-
-        @media (min-width: 768px) {
-            .logo {
-                position: absolute;
-                top: 40px;
-                left: 40px;
-                margin: 0;
-            }
         }
 
 
@@ -250,6 +225,27 @@
         }
         .label-reset a:hover {
             text-decoration: underline;
+        }
+
+        @media (min-width: 768px) {
+            .reset-page {
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                gap: 80px;
+            }
+
+            .reset-logo {
+                position: absolute;
+                top: 20px;
+                left: 20px;
+                margin-bottom: 0;
+                text-align: left;
+            }
+
+            .logo {
+                width: 140px;
+            }
         }
 
 

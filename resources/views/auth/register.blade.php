@@ -18,20 +18,11 @@
             </div>
             <form class="card-body" action="{{ route('register') }}" method="POST">
                 @csrf
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
 
                 <div class="form-group">
                     <label class="label" for="login">Логін</label>
                     <div class="input-group">
-                        <input type="text" class="form-input" id="login" name="login" value="{{ old('login') }}" placeholder="Введіть логін" required>
+                        <input type="text" class="form-input" id="login" name="login" value="{{ old('login') }}" placeholder="Введіть логін" >
                     </div>
                     @error('login')
                     <div class="text-danger">{{ $message }}</div>
@@ -42,7 +33,7 @@
                     <div class="form-groupp">
                         <label class="label" for="password">Пароль</label>
                         <div class="input-group">
-                            <input type="password" class="form-input" id="password" name="password" placeholder="Введіть пароль" required>
+                            <input type="password" class="form-input" id="password" name="password" placeholder="Введіть пароль" >
                             <span class="toggle-password">
                                 <img src="{{ asset('images/icon/eye-close.svg') }}" alt="Send">
                             </span>
@@ -54,7 +45,7 @@
                     <div class="form-groupp">
                         <label class="label" for="password_confirmation">Підтвердити пароль</label>
                         <div class="input-group">
-                            <input type="password" class="form-input" id="password_confirmation" name="password_confirmation" placeholder="Введіть пароль" required>
+                            <input type="password" class="form-input" id="password_confirmation" name="password_confirmation" placeholder="Введіть пароль" >
                             <span class="toggle-password-confirmation">
                                 <img src="{{ asset('images/icon/eye-close.svg') }}" alt="Send">
                             </span>
@@ -69,7 +60,7 @@
                 <div class="form-group">
                     <label class="label" for="email">Електронна пошта</label>
                     <div class="input-group">
-                        <input type="email" class="form-input" id="email" name="email" value="{{ old('email') }}" placeholder="Введіть пошту" required>
+                        <input type="email" class="form-input" id="email" name="email" value="{{ old('email') }}" placeholder="Введіть пошту" >
                     </div>
                     @error('email')
                     <div class="text-danger">{{ $message }}</div>
@@ -80,7 +71,7 @@
                     <div class="form-groupp" >
                         <label class="label" for="surname">Прізвище</label>
                         <div class="input-group">
-                            <input type="text" class="form-input" id="surname" name="surname" value="{{ old('surname') }}" placeholder="Введіть прізвище" required>
+                            <input type="text" class="form-input" id="surname" name="surname" value="{{ old('surname') }}" placeholder="Введіть прізвище" >
                         </div>
                         @error('surname')
                         <div class="text-danger">{{ $message }}</div>
@@ -89,7 +80,7 @@
                     <div class="form-groupp" >
                         <label class="label" for="name">Ім'я</label>
                         <div class="input-group">
-                            <input type="text" class="form-input" id="name" name="name" value="{{ old('name') }}" placeholder="Введіть ім'я" required>
+                            <input type="text" class="form-input" id="name" name="name" value="{{ old('name') }}" placeholder="Введіть ім'я" >
                         </div>
                         @error('name')
                         <div class="text-danger">{{ $message }}</div>
@@ -100,7 +91,7 @@
                 <div class="form-group">
                     <label class="label" for="phone">Телефон</label>
                     <div class="input-group">
-                        <input type="tel" class="form-input" id="phone" name="phone" value="{{ old('phone') }}" placeholder="Введіть телефон" required>
+                        <input type="tel" class="form-input" id="phone" name="phone" value="{{ old('phone') }}" placeholder="Введіть телефон" >
                     </div>
                     @error('phone')
                     <div class="text-danger">{{ $message }}</div>
@@ -285,7 +276,7 @@
             background: transparent;
             color: var(--black-my);
             width: auto;
-            min-width: 5ch; /* мінімальна ширина для кількох символів */
+            min-width: 5ch;
             max-width: 80%;
         }
 

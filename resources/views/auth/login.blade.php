@@ -18,10 +18,10 @@
         <div class="card">
             <div class="card-header" style="margin: 0">
                 <h2>Вхід в акаунт</h2>
+
             </div>
             <form class="card-body" action="{{ route('login') }}" method="POST">
                     @csrf
-
                     <div class="form-group">
                         <label class="label" for="login">Логін</label>
                         <div class="input-group">
@@ -70,6 +70,7 @@
     </div>
 
     <style>
+
         html, body {
             height: 100%;
             margin: 0;
@@ -85,7 +86,6 @@
             background: linear-gradient(180deg, #FDFDF6 40%, #A3B18A 40%);
             padding: 20px;
             gap: 20px;
-
             position: relative;
         }
 

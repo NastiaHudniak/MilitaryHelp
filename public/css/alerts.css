@@ -76,3 +76,62 @@
 .alert-success-custom .alert-ok-btn:hover {
     background-color: #0b3d1e;
 }
+
+
+
+
+
+
+
+
+.alert-danger-custom {
+    position: fixed;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: end;
+    width: fit-content;
+    gap: 12px;
+    background-color: var(--red-100-15); /* напівпрозорий фон */
+    border: 1px solid var(--red-100); /* червона рамка */
+    color: var(--red-100); /* червоний текст */
+    padding: 1rem;
+    border-radius: 16px;
+    margin: 1rem;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.alert-danger-custom-text-block {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: start;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 21px;
+    margin: 0;
+    padding: 0;
+}
+
+.alert-danger-custom-text {
+    margin: 0;
+    padding: 4px 0;
+}
+
+/* Стилізація кнопки "OK" */
+.alert-danger-custom .alert-ok-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 16px;
+    transition: all 0.3s ease-in-out;
+    background-color: var(--red-100);
+    color: var(--red-100-15);
+    border: none;
+    padding: 4px 12px;
+}
+
+.alert-danger-custom .alert-ok-btn:hover {
+    background-color: #6b0e0e; /* темніший червоний при наведенні */
+}
