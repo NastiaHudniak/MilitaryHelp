@@ -33,7 +33,5 @@ class FeedbackController extends Controller
         });
 
         return response()->json(['success' => 'Повідомлення надіслано!']);
-
-
     }
 }

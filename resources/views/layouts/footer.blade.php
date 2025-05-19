@@ -9,11 +9,10 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="{{ asset('css/loader.css') }}">
     <link rel="stylesheet" href="{{ asset('css/alerts.css') }}">
-
 </head>
+
 <body>
 <footer class="footer">
     <div class="left-block" style="width: 340px;">
@@ -49,9 +48,11 @@
 
             @guest
                 <div class="list-navigation">
-                    <a href="#help-section">Головна</a>
-                    <a href="#about-section">Про нас</a>
-                    <a href="#volunteers-section">Волонтери</a>
+                    <a href="#home-section" >Головна</a>
+                    <a href="#help-section" >Допомога</a>
+                    <a href="#analytics-section" >Аналітика</a>
+                    <a href="#about-section" >Про нас</a>
+                    <a href="#volunteers-section" >Волонтери</a>
                 </div>
             @else
                 @if(Auth::user()->role_id == 2)
@@ -113,8 +114,14 @@
                 return res.json();
             })
             .then(data => {
-                showSuccess(data.success || 'Повідомлення надіслано!');
-                messageInput.value = '';
+                if (data.success) {
+                    showToast('Повідомлення успішно надіслано!', 'success');
+                    messageInput.value = '';
+                }
+                else if(data.error){
+                    showToast('Сталася помилка!', 'error');
+                    messageInput.value = '';
+                }
             })
             .catch(err => {
                 showError('Сталася помилка при надсиланні. Спробуйте пізніше.');
@@ -139,7 +146,7 @@
 
 <style>
 
-    html {
+    html{
         scroll-behavior: smooth;
     }
     .footer {

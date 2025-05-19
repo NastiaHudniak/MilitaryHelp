@@ -1,14 +1,14 @@
 @extends('layouts.app')
 @include('layouts.header_landing')
-<body><link href="{{ asset('css/icon.css') }}" rel="stylesheet">
-<link href="{{ asset('css/global.css') }}" rel="stylesheet">
-
-</body>
+@section('head')
+    <link href="{{ asset('css/icon.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/global.css') }}" rel="stylesheet">
+@endsection
 
 
 @section('content')
     <div class="main-content" style="font-family: 'Open Sans', sans-serif;">
-        <div class="block-one" style="font-family: 'Open Sans', sans-serif;">
+        <section class="block-one" id="home-section" style="font-family: 'Open Sans', sans-serif;">
             <div class="left-title">
                 <div class="title">
                     <h2 class="title-one">Косметологічна допомога</h2>
@@ -23,9 +23,9 @@
             <div class="right-image">
                     <img src="{{ asset('images/logo/image_military.svg') }}" alt="Image-Military">
             </div>
-        </div>
+        </section>
 
-        <div class="block-two" id="help-section" >
+        <section  class="block-two" id="help-section" >
             <h2 class="title-info">Військові публікують заявки зі своїми потребами - волонтери допомагають</h2>
             <p class="subtitle-info">Що ми можемо надати?</p>
             <div class="helps-info-block">
@@ -51,9 +51,9 @@
                     <p class="helps-subtitle">Серветки, мило, одноразові душі, зубні щітки</p>
                 </div>
             </div>
-        </div>
+        </section >
 
-        <div class="block-three" id="analytics-section">
+        <section  class="block-three" id="analytics-section">
             <h2 class="title-analytics">Результати нашої роботи</h2>
             <div class="analytics">
                 <div class="analytics-block">
@@ -69,10 +69,9 @@
                     <p class="analytics-label">заявок опрацьовано</p>
                 </div>
             </div>
-        </div>
+        </section >
 
-
-        <div class="block-four" id="about-section" >
+        <section  class="block-four" id="about-section" >
             <div class="block-four-inside">
                 <h2 class="title-block-why-us">Чому саме ми?</h2>
                 <div class="why-us-info-block">
@@ -94,9 +93,9 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </section >
 
-        <div class="block-five" id="volunteer-section">
+        <section  class="block-five" id="volunteers-section">
             <div class="volunteers-header">
                 <div class="title-block-volunteer">
                     Наші <span class="highlight">волонтери</span> - завжди допоможуть та підтримають
@@ -130,9 +129,7 @@
                     @endforeach
                 </div>
             </div>
-        </div>
-
-
+        </section >
     </div>
 
         @include('layouts.footer')
