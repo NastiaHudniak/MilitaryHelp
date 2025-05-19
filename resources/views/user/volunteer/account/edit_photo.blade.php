@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@include('layouts.header_volunteer_notsearch')
+@include('layouts.header_volunteer')
 @section('content')
     <div class="container" style="max-width: 600px; margin: 0 auto; padding: 50px 0px;">
         <div class="card" style="box-shadow: 0 6px 15px rgba(0, 0, 0, 0.8);">

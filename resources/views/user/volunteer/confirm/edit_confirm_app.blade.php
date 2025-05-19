@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@include('layouts.header_volunteer_notsearch')
+@include('layouts.header_volunteer')
 
 @section('content')
     <img class="background-icon" src="{{ asset('images/pattern.png') }}" alt="Background">

@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@include('layouts.header_volunteer_notsearch')
+@include('layouts.header')
 
 @section('content')
     <div class="container" style="max-width: 1300px; padding: 40px 0px;">

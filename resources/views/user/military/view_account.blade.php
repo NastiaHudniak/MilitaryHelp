@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@include('layouts.header_military_notsearch')
+@include('layouts.header_military')
 
 @section('content')
 

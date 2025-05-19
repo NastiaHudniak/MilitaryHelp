@@ -4,7 +4,7 @@
     <link href="{{ asset('css/icon.css') }}" rel="stylesheet">
     <link href="{{ asset('css/global.css') }}" rel="stylesheet">
 </head>
-@include('layouts.header_military_notsearch')
+@include('layouts.header_military')
 @section('content')
     <img class="background-icon" src="{{ asset('images/pattern.png') }}" alt="Background">
     <div class="container" style="max-width: 500px; margin: 0 auto; padding: 50px 0px;">

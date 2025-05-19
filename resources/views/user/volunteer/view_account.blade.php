@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@include('layouts.header_volunteer_notsearch')
+@include('layouts.header_volunteer')
 
 @section('content')
 

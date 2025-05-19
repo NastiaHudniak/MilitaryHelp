@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@include('layouts.header_volunteer_notsearch')
+@include('layouts.header_volunteer')
 @section('content')
     <img class="background" src="{{ asset('images/back-image.png') }}" alt="">
     <div class="main-content" style="font-family: 'Jura', sans-serif;">
