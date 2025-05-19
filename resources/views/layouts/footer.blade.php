@@ -9,7 +9,6 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/loader.css') }}">
     <link rel="stylesheet" href="{{ asset('css/alerts.css') }}">
 </head>
 
@@ -83,10 +82,7 @@
     </div>
 </footer>
 
-<!-- Лоадер -->
-<div class="loader-overlay" id="loader" style="display: none;">
-    <div class="loader"></div>
-</div>
+
 
 <script>
     document.getElementById('sendFeedback').addEventListener('click', function () {
@@ -94,11 +90,12 @@
         const message = messageInput.value.trim();
 
         if (!message) {
-            showError('Будь ласка, введіть повідомлення.');
+            showToast('Будь ласка, введіть повідомлення.', 'error');
             return;
         }
 
-        showLoader(true);
+        // showLoader(true);
+        showLoaderWithDelay();
 
         fetch("{{ route('feedback.send') }}", {
             method: "POST",
@@ -109,7 +106,8 @@
             body: JSON.stringify({ message })
         })
             .then(res => {
-                showLoader(false);
+                // showLoader(false);
+                hideLoader();
                 if (!res.ok) throw new Error('Помилка мережі');
                 return res.json();
             })
@@ -129,9 +127,7 @@
             });
     });
 
-    function showLoader(show) {
-        document.getElementById('loader').style.display = show ? 'flex' : 'none';
-    }
+
 
 
     window.addEventListener('DOMContentLoaded', () => {

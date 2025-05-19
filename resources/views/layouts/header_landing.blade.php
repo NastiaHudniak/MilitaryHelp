@@ -43,20 +43,23 @@
 </script>
 <!-- Admin Header -->
 <header class="header-admin">
-    <div class="header-left">
-        <a  href="#logos">
-            <img src="{{ asset('images/logo/logo_mini.svg') }}" alt="Logo">
-        </a>
+    <div class="header-l-c">
+        <div class="header-left">
+            <a  href="#logos">
+                <img src="{{ asset('images/logo/logo_mini.svg') }}" alt="Logo">
+            </a>
+        </div>
+        <div class="header-center">
+            <nav class="navbar-custom">
+                <a href="#home-section" class="nav-link active">Головна</a>
+                <a href="#help-section" class="nav-link">Допомога</a>
+                <a href="#analytics-section" class="nav-link">Аналітика</a>
+                <a href="#about-section" class="nav-link">Про нас</a>
+                <a href="#volunteers-section" class="nav-link">Волонтери</a>
+            </nav>
+        </div>
     </div>
-    <div class="header-center">
-        <nav class="navbar-custom">
-            <a href="#home-section" class="nav-link active">Головна</a>
-            <a href="#help-section" class="nav-link">Допомога</a>
-            <a href="#analytics-section" class="nav-link">Аналітика</a>
-            <a href="#about-section" class="nav-link">Про нас</a>
-            <a href="#volunteers-section" class="nav-link">Волонтери</a>
-        </nav>
-    </div>
+
 
     <div class="header-right">
         <a class="login-button" href="{{ url('auth/login') }}">
@@ -100,13 +103,19 @@
         flex-wrap: wrap;
     }
 
+    .header-l-c{
+        display: flex;
+        align-items: start;
+        gap: 350px;
+    }
+
     .header-left {
         display: flex;
         align-items: center;
     }
 
-    .logo img {
-        height: 40px;
+    img {
+        height: 60px;
         width: auto;
     }
 
@@ -191,16 +200,28 @@
     /* === Мобільна адаптація === */
     @media (max-width: 768px) {
 
+
+        img {
+            height: 40px;
+            width: auto;
+        }
+
         .header-admin {
             flex-direction: column;
             gap: 8px;
         }
+
+        .header-l-c{
+            flex-direction: row;
+            gap: 8px;
+        }
+
         .header-center {
             flex-direction: row;
             margin: 0;
         }
         .navbar-custom{
-            gap: 8px;
+            gap: 2px;
         }
         .header-right {
             width: 100%;

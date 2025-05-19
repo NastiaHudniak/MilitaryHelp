@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link href="{{ asset('css/icon.css') }}" rel="stylesheet">
     <link href="{{ asset('css/alerts.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/loader.css') }}" rel="stylesheet">
 
 </head>
 <body style="font-family: 'Open Sans';">
@@ -24,17 +25,17 @@
 {{--    </div>--}}
 {{--@endif--}}
 
-{{--@if (session('error'))--}}
-{{--    <div class="alert-danger-custom" id="error-alert">--}}
-{{--        <div class="alert-danger-custom-text-block">--}}
-{{--            <p class="alert-danger-custom-text">{{ session('error') }}</p>--}}
-{{--            <button class="alert-ok-btn" onclick="document.getElementById('error-alert').style.display='none'">OK</button>--}}
-{{--        </div>--}}
-{{--    </div>--}}
-{{--@endif--}}
-
 <div class="container" style="max-width: 1800px; margin: 0px; padding: 0px 0px;">
     @yield('content')
+
+    <!-- Лоадер -->
+{{--    <div class="loader-overlay" id="loader" style="display: none;">--}}
+{{--        <div class="loader"></div>--}}
+{{--    </div>--}}
+
+    <div id="global-loader" class="loader-hidden">
+        <div class="loader-spinner"></div>
+    </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -65,15 +66,46 @@
         }
     });
 
+    // function showLoader(show) {
+    //     document.getElementById('loader').style.display = show ? 'flex' : 'none';
+    // }
 
+    let loaderTimeout;
+
+    function showLoaderWithDelay() {
+        loaderTimeout = setTimeout(() => {
+            document.getElementById('global-loader')?.classList.remove('loader-hidden');
+        }, 100);
+    }
+
+    function hideLoader() {
+        clearTimeout(loaderTimeout);
+        document.getElementById('global-loader')?.classList.add('loader-hidden');
+    }
+
+    window.addEventListener('beforeunload', () => {
+        showLoaderWithDelay();
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function () {
+                showLoaderWithDelay();
+            });
+        });
+    });
+
+    window.addEventListener('load', () => {
+        hideLoader();
+    });
 
 
     function showToast(message, type = 'success') {
         const icons = {
-            success: "{{ asset('images/icon/info.svg') }}",
-            warning: "{{ asset('images/icon/info.svg') }}",
+            success: "{{ asset('images/icon/alerts/done.svg') }}",
+            warning: "{{ asset('images/icon/warning.svg') }}",
             info: "{{ asset('images/icon/info.svg') }}",
-            error: "{{ asset('images/icon/info.svg') }}"
+            error: "{{ asset('images/icon/cansel.svg') }}"
         };
 
         const icon = icons[type] || 'ℹ️';
@@ -81,7 +113,7 @@
         Toastify({
             node: createCustomToast(icon, message, type),
             duration: 5000,
-            gravity: "bottom",
+            gravity: "top",
             position: "left",
             stopOnFocus: true,
             close: false,
@@ -101,11 +133,13 @@
         toast.className = `custom-toast toast-${type}`;
 
         toast.innerHTML = `
-         <span class="toast-icon">
-            <img src="${iconSrc}" alt="icon" width="28" height="28">
-        </span>
-        <span class="toast-message">${message}</span>
-        <button class="toast-close">&times;</button>
+         <div class="toast-text-block">
+            <div class="toast-message">
+                <img src="${iconSrc}" alt="icon" width="24" height="24">
+                <span>${message}</span>
+            </div>
+            <button class="toast-close">OK</button>
+        </div>
     `;
 
         toast.querySelector('.toast-close').addEventListener('click', () => {
