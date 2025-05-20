@@ -348,7 +348,7 @@
             }
 
             .action-block{
-                gap: 8px;
+                gap: 16px;
             }
 
             .action-block-2{

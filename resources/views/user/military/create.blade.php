@@ -8,19 +8,10 @@
             </div>
             <form class="card-body" action="{{ route('user.military.store') }}" method="POST">
                 @csrf
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
                 <div class="form-group">
                     <label class="label" for="title">Назва</label>
                     <div class="input-group">
-                        <input type="text" class="form-input" id="title" name="title" placeholder="Введіть назву" value="{{ old('title') }}" required>
+                        <input type="text" class="form-input" id="title" name="title" placeholder="Введіть назву" value="{{ old('title') }}" >
                     </div>
                     @error('title')
                     <div class="text-danger">{{ $message }}</div>
@@ -30,7 +21,7 @@
                 <div class="form-group">
                     <label class="label" for="category_id">Категорія</label>
                     <div class="input-group">
-                        <select class="form-input" id="category_id" name="category_id" placeholder="Оберіть категорію"  required>
+                        <select class="form-input" id="category_id" name="category_id" placeholder="Оберіть категорію" >
                             @foreach ($categories as $category)
                                 <option value="{{ $category->id }}" {{ old('category_id', $category->category_id) == $category->id ? 'selected' : '' }}>
                                     {{ $category->name }}
@@ -46,7 +37,7 @@
                 <div class="form-group">
                     <label class="label" for="description">Опис</label>
                     <div class="input-group">
-                        <input type="text" class="form-input" id="description" name="description" placeholder="Введіть опис" value="{{ old('description') }}" required>
+                        <input type="text" class="form-input" id="description" name="description" placeholder="Введіть опис" value="{{ old('description') }}" >
                     </div>
                     @error('description')
                     <div class="text-danger">{{ $message }}</div>
@@ -94,6 +85,8 @@
         background-color: transparent;
     }
 
+
+
     .card-header {
         text-align: center;
         color: var(--black-my);
@@ -111,6 +104,12 @@
         border-radius: 16px;
         padding: 2rem;
         margin: 0;
+    }
+
+    @media (max-width: 768px) {
+        .card {
+            padding: 24px;
+        }
     }
 
     .label {
@@ -137,6 +136,7 @@
     }
 
     .form-input {
+        width: 100%;
         flex-grow: 1;
         padding: 0.5rem;
         font-size: 1rem;
@@ -180,6 +180,9 @@
         transform: scale(1.05);
     }
 
+
+
+
     .label-create {
         display: flex;
         justify-content: center;
@@ -196,9 +199,12 @@
         color: var(--green-light);
         text-decoration: none;
     }
-
-    .label-create a:hover {
-        text-decoration: underline;
+    .label-create a:visited,
+    .label-create a:hover,
+    .label-create a:focus,
+    .label-create a:active {
+        color: var(--green-light);
+        text-decoration: none;
     }
 
 </style>

@@ -218,6 +218,7 @@
 
 
     .burger-menu {
+        display: none;
         position: fixed;
         right: -300px;
         top: 100px;
@@ -227,7 +228,6 @@
         color: var(--black-my);
         transition: right 0.3s ease;
         z-index: 1000;
-        display: flex;
         flex-direction: column;
         justify-content: start;
         align-items: start;
@@ -236,6 +236,7 @@
     }
 
     .burger-menu.open {
+        display: flex;
         right: 0;
     }
 
