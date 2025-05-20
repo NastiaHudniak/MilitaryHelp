@@ -117,11 +117,11 @@
                             </div>
                             <div class="text-block-volunteer">
                                 <div class="volunteer-name">
-                                    <b>{{ $volunteer->name }} {{ $volunteer->surname }}</b>
+                                    <a>{{ $volunteer->name }} {{ $volunteer->surname }}</a>
                                 </div>
                                 <div class="volunteer-text-more">
-                                    <b>{{ $volunteer->phone }}</b>
-                                    <b>{{ $volunteer->email }}</b>
+                                    <a>{{ $volunteer->phone }}</a>
+                                    <a>{{ $volunteer->email }}</a>
                                 </div>
                             </div>
                         </div>
@@ -131,7 +131,6 @@
             </div>
         </section >
     </div>
-
         @include('layouts.footer')
 
 
@@ -268,17 +267,16 @@
             transform: scale(1.1);
         }
 
-        /* === Адаптивність для мобільних === */
         @media (max-width: 768px) {
             .block-one {
-                flex-direction: column;
+                flex-direction: column-reverse;
                 padding: 32px 24px;
             }
 
             .left-title {
                 align-items: center;
                 text-align: center;
-                gap: 24px;
+                gap: 16px;
             }
 
             .title {
@@ -288,7 +286,8 @@
 
             .title-one,
             .title-two {
-                font-size: 36px;
+                font-size: 28px;
+                line-height: 32px;
             }
 
             .subtitle {
@@ -296,20 +295,21 @@
             }
 
             .button-row {
-                flex-direction: column;
+                flex-direction: row;
                 align-items: center;
                 gap: 16px;
             }
 
             .btn-more,
             .btn-log {
-                width: 100%;
+                width: min-content;
                 text-align: center;
+                white-space: nowrap;
             }
 
             .right-image {
                 width: 100%;
-                margin-top: 24px;
+                margin-top: 0;
                 display: flex;
                 justify-content: center;
             }
@@ -319,12 +319,6 @@
                 height: auto;
             }
         }
-
-
-
-
-
-
 
 
         .block-two {
@@ -389,7 +383,7 @@
         .helps-title{
             font-size: 24px;
             font-weight: 600;
-            line-height: 36px;
+            line-height: 130%;
             color: var(--black-my);
             margin: 0;
         }
@@ -403,35 +397,57 @@
             width: 318px;
             height: auto;
         }
+
         @media (max-width: 768px) {
             .block-two {
                 width: calc(100vw - 48px);
                 margin: 32px 24px;
-                padding: 40px 24px;
+                padding: 32px 24px;
+                gap: 20px;
             }
 
             .title-info {
-                font-size: 36px;
-                line-height: 44px;
+                font-size: 24px;
+                line-height: 32px;
             }
 
             .subtitle-info {
-                font-size: 24px;
+                font-size: 22px;
                 text-align: center;
             }
 
             .helps-info-block {
                 flex-direction: column;
-                gap: 32px;
+                gap: 18px;
+            }
+
+            .helps-info-icon{
+                padding: 4px;
+                background-color: var(--orange-my);
+                border-radius: 16px;
+                width: 40px;
+                height: 40px;
+            }
+
+            .icon-helps{
+                width: 32px;
+                height: 32px;
             }
 
             .helps-info {
                 align-items: center;
                 text-align: center;
+                gap: 8px;
+            }
+
+            .helps-title {
+                width: 100%;
+                font-size: 20px;
             }
 
             .helps-subtitle {
                 width: 100%;
+                font-size: 18px;
             }
         }
 
@@ -454,7 +470,7 @@
             display: inline-block;
             font-size: 48px;
             font-weight: 600;
-            line-height: 56px;
+            line-height: 130%;
             margin: 0;
         }
 
@@ -474,17 +490,52 @@
         .analytics-number {
             font-size: 58px;
             font-weight: 600;
-            line-height: 75.40px;
+            line-height: 130%;
             color: var(--black-my);
         }
         .analytics-label {
             font-size: 24px;
             font-weight: 400;
-            line-height: 31.20px;
+            line-height: 130%;
             color: var(--black-my);
             word-wrap: break-word;
             width: 183px;
         }
+
+        @media (max-width: 768px) {
+            .block-three {
+                width: 100%;
+                margin: 32px 0;
+                display: inline-flex;
+                justify-content: space-between;
+                flex-direction: column;
+                align-items: center;
+                padding: 20px 24px;
+                gap: 24px;
+            }
+
+            .title-analytics{
+                font-size: 24px;
+                text-align: center;
+            }
+
+            .analytics {
+                padding: 0;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 8px;
+                align-items: center;
+            }
+            .analytics-number {
+                font-size: 40px;
+                margin: 0;
+            }
+            .analytics-label {
+                font-size: 20px;
+                margin: 0;
+            }
+        }
+
 
 
 
@@ -522,7 +573,7 @@
             display: inline-block;
             font-size: 48px;
             font-weight: 600;
-            line-height: 62.40px;
+            line-height:  130%;
             word-wrap: break-word;
             margin: 0;
             text-align: center;
@@ -548,7 +599,7 @@
             color: var(--green-dark);
             font-size: 28px;
             font-weight: 600;
-            line-height: 36.40px;
+            line-height: 130%;
             word-wrap: break-word
         }
         .why-us-subtitle{
@@ -556,15 +607,53 @@
             color: var(--main-green-dark);
             font-size: 20px;
             font-weight: 400;
-            line-height: 26px;
+            line-height:  130%;
             word-wrap: break-word
+        }
+
+        @media (max-width: 768px) {
+            .block-four {
+                margin: 32px auto;
+                padding: 24px 24px;
+            }
+
+            .block-four-inside {
+                padding: 24px 16px;
+                gap: 24px;
+            }
+
+            .title-block-why-us{
+                font-size: 32px;
+                margin: 0;
+            }
+
+            .why-us-info-block{
+                display: flex;
+                justify-content: center;
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .why-us-info{
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 8px;
+            }
+            .why-us-title{
+                font-size: 20px;
+            }
+            .why-us-subtitle{
+                font-size: 16px;
+            }
         }
 
 
 
 
-        .block-five {
 
+
+        .block-five {
             padding: 64px 80px;
             width: 100%;
             display: inline-flex;
@@ -580,7 +669,7 @@
             width: 1080px;
             font-size: 48px;
             font-weight: 600;
-            line-height: 56px;
+            line-height: 130%;
             word-wrap: break-word;
             color: var(--main-green-dark);
             text-align: center;
@@ -662,19 +751,62 @@
         .volunteer-name{
             color: var(--black-my);
             font-size: 24px;
-            font-weight: 600;
-            line-height: 31.20px;
+            font-weight: 500 !important;
+            line-height: 130%;
             word-wrap: break-word;
         }
         .volunteer-text-more{
             color: var(--green-dark);
             font-size: 18px;
-            font-weight: 400;
-            line-height: 23.40px;
+            font-weight: 400 !important;
+            line-height: 130%;
             word-wrap: break-word;
             display: flex;
             justify-content: space-between;
             flex-direction: column;
+        }
+
+        @media (max-width: 768px) {
+
+            .block-five {
+                padding: 32px 24px;
+                gap: 2px;
+            }
+            .title-block-volunteer {
+                width: fit-content;
+                font-size: 24px;
+            }
+            .volunteer-block {
+                flex-direction: column;
+                align-items: center;
+                gap: 90px;
+            }
+            .volunteer-card{
+                max-width: 80%;
+                width: 80%;
+            }
+            .img-vol{
+                width: 120px;
+                height: 120px;
+                top: -60px;
+            }
+            .img-vol img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: 50%;
+            }
+
+            .text-block-volunteer{
+                padding-top: 60px;
+                gap: 8px;
+            }
+            .volunteer-name{
+                font-size: 20px;
+            }
+            .volunteer-text-more{
+                font-size: 16px;
+            }
         }
 
 

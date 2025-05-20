@@ -202,8 +202,8 @@
         }
 
         .header-admin {
-            flex-direction: column;
-            gap: 8px;
+            flex-direction: row;
+            gap: 16px;
         }
 
         .header-l-c{
@@ -212,18 +212,20 @@
         }
 
         .header-center {
-            flex-direction: row;
-            margin: 0;
+            display: none;
         }
         .navbar-custom{
-            gap: 2px;
-        }
-        .header-right {
-            width: 100%;
-            margin: 0;
+            gap: 16px;
         }
         .login-button {
             width: 100%;
+        }
+
+        .navbar-custom .nav-link {
+            padding: 0;
+        }
+        .navbar-custom .nav-link.active {
+            padding: 0;
         }
     }
 

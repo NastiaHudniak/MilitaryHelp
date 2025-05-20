@@ -53,7 +53,7 @@
                         <img src="{{ asset('images/icon/znak.svg') }}" >
                         Створення нової заявки
                     </a>
-                    <div class="title-action-block" style="text-align: right">
+                    <div class="title-action-block" >
                         Ви можете <span class="highlight-action">оформити заявку</span> про допомогу
                     </div>
                 </div>
@@ -61,18 +61,18 @@
 
                     <a type="submit" class="action-button" href="{{ route('user.military.view_app') }}">
                         <img src="{{ asset('images/icon/history.svg') }}" >
-                        Створення нової заявки
+                        Перегляд створених заявок
                     </a>
-                    <div class="title-action-block" style="text-align: left">
+                    <div class="title-action-block-2" >
                         Перегляньте <span class="highlight-action">свою історію</span> створених заявок
                     </div>
                 </div>
                 <div class="action-block">
                     <a type="submit" class="action-button" href="{{ route('user.military.vol.view_volunteer')}}">
                         <img src="{{ asset('images/icon/list.svg') }}" >
-                        Створення нової заявки
+                        Перегляд списку волонтерів
                     </a>
-                    <div class="title-action-block" style="text-align: right">
+                    <div class="title-action-block" >
                         Перегляньте <span class="highlight-action">список волонтерів</span> які можуть вам допомогти
                     </div>
                 </div>
@@ -207,14 +207,14 @@
 
         @media (max-width: 768px) {
             .block-one {
-                flex-direction: column;
+                flex-direction: column-reverse;
                 padding: 32px 24px;
             }
 
             .left-title {
                 align-items: center;
                 text-align: center;
-                gap: 24px;
+                gap: 16px;
             }
 
             .title {
@@ -224,7 +224,8 @@
 
             .title-one,
             .title-two {
-                font-size: 36px;
+                font-size: 28px;
+                line-height: 32px;
             }
 
             .subtitle {
@@ -238,13 +239,14 @@
             }
 
             .btn-create{
-                width: 100%;
+                width: min-content;
                 text-align: center;
+                white-space: nowrap;
             }
 
             .right-image {
                 width: 100%;
-                margin-top: 24px;
+                margin-top: 0;
                 display: flex;
                 justify-content: center;
             }
@@ -310,15 +312,54 @@
             width: 550px;
             font-size: 32px;
             font-weight: 600;
-            line-height: 48px;
+            line-height: 130%;
             word-wrap: break-word;
             color: var(--main-green-dark);
             text-align: left;
         }
+
+        .title-action-block-2 {
+            width: 550px;
+            font-size: 32px;
+            font-weight: 600;
+            line-height: 130%;
+            word-wrap: break-word;
+            color: var(--main-green-dark);
+            text-align: right;
+        }
+
         .title-action-block .highlight-action {
             background-image: linear-gradient(90deg, #556B2F 0%, #D97706 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+        }
+        .title-action-block-2 .highlight-action {
+            background-image: linear-gradient(90deg, #556B2F 0%, #D97706 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        @media (max-width: 768px) {
+            .block-two {
+                padding: 24px;
+            }
+            .action-button {
+                width: 100%;
+            }
+
+            .action-block{
+                gap: 8px;
+            }
+
+            .action-block-2{
+                flex-direction: row;
+                gap: 16px;
+            }
+
+            .title-action-block, .title-action-block-2 {
+                font-size: 20px;
+                text-align: center;
+            }
         }
 
 
@@ -339,7 +380,7 @@
             display: inline-block;
             font-size: 48px;
             font-weight: 600;
-            line-height: 56px;
+            line-height: 130%;
             margin: 0;
         }
 
@@ -360,13 +401,13 @@
         .analytics-number {
             font-size: 58px;
             font-weight: 600;
-            line-height: 75.40px;
+            line-height: 130%;
             color: var(--black-my);
         }
         .analytics-label {
             font-size: 24px;
             font-weight: 400;
-            line-height: 31.20px;
+            line-height: 130%;
             color: var(--black-my);
             word-wrap: break-word;
             width: 183px;
@@ -385,6 +426,41 @@
             flex-direction: row;
             gap: 16px;
             padding: 6px 0;
+        }
+
+        @media (max-width: 768px) {
+            .block-three {
+                width: 100%;
+                margin: 32px 0;
+                display: inline-flex;
+                justify-content: space-between;
+                flex-direction: column;
+                align-items: center;
+                padding: 20px 24px;
+                gap: 24px;
+            }
+
+            .title-analytics{
+                font-size: 24px;
+                text-align: center;
+            }
+
+            .analytics {
+                padding: 0;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 8px;
+                align-items: center;
+            }
+            .analytics-number {
+                font-size: 40px;
+                margin: 0;
+            }
+            .analytics-label {
+                width: 150px;
+                font-size: 20px;
+                margin: 0;
+            }
         }
 
     </style>
