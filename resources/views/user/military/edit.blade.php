@@ -118,6 +118,7 @@
         border-radius: 16px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         background-color: transparent;
+        padding: 24px 0;
     }
 
 
