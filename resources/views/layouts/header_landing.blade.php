@@ -45,7 +45,7 @@
 <header class="header-admin">
     <div class="header-l-c">
         <div class="header-left">
-            <a  href="#logos">
+            <a class="logos" href="#logos">
                 <img src="{{ asset('images/logo/logo_mini.svg') }}" alt="Logo">
             </a>
         </div>
@@ -59,7 +59,6 @@
             </nav>
         </div>
     </div>
-
 
     <div class="header-right">
         <a class="login-button" href="{{ url('auth/login') }}">
@@ -75,9 +74,8 @@
 
 <style>
     section {
-        scroll-margin-top: 120px; /* або скільки займає ваш хедер */
+        scroll-margin-top: 120px;
     }
-
 
     html {
         scroll-behavior: smooth;
@@ -114,7 +112,7 @@
         align-items: center;
     }
 
-    img {
+    .logos img {
         height: 60px;
         width: auto;
     }
@@ -197,10 +195,7 @@
         transform: scale(1.05);
     }
 
-    /* === Мобільна адаптація === */
     @media (max-width: 768px) {
-
-
         img {
             height: 40px;
             width: auto;

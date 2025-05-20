@@ -31,7 +31,7 @@
 
 
 
-            <div class="block-one" style="font-family: 'Open Sans', sans-serif;">
+            <section class="block-one" id="home-section" style="font-family: 'Open Sans', sans-serif;">
                 <div class="left-title">
                     <div class="title">
                         <h2 class="title-one">Косметологічна допомога</h2>
@@ -45,9 +45,9 @@
                 <div class="right-image">
                     <img src="{{ asset('images/logo/image_military.svg') }}" alt="Image-Military">
                 </div>
-            </div>
+            </section>
 
-            <div class="block-two">
+            <section class="block-two" id="actions-section">
                 <div class="action-block" style="border-bottom: 1px solid var(--blue-my);">
                     <a type="submit" class="action-button" href="{{ route('user.military.create') }}">
                         <img src="{{ asset('images/icon/znak.svg') }}" >
@@ -76,9 +76,9 @@
                         Перегляньте <span class="highlight-action">список волонтерів</span> які можуть вам допомогти
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <div class="block-three" id="analytics-section">
+            <section class="block-three" id="analytics-section" >
                 <h2 class="title-analytics">Досягнення</h2>
                 <div class="analytics">
                     <div class="analytics-block">
@@ -94,7 +94,7 @@
                         <p class="analytics-label">заявки відхилено</p>
                     </div>
                 </div>
-            </div>
+            </section>
         </div>
 
         @include('layouts.footer')

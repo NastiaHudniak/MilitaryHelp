@@ -206,39 +206,13 @@
             &#xE853;
         </a>
 
-        <!-- Бургер-меню -->
-        <!-- Бургер-меню -->
+
         <div id="burger-menu" class="burger-menu">
             <div class="details">
-                <a class="details-item" id="account-info-toggle" style="font-size:20px; color: var(--yellow-400); cursor: pointer;">
-                    <span class="si--info-line" style="color: var(--yellow-400); font-size:40px"></span>
-                    <p>Інформація про акаунт</p>
+                <a href="{{ route('user.volunteer.view_account') }}" class="details-items" style="font-size:18px; color: var(--green-500); cursor: pointer;">
+                    <span class="material-symbols-light--view-cozy-outline" style="color: var(--green-500);"></span>
+                    <p>Переглянути</p>
                 </a>
-                <!-- Додаткові елементи, які будуть показані при натисканні -->
-                <div id="account-info-extra" style="display: none;">
-                    <a href="{{ route('user.volunteer.view_account') }}" class="details-items" style="font-size:18px; color: var(--green-500); cursor: pointer;">
-                        <span class="material-symbols-light--view-cozy-outline" style="color: var(--green-500);"></span>
-                        <p>Переглянути</p>
-                    </a>
-                    <a href="{{ route('user.volunteer.edit_account', Auth::user() ) }}"  class="details-items" style="font-size:18px; color: var(--green-500); cursor: pointer;">
-                        <span class="cuida--edit-outline" style="color: var(--green-500);"></span>
-                        <p>Редагувати</p>
-                    </a>
-
-                </div>
-                <a class="details-item" href="{{ route('user.volunteer.confirm.view_confirm_app') }}" style="font-size:20px; color: var(--yellow-400);">
-                    <span class="fluent-mdl2--add-to" style="color: var(--yellow-400); font-size:54px">></span>
-                    <p>Переглянути прийняті заявки</p>
-                </a>
-                <a class="details-item" href="{{ route('user.volunteer.view_app') }}" style="font-size:20px;color: var(--yellow-400);">
-                    <span class="solar--history-bold-duotone" style="color: var(--yellow-400); font-size:45px">></span>
-                    <p>Переглянути усі заявки</p>
-                </a>
-                <a class="details-item" href="{{ route('user.volunteer.mil.view_military') }}" style="font-size:20px;color: var(--yellow-400);">
-                    <span class="solar--history-bold-duotone" style="color: var(--yellow-400); font-size:60px">></span>
-                    <p>Переглянути список військових</p>
-                </a>
-                <div class="divider"></div>
             </div>
             <div class="logout-container" style="color: var(--yellow-400); font-size: 20px;">
                 <form action="{{ route('logout') }}" method="POST" style="width: 37px; height: 37px; ">
