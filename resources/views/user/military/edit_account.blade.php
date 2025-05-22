@@ -8,104 +8,116 @@
 @section('content')
 
     <div class="main-content" style="font-family: 'Open Sans', sans-serif;">
-        <div class="card">
-            <div class="card-header" style="margin: 0">
-                <h2>Редагування інформації</h2>
-                <a class="card-header-name">Вітаємо, {{ $user->login }}!</a>
+        <div class="main-info">
+            @include('components.sidebar_account', ['user' => $user])
+            <div class="card">
+                <div class="card-header" style="margin: 0">
+                    <h2>Редагування інформації</h2>
+{{--                    <a class="card-header-name">Вітаємо, {{ $user->login }}!</a>--}}
+                </div>
+                <form id="user-form" class="card-body" action="{{ route('user.military.update_account', $user->id) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+
+
+
+                    <div class="form-groups">
+                        <div class="form-groupp">
+                            <label class="label" for="login">Логін</label>
+                            <div class="input-group">
+                                <input type="text" class="form-input" id="login" name="login" value="{{ old('login', $user->login) }}" placeholder="Введіть логін" >
+                            </div>
+                            @error('login')
+                            <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="form-groupp">
+                            <label class="label" for="surname">Прізвище</label>
+                            <div class="input-group">
+                                <input type="text" class="form-input" id="surname" name="surname" value="{{ old('surname', $user->surname) }}" placeholder="Введіть прізвище" >
+                            </div>
+                            @error('surname')
+                            <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="form-groupp" >
+                            <label class="label" for="name">Ім'я</label>
+                            <div class="input-group">
+                                <input type="text" class="form-input" id="name" name="name" value="{{ old('name', $user->name) }}" placeholder="Введіть ім'я" >
+                            </div>
+                            @error('name')
+                            <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+
+
+                    <div class="form-groups">
+                        <div class="form-groupp">
+                            <label class="label" for="email">Електронна пошта</label>
+                            <div class="input-group">
+                                <input type="email" class="form-input" id="email" name="email" value="{{ old('email', $user->email) }}" placeholder="Введіть пошту" >
+                            </div>
+                            @error('email')
+                            <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="form-groupp">
+                            <label class="label" for="phone">Телефон</label>
+                            <div class="input-group">
+                                <input type="tel" class="form-input" id="phone" name="phone" value="{{ old('phone', $user->phone) }}" placeholder="Введіть телефон" >
+                            </div>
+                            @error('phone')
+                            <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="form-groupp">
+                            <label class="label" for="address">Адреса</label>
+                            <div class="input-group">
+                                <input type="text" class="form-input" id="address" name="address" value="{{ old('address', $user->address) }}" placeholder="Введіть адресу">
+                            </div>
+                            @error('address')
+                            <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+
+
+{{--                    <div class="form-group role-group">--}}
+{{--                        <label class="label" for="role_id">Роль</label>--}}
+{{--                        <div class="role-options">--}}
+{{--                            @foreach ($roles as $role)--}}
+{{--                                @if(in_array($role->id, [2, 3]))--}}
+{{--                                    <label class="role-option">--}}
+{{--                                        <input type="radio" name="role_id" value="{{ $role->id }}" required--}}
+{{--                                            {{ old('role_id', $user->role_id) == $role->id ? 'checked' : '' }}>--}}
+{{--                                        {{ $role->name }}--}}
+{{--                                    </label>--}}
+{{--                                @endif--}}
+{{--                            @endforeach--}}
+{{--                        </div>--}}
+{{--                        @error('role_id')--}}
+{{--                        <div class="text-danger">{{ $message }}</div>--}}
+{{--                        @enderror--}}
+{{--                    </div>--}}
+
+                    <div class="form-buttons">
+                        <button type="submit" class="update-button">Зберегти зміни</button>
+{{--                        <div class="label-ed">--}}
+{{--                            <p>Не хочете змінювати дані?</p>--}}
+{{--                            <a id="back-button" href="{{ route('user.military.view_account') }}">Повернутись</a>--}}
+{{--                        </div>--}}
+                    </div>
+                </form>
             </div>
-            <form id="user-form" class="card-body" action="{{ route('user.military.update_account', $user->id) }}" method="POST">
-                @csrf
-                @method('PUT')
 
-                <div class="form-group">
-                    <label class="label" for="login">Логін</label>
-                    <div class="input-group">
-                        <input type="text" class="form-input" id="login" name="login" value="{{ old('login', $user->login) }}" placeholder="Введіть логін" >
-                    </div>
-                    @error('login')
-                    <div class="text-danger">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <div class="form-groups">
-                    <div class="form-groupp" >
-                        <label class="label" for="surname">Прізвище</label>
-                        <div class="input-group">
-                            <input type="text" class="form-input" id="surname" name="surname" value="{{ old('surname', $user->surname) }}" placeholder="Введіть прізвище" >
-                        </div>
-                        @error('surname')
-                        <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="form-groupp" >
-                        <label class="label" for="name">Ім'я</label>
-                        <div class="input-group">
-                            <input type="text" class="form-input" id="name" name="name" value="{{ old('name', $user->name) }}" placeholder="Введіть ім'я" >
-                        </div>
-                        @error('name')
-                        <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="label" for="email">Електронна пошта</label>
-                    <div class="input-group">
-                        <input type="email" class="form-input" id="email" name="email" value="{{ old('email', $user->email) }}" placeholder="Введіть пошту" >
-                    </div>
-                    @error('email')
-                    <div class="text-danger">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label class="label" for="phone">Телефон</label>
-                    <div class="input-group">
-                        <input type="tel" class="form-input" id="phone" name="phone" value="{{ old('phone', $user->phone) }}" placeholder="Введіть телефон" >
-                    </div>
-                    @error('phone')
-                    <div class="text-danger">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label class="label" for="address">Адреса</label>
-                    <div class="input-group">
-                        <input type="text" class="form-input" id="address" name="address" value="{{ old('address', $user->address) }}" placeholder="Введіть адресу">
-                    </div>
-                    @error('address')
-                    <div class="text-danger">{{ $message }}</div>
-                    @enderror
-                </div>
-
-
-                <div class="form-group role-group">
-                    <label class="label" for="role_id">Роль</label>
-                    <div class="role-options">
-                        @foreach ($roles as $role)
-                            @if(in_array($role->id, [2, 3]))
-                            <label class="role-option">
-                                <input type="radio" name="role_id" value="{{ $role->id }}" required
-                                    {{ old('role_id', $user->role_id) == $role->id ? 'checked' : '' }}>
-                                {{ $role->name }}
-                            </label>
-                            @endif
-                        @endforeach
-                    </div>
-                    @error('role_id')
-                    <div class="text-danger">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <div class="form-buttons">
-                    <button type="submit" class="update-button">Зберегти зміни</button>
-                    <div class="label-ed">
-                        <p>Не хочете змінювати дані?</p>
-                        <a id="back-button" href="{{ route('user.military.view_account') }}">Повернутись</a>
-                    </div>
-                </div>
-            </form>
         </div>
+
+
+
+
     </div>
 
     <script>
@@ -163,36 +175,58 @@
 
     .main-content {
         background-color: var(--main-white);
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
+    .main-info{
         display: flex;
+        justify-content: left;
+        flex-direction: row;
         align-items: start;
-        justify-content: center;
-        padding-top: 20px;
-        min-height: 80vh;
-        gap: 20px;
+        padding: 64px 80px;
+        gap: 80px;
+    }
+
+
+
+    @media (max-width: 768px) {
+
+        .main-info{
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            padding: 24px;
+            gap: 40px;
+        }
+
+        .sidebar-block-account{
+
+            width: 100%;
+        }
+
     }
 
     .card {
         width: 100%;
-        max-width: 450px;
+        max-width: 1000px;
         border: none !important;
         border-radius: 16px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         background-color: transparent;
-        padding: 24px 0;
+        padding: 0;
     }
 
 
-
     .card-header {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        text-align: center;
-        color: var(--black-my);
-        font-size: 2rem;
-        font-weight: 700;
+        margin: 0;
+        color: var(--orange-my) !important;
+        font-size: 44px;
+        font-weight: 600;
         background-color: transparent !important;
         border: none !important;
+        padding: 0 !important;
     }
 
     .card-header-name{
@@ -215,9 +249,7 @@
     }
 
     @media (max-width: 768px) {
-        .card {
-            padding: 24px;
-        }
+
 
         .card-header h2{
             font-size: 1.6rem;
@@ -242,7 +274,7 @@
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        gap: 6px;
+        gap: 12px;
         margin: 0;
     }
     .form-groupp {
