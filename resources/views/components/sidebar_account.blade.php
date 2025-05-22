@@ -64,6 +64,13 @@
                 Перегляд заявок
             </a>
 
+            <a href="{{ route('user.volunteer.confirm.view_confirm_app') }}"
+               class="sidebar-menu {{ request()->routeIs('user.volunteer.confirm.view_confirm_app') ? 'active' : '' }}">
+                <img src="{{ asset(request()->routeIs('user.volunteer.confirm.view_confirm_app') ? 'images/icon/sidebar/history-w.svg' : 'images/icon/sidebar/history.svg') }}"
+                     alt="Заявки">
+                Підтверджені заявки
+            </a>
+
             <a href="{{ route('user.volunteer.mil.view_military') }}"
                class="sidebar-menu {{ request()->routeIs('user.volunteer.mil.view_military') ? 'active' : '' }}">
                 <img src="{{ asset(request()->routeIs('user.volunteer.mil.view_military') ? 'images/icon/sidebar/list-w.svg' : 'images/icon/sidebar/list.svg') }}"

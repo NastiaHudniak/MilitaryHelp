@@ -10,230 +10,281 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jura:wght@600&display=swap">
     <link href="{{ asset('css/icon.css') }}" rel="stylesheet">
     <link href="{{ asset('css/global.css') }}" rel="stylesheet">
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-        }
-        .header-military {
-            background-color: var(--green-800);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: white;
-            font-family: 'Jura', sans-serif;
-            position: sticky; /* Робимо хедер прикріпленим */
-            top: 0;
-            z-index: 1000;
-        }
-        .logo-and-home {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-            margin: 10px 20px;
-        }
-        .navbar-search {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            font-weight: 600;
-            letter-spacing: 0.12em;
-            font-size: 24px;
-            gap: 20px;
-            margin: 10px 20px;
-        }
-
-        .search-title {
-            width: 100%;
-            position: relative;
-            border-radius: 40px;
-            background-color: var(--green-300);
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between;
-            padding: 5px 10px;
-            box-sizing: border-box;
-            text-align: left;
-            font-size: var(--medium-24-8-size);
-            color: var(--green-500);
-            gap: 30px;
-        }
-
-        /*.search {*/
-        /*    width: 100px;*/
-        /*    position: relative;*/
-        /*    letter-spacing: 0.08em;*/
-        /*    line-height: 30px;*/
-        /*    display: flex;*/
-        /*    align-items: center;*/
-        /*    flex-shrink: 0;*/
-        /*    color: var(--green-500);*/
-        /*}*/
-
-        .search {
-            position: relative;
-            letter-spacing: 0.08em;
-            line-height: 30px;
-            display: flex;
-            align-items: center;
-            flex-shrink: 0;
-            color: var(--green-500);
-            border: none; /* Відключаємо рамку */
-            outline: none;
-
-        }
-
-        .navbar-right {
-            display: flex;
-            align-items: center; /* Вирівнювання по вертикалі по центру */
-            justify-content: space-between;
-            gap: 20px; /* Відстань між іконками */
-            margin: 10px 20px;
-        }
-
-        .navbar-right span {
-            display: flex;
-            align-items: center; /* Вирівнювання тексту або іконок по центру вертикально */
-            justify-content: center;
-        }
-
-
-
-        /* Бургер-меню */
-        .burger-menu {
-            position: fixed;
-            right: -300px; /* Початкова позиція (за межами екрану) */
-            top: 90px; /* Піднімаємо під хедером (висота хедера 70px) */
-            width: 300px;
-            height: 88%;
-            background-color: var(--green-800);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
-            color: white;
-            transition: right 0.3s ease;
-            z-index: 1000; /* Щоб воно перекривало інші елементи */
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        /* Стиль для відкритого меню */
-        .burger-menu.open {
-            right: 0;
-        }
-
-        .details-item  {
-            width: 100%; /* Розмір блоку */
-            margin: 10px;
-            display: flex;
-            gap: 20px; /* Проміжок між іконкою та текстом */
-        }
-
-        .details-items {
-            width: 100%; /* Розмір блоку */
-            display: flex;
-            flex-direction: row;
-            text-align: center;
-            padding-left: 50px;
-            align-items: center;
-            gap: 20px; /* Проміжок між іконкою та текстом */
-        }
-
-        .details{
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-        }
-
-        .divider {
-            width: 80%;
-            text-align: center;
-            margin: auto;
-            position: relative;
-            border-bottom: 1px solid var(--green-500); /* Створює одну суцільну лінію */
-        }
-
-        /* Зміни в CSS для елемента "Вийти з акаунту" */
-        .logout-container {
-            width: 100%; /* Розмір блоку */
-            margin: 10px;
-            display: flex;
-            gap: 20px; /* Проміжок між іконкою та текстом */
-            text-align: center;
-            align-items: center;
-
-        }
-
-
-
-
-
-
-
-
-
-    </style>
 </head>
 <body>
 
-<!-- Admin Header -->
-<header class="header-military">
-    <nav class="logo-and-home">
-        <img src="{{ asset('images/logo.jpg') }}" alt="Logo" class="mr" style="width: 70px; height: auto; border-radius: 50%;">
-        <a id="home-icon"  class="fluent--home-20-regular" style="color: var(--yellow-400);  font-size: 37px; " href="{{ route('user.volunteer.index') }}"></a>
-    </nav>
 
-    <nav class="navbar-search">
-        <div class="search-title">
-            <input type="text" class="search" style="background-color: var(--green-300); " id="search" placeholder="Пошук за назвою">
-            {{--            <a class="search">Пошук</a>--}}
-            <span class="mynaui--search"  style="color: var(--green-800); font-size: 32px; "></span>
+
+<header class="header-volunteer">
+    <div class="header-l-c">
+        <div class="header-left">
+            <a class="logos" href="{{ route('user.volunteer.index') }}">
+                <img src="{{ asset('images/logo/logo_mini.svg') }}" alt="Logo">
+            </a>
+            <a id="add-icon" href="{{ route('user.volunteer.confirm.view_confirm_app') }}">
+                <img src="{{ asset('images/icon/sidebar/list.svg') }}" alt="Додати" >
+            </a>
+            <a id="history-icon" href="{{ route('user.volunteer.view_app') }}">
+                <img src="{{ asset('images/icon/history.svg') }}" alt="Історія" >
+            </a>
         </div>
-    </nav>
-
-    <nav class="navbar-right">
-        <a id="history-icon" class="solar--history-bold-duotone" style="color: var(--yellow-400); font-size: 37px; " href="{{ route('user.military.view_app') }}"></a>
+        <div class="header-center">
+            <nav class="navbar-custom">
+                <a href="#home-section" class="nav-link active">Головна</a>
+                <a href="#actions-section" class="nav-link">Дії з заявками</a>
+                <a href="#analytics-section" class="nav-link">Аналітика</a>
+            </nav>
+        </div>
+    </div>
+    <div class="header-right">
         @if (!empty(Auth::user()->login))
-            <span class="mr-3" style="font-size: 22px; color: var(--yellow-400);">
+            <span class="text-log">
                 {{ Auth::user()->login }}
-               <i class="fas fa-circle-check" style="color: var(--green-500); margin-left: 5px;"></i>
             </span>
         @endif
-        <a class="material-symbols-light--account-circle-outline"
-           id="burger-icon"
-           style="color: var(--yellow-400); font-size: 37px; cursor: pointer;">
-            &#xE853;
+        <a id="burger-icon" style="cursor: pointer;">
+            <img src="{{ asset('images/icon/user-fill.svg') }}">
         </a>
 
-
         <div id="burger-menu" class="burger-menu">
-            <div class="details">
-                <a href="{{ route('user.volunteer.view_account') }}" class="details-items" style="font-size:18px; color: var(--green-500); cursor: pointer;">
-                    <span class="material-symbols-light--view-cozy-outline" style="color: var(--green-500);"></span>
-                    <p>Переглянути</p>
-                </a>
-            </div>
-            <div class="logout-container" style="color: var(--yellow-400); font-size: 20px;">
-                <form action="{{ route('logout') }}" method="POST" style="width: 37px; height: 37px; ">
-                    @csrf
-                    <a class="ic--outline-logout" onClick="confirmLogout()" style="color: var(--yellow-400); font-size: 37px;"></a>
-                </form>
-                <p>Вийти з акаунту</p>
-            </div>
+            <a class="details-items" href="{{ route('user.volunteer.view_account') }}">
+                <img src="{{ asset('images/icon/info.svg') }}">
+                Особистий кабінет
+            </a>
+
+            <form class="details-items" method="POST" action="{{ route('logout') }}">
+                @csrf
+                <img src="{{ asset('images/icon/logout.svg') }}">
+                <button type="submit" class="button-log" onclick="return confirmLogout()">
+                    Вийти з акаунту
+                </button>
+            </form>
         </div>
-
-
-
-
-    </nav>
+    </div>
 </header>
+
 
 <!-- Основний Контент -->
 <div class="container" style="max-width: 1800px;">
     @yield('content')
 </div>
 
+
+
+<style>
+
+    section {
+        scroll-margin-top: 120px;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        font-family: 'Open Sans', sans-serif;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+    }
+    .header-volunteer{
+        font-family: 'Open Sans', sans-serif;
+        width: 100%;
+        background-color: var(--yellow-opasity);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 24px;
+        backdrop-filter: blur(20px);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        flex-wrap: wrap;
+    }
+    .header-l-c{
+        display: flex;
+        align-items: start;
+        gap: 350px;
+    }
+
+    .header-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .logos img {
+        height: 60px;
+        width: auto;
+    }
+
+    .header-center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-grow: 1;
+        margin: 12px 0;
+    }
+
+    .navbar-custom {
+        display: flex;
+        gap: 32px;
+        flex-wrap: wrap;
+        justify-content: center;
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 27px;
+    }
+
+    .navbar-custom .nav-link {
+        color: var(--green-dark);
+        position: relative;
+        text-decoration: none;
+        transition: color 0.3s ease-in-out;
+    }
+
+    .navbar-custom .nav-link::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        background-color: var(--black-my);
+        left: 0;
+        bottom: -2px;
+        transition: width 0.3s ease-in-out;
+    }
+
+    .navbar-custom .nav-link:hover::after {
+        width: 100%;
+    }
+
+    .navbar-custom .nav-link:hover {
+        color: var(--black-my);
+    }
+
+    .navbar-custom .nav-link.active {
+        transform: scale(0.95);
+        color: var(--orange-my);
+    }
+
+    .navbar-custom .nav-link.active::after {
+        width: 100%;
+        background-color: var(--orange-my);
+    }
+
+    .header-right {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .text-log{
+        color: var(--black-my);
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 27px;
+        word-wrap: break-word
+    }
+
+    @media (max-width: 768px) {
+
+        .logos img {
+            height: 40px;
+            width: auto;
+        }
+
+        img {
+            height: 24px;
+            width: auto;
+        }
+
+        .header-military {
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        .header-l-c{
+            flex-direction: row;
+            gap: 8px;
+        }
+
+        .header-center {
+            display: none;
+        }
+        .navbar-custom{
+            gap: 2px;
+        }
+    }
+
+
+
+    .burger-menu {
+        display: none;
+        position: fixed;
+        right: -300px;
+        top: 100px;
+        width: min-content;
+        background-color: var(--yellow-my);
+        border-radius: 16px;
+        color: var(--black-my);
+        transition: right 0.3s ease;
+        z-index: 1000;
+        flex-direction: column;
+        justify-content: start;
+        align-items: start;
+        gap: 16px;
+        padding: 16px;
+    }
+
+    .burger-menu.open {
+        display: flex;
+        right: 0;
+    }
+
+    @media (max-width: 768px) {
+
+        .burger-menu {
+            top: 74px;
+        }
+    }
+
+
+
+    .details-items {
+        display: flex;
+        flex-direction: row;
+        text-align: left;
+        align-items: center;
+        color: var(--green-dark);
+        gap: 16px;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 27px;
+        white-space: nowrap;
+    }
+
+    .details-items:hover {
+        color: var(--black-my);
+    }
+
+    .button-log{
+        background: none;
+        border: none;
+        color: inherit;
+        cursor: pointer;
+        padding: 0;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        text-align: left;
+        align-items:start;
+        gap: 16px;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 27px;
+        white-space: nowrap;
+    }
+</style>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

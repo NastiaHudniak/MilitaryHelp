@@ -60,6 +60,12 @@
                         <a href="{{ route('user.military.view_app') }}">Переглянути всі заявки</a>
                         <a href="{{ route('user.military.vol.view_volunteer') }}">Переглянути волонтерів</a>
                     </div>
+                @elseif(Auth::user()->role_id == 3)
+                    <div class="list-navigation">
+                        <a href="{{ route('user.volunteer.confirm.view_confirm_app') }}">Переглянути підтверджені заявки</a>
+                        <a href="{{ route('user.volunteer.view_app') }}">Переглянути всі заявки</a>
+                        <a href="{{ route('user.volunteer.mil.view_military') }}">Переглянути військових</a>
+                    </div>
                 @else
                     <div class="list-navigation">
                         <a href="#help-section">Головна</a>
