@@ -10,11 +10,14 @@
             <div class="profile-card">
                 <div class="profile-photo">
                     @if ($userImage)
-                        @if(str_contains($userImage->image_url,'images/acc.jpg'))
-                            <img src="{{  url('/').'/'.$userImage->image_url }}" alt="User Image">
-                        @else
-                            <img src="{{ asset('storage/' . $userImage->image_url) }}" alt="User Image">
-                        @endif
+                        <div class="zoom-container">
+                            @if(str_contains($userImage->image_url,'images/acc.jpg'))
+                                <img id="zoom-image" src="{{ url('/') . '/' . $userImage->image_url }}" alt="User Image">
+                            @else
+                                <img id="zoom-image" src="{{ asset('storage/' . $userImage->image_url) }}" alt="User Image">
+                            @endif
+                            <div id="zoom-lens"></div>
+                        </div>
                     @else
                         <p>No image available.</p>
                     @endif
@@ -256,5 +259,71 @@
 
     }
 
+    .zoom-container {
+        position: relative;
+        display: inline-block;
+    }
 
+    #zoom-image {
+        width: 100%;
+        max-width: 200px;
+        height: 200px;
+        display: block;
+    }
+
+    #zoom-lens {
+        display: none;
+        position: absolute;
+        border: 2px solid #000;
+        width: 100px;
+        height: 100px;
+        background-repeat: no-repeat;
+        pointer-events: none;
+        border-radius: 50%;
+        box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
 </style>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const img = document.getElementById("zoom-image");
+        const lens = document.getElementById("zoom-lens");
+
+        if (!img || !lens) return;
+
+        // Дочекаємось завантаження зображення
+        img.onload = function () {
+            const zoomFactor = 3; // кратність збільшення
+
+            lens.style.backgroundImage = `url('${img.src}')`;
+            lens.style.backgroundRepeat = "no-repeat";
+            lens.style.backgroundSize = `${img.width * zoomFactor}px ${img.height * zoomFactor}px`;
+
+
+            const moveLens = (e) => {
+                const rect = img.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                const lensWidth = lens.offsetWidth / 2;
+                const lensHeight = lens.offsetHeight / 2;
+
+                let left = x - lensWidth;
+                let top = y - lensHeight;
+
+                // обмеження в межах зображення
+                left = Math.max(0, Math.min(left, img.width - lens.offsetWidth));
+                top = Math.max(0, Math.min(top, img.height - lens.offsetHeight));
+
+                lens.style.left = `${left}px`;
+                lens.style.top = `${top}px`;
+
+                lens.style.backgroundPosition = `-${x * zoomFactor - lensWidth}px -${y * zoomFactor - lensHeight}px`;
+            };
+
+            img.addEventListener("mousemove", moveLens);
+            lens.addEventListener("mousemove", moveLens);
+            img.addEventListener("mouseenter", () => lens.style.display = "block");
+            img.addEventListener("mouseleave", () => lens.style.display = "none");
+        };
+    });
+</script>
