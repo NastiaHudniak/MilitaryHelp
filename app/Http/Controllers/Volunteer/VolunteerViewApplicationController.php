@@ -19,13 +19,17 @@ class VolunteerViewApplicationController extends Controller
     {
         $users = User::all();
         $categories = Category::all();
-        $applications = Application::with('images') 
+        $applications = Application::with('images')
         ->whereNull('volunteer_id')
         ->get();
+        $userLikedApplicationIds = auth()->check()
+            ? auth()->user()->likedApplications()->pluck('application_id')->toArray()
+            : [];
 
-        return view('user.volunteer.view_app', compact('applications', 'users', 'categories'));
 
-      
+        return view('user.volunteer.view_app', compact('applications', 'users', 'categories', 'userLikedApplicationIds'));
+
+
     }
 
     public function store(Request $request)
@@ -56,7 +60,7 @@ class VolunteerViewApplicationController extends Controller
 
         return redirect()->route('user.volunteer.index')->with('success', 'Заявка створена успішно!');
     }
-    
+
     public function search(Request $request)
     {
         $query = $request->input('query');
@@ -82,7 +86,7 @@ class VolunteerViewApplicationController extends Controller
             $applications->orderBy('created_at', 'desc');
         } elseif ($sort === 'oldest') {
             $applications->orderBy('created_at', 'asc');
-        } 
+        }
 
         return response()->json(['applications' => $applications->get()]);
     }
@@ -92,7 +96,7 @@ class VolunteerViewApplicationController extends Controller
     {
         $application = Application::findOrFail($id);
         $pdf = Pdf::loadView('user.volunteer.pdf', compact('application'));
-        
+
         return $pdf->download('application-'.$application->id.'.pdf');
     }
 }

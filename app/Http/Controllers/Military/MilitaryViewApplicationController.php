@@ -20,9 +20,12 @@ class MilitaryViewApplicationController extends Controller
         $users = User::all();
         $categories = Category::all();
         $user_id = Auth::user()->id;
-        $applications = Application::with('images')
-        ->where('millitary_id',  $user_id)->get();
-        return view('user.military.view_app', compact('applications','users', 'categories'));
+        $applications = Application::with(['images', 'category', 'volunteer'])
+            ->withCount('likedByUsers') // <-- додаємо підрахунок лайків
+            ->where('millitary_id', $user_id)
+            ->get();
+
+        return view('user.military.view_app', compact('applications', 'users', 'categories'));
     }
 
     public function store(Request $request)

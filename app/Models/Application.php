@@ -45,4 +45,10 @@ class Application extends Model
         return $this->hasMany(ApplicationImage::class);
 
     }
+
+    public function likedByUsers()
+    {
+        return $this->belongsToMany(User::class, 'application_likes', 'application_id', 'user_id')
+            ->withTimestamps();
+    }
 }

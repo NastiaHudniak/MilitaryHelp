@@ -71,4 +71,13 @@ class User extends Authenticatable
     {
         return $this->hasMany(VolunteerRating::class);
     }
+
+    public function likedApplications()
+    {
+        return $this->belongsToMany(Application::class, 'application_likes', 'user_id', 'application_id')->withTimestamps();
+    }
+
+
+
+
 }

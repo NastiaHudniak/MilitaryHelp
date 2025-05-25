@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ApplicationImageController;
+use App\Http\Controllers\ApplicationLikeController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\EditMilitaryImageController;
@@ -75,7 +76,6 @@ Route::prefix('admin')->group(function () {
     Route::get('/admin/applications/export', [ApplicationController::class, 'exportPDF'])->name('admin.applications.export');
 });
 
-
 Route::prefix('admin')->group(function () {
     Route::get('/categories', [CategoryController::class, 'index'])->name('admin.categories.index');
     Route::get('/categories/create', [CategoryController::class, 'create'])->name('admin.categories.create');
@@ -88,7 +88,6 @@ Route::prefix('admin')->group(function () {
     Route::get('/admin/categories/export', [CategoryController::class, 'exportPDF'])->name('admin.categories.export');
 });
 
-
 Route::prefix('admin/applications/{application}')->group(function () {
     Route::get('/images/create', [ApplicationImageController::class, 'create'])->name('admin.applications.images.create');
     Route::post('/images', [ApplicationImageController::class, 'store'])->name('admin.applications.images.store');
@@ -96,8 +95,6 @@ Route::prefix('admin/applications/{application}')->group(function () {
     Route::put('/images/{image}', [ApplicationImageController::class, 'update'])->name('admin.applications.images.update');
     Route::delete('/images/{image}', [ApplicationImageController::class, 'destroy'])->name('admin.applications.images.delete');
 });
-
-
 
 Route::prefix('admin/users/{user}')->group(function () {
     Route::get('/images/create', [UserImageController::class, 'create'])->name('admin.users.images.create');
@@ -213,3 +210,9 @@ Route::post('/military/rating/{application}', [MilitaryHomeController::class, 's
 
 
 Route::post('/send-feedback', [FeedbackController::class, 'send'])->name('feedback.send');
+
+// routes/web.php
+Route::post('/applications/like/toggle/{application}', [ApplicationLikeController::class, 'toggleLike']);
+
+
+

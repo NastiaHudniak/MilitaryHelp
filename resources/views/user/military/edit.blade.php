@@ -55,7 +55,7 @@
                     <button type="submit" class="update-button">Зберегти</button>
                     <div class="label-create">
                         <p>Не хочете змінювати заявку? </p>
-                        <a  id="back-button" href="{{ route('user.military.index') }}">Назад</a>
+                        <a  id="back-button" href="{{ route('user.military.view_app') }}">Назад</a>
                     </div>
                 </div>
             </form>

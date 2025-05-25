@@ -316,58 +316,7 @@
         });
     });
 
-    document.addEventListener('DOMContentLoaded', function() {
-        const accountInfoToggle = document.getElementById('account-info-toggle');
-        const accountInfoExtra = document.getElementById('account-info-extra');
 
-        // Додаємо обробник події на "Інформація про акаунт"
-        accountInfoToggle.addEventListener('click', function() {
-            // Перемикаємо видимість додаткових полів
-            accountInfoExtra.style.display = accountInfoExtra.style.display === 'none' ? 'block' : 'none';
-        });
-    });
-
-
-    document.getElementById('home-icon').addEventListener('mouseover', function() {
-        this.classList.remove('fluent--home-20-regular');
-        this.classList.add('fluent--home-20-filled');
-    });
-
-    document.getElementById('home-icon').addEventListener('mouseout', function() {
-        this.classList.remove('fluent--home-20-filled');
-        this.classList.add('fluent--home-20-regular');
-    });
-
-    document.getElementById('filter-icon').addEventListener('mouseover', function() {
-        this.classList.remove('streamline--filter-2');
-        this.classList.add('streamline--filter-2-solid');
-    });
-
-    document.getElementById('filter-icon').addEventListener('mouseout', function() {
-        this.classList.remove('streamline--filter-2-solid');
-        this.classList.add('streamline--filter-2');
-    });
-
-    document.getElementById('add-icon').addEventListener('mouseover', function() {
-        this.classList.remove('gridicons--add-outline');
-        this.classList.add('gridicons--add');
-    });
-
-    document.getElementById('add-icon').addEventListener('mouseout', function() {
-        this.classList.remove('gridicons--add');
-        this.classList.add('gridicons--add-outline');
-    });
-
-    document.getElementById('history-icon').addEventListener('mouseover', function() {
-        this.classList.remove('solar--history-bold-duotone');
-        this.classList.add('uim--history');
-    });
-
-    document.getElementById('history-icon').addEventListener('mouseout', function() {
-        this.classList.remove('uim--history');
-        this.classList.add('solar--history-bold-duotone');
-
-    });
 
 
 

@@ -1,7 +1,11 @@
 @extends('layouts.app')
 @include('layouts.header_volunteer')
+<meta name="csrf-token" content="{{ csrf_token() }}">
+<pre>{{ var_dump($userLikedApplicationIds) }}</pre>
 
 @section('content')
+
+
     <div class="container" style="max-width: 1300px; padding: 50px 0px;">
     <div class="naw">
     <div class="nawb">
@@ -69,7 +73,7 @@
     </span>
                             </p>
                         </div>
-                        <div class="card-footer" style="background-color: var(--green-200);">
+                        <div class="card-footer" style="background-color: var(--green-200); display: flex; align-items: center; justify-content: space-between;">
                             <a href="javascript:void(0);" class="btn btn-sm"  data-toggle="modal" data-target="#applicationModal{{ $application->id }}" style="background-color: var(--yellow-500);" >
                                 <i class="fas fa-ellipsis-v" style="font-size: 15px;"></i> Переглянути більше
                             </a>
@@ -77,7 +81,17 @@
                                 <span class="lets-icons--done-ring-round"></span>
                             </a>
                             <a href="{{ route('user.volunteer.pdf', $application->id) }}" class="btn btn-sm" style="background-color: var(--yellow-500);">PDF</a>
-
+                            @php
+                                $isLiked = in_array($application->id, $userLikedApplicationIds);
+                            @endphp
+                            <!-- Лайк іконка -->
+                            <button class="like-btn" type="button" data-id="{{ $application->id }}">
+                                <img src="{{ $isLiked ? asset('images/icon/likes/like-filled.svg') : asset('images/icon/likes/like.svg') }}"
+                                     alt="Like"
+                                     class="like-icon"
+                                     data-outline="{{ asset('images/icon/likes/like.svg') }}"
+                                     data-filled="{{ asset('images/icon/likes/like-filled.svg') }}">
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -113,38 +127,41 @@
 
     </div>
 
+
+     @include('layouts.footer')
+
     <script>
-        document.getElementById('search').addEventListener('input', function() {
-            const query = document.getElementById('search').value;
-            const category = document.getElementById('category-filter').value;
-            const sort = document.getElementById('sort-filter').value;
-            fetchApplications(query,  category, sort);
-        });
-
-        document.getElementById('reset-filter').addEventListener('click', function() {
-            const query = document.getElementById('search').value;
-            const category = document.getElementById('category-filter').value;
-            const sort = document.getElementById('sort-filter').value;
-            document.getElementById('search').value = '';
-            document.getElementById('category-filter').value = '';
-            fetchApplications(query,  '', sort);
-        });
-
-        document.getElementById('category-filter').addEventListener('change', function() {
-            const query = document.getElementById('search').value;
-            const category = document.getElementById('category-filter').value;
-            const sort = document.getElementById('sort-filter').value;
-            fetchApplications(query,  category, sort);
-        });
-
-
-        document.getElementById('sort-filter').addEventListener('change', function() {
-            const query = document.getElementById('search').value;
-            const category = document.getElementById('category-filter').value;
-            const sort = document.getElementById('sort-filter').value;
-
-            fetchApplications(query,  category, sort);
-        });
+        // document.getElementById('search').addEventListener('input', function() {
+        //     const query = document.getElementById('search').value;
+        //     const category = document.getElementById('category-filter').value;
+        //     const sort = document.getElementById('sort-filter').value;
+        //     fetchApplications(query,  category, sort);
+        // });
+        //
+        // document.getElementById('reset-filter').addEventListener('click', function() {
+        //     const query = document.getElementById('search').value;
+        //     const category = document.getElementById('category-filter').value;
+        //     const sort = document.getElementById('sort-filter').value;
+        //     document.getElementById('search').value = '';
+        //     document.getElementById('category-filter').value = '';
+        //     fetchApplications(query,  '', sort);
+        // });
+        //
+        // document.getElementById('category-filter').addEventListener('change', function() {
+        //     const query = document.getElementById('search').value;
+        //     const category = document.getElementById('category-filter').value;
+        //     const sort = document.getElementById('sort-filter').value;
+        //     fetchApplications(query,  category, sort);
+        // });
+        //
+        //
+        // document.getElementById('sort-filter').addEventListener('change', function() {
+        //     const query = document.getElementById('search').value;
+        //     const category = document.getElementById('category-filter').value;
+        //     const sort = document.getElementById('sort-filter').value;
+        //
+        //     fetchApplications(query,  category, sort);
+        // });
 
 
         function fetchApplications(query, category, sort) {
@@ -199,9 +216,53 @@
         }
 
 
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll('.like-btn .like-icon').forEach(function (icon) {
+                icon.addEventListener('click', function (e) {
+                    e.stopPropagation();
 
+                    const btn = icon.closest('.like-btn');
+                    const applicationId = btn.dataset.id;
+                    const outlineSrc = icon.dataset.outline;
+                    const filledSrc = icon.dataset.filled;
+
+                    fetch(`/applications/like/toggle/${applicationId}`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({})
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                if (response.status === 401) {
+                                    alert('Спочатку увійдіть, щоб поставити лайк!');
+                                    return;
+                                }
+                                throw new Error('Помилка мережі');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (!data) return;
+
+                            if (data.status === 'added') {
+                                icon.setAttribute('src', filledSrc);
+                                btn.classList.add('liked');
+                            } else if (data.status === 'removed') {
+                                icon.setAttribute('src', outlineSrc);
+                                btn.classList.remove('liked');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('Сталася помилка.');
+                        });
+                });
+            });
+        });
     </script>
-     @include('layouts.footer')
 @endsection
 
 <style>
@@ -210,7 +271,7 @@
     }
 
     .btn:hover {
-        background-color: var(--green-800);
+        background-color: green;
         text-decoration: none;
         transform: scale(1.1);
     }
