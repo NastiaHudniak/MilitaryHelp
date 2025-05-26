@@ -11,6 +11,7 @@
         "laravel/framework": "^11.9",
         "laravel/socialite": "^5.20",
         "laravel/tinker": "^2.9",
+        "maatwebsite/excel": "*",
         "socialiteproviders/google": "^4.1"
     },
     "require-dev": {

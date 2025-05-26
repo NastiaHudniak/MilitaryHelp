@@ -9,7 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-
+use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 
@@ -135,5 +135,61 @@ class MilitaryViewApplicationController extends Controller
 
 
     }
+
+    public function exportAllApplicationsToPDF()
+    {
+        $user = Auth::user(); // військовий
+
+        $applications = \App\Models\Application::with(['category', 'volunteer', 'images'])
+            ->where('millitary_id', $user->id)
+            ->get();
+
+        $applicationCount = $applications->count();
+        $date = \Carbon\Carbon::now()->format('d.m.Y');
+        $fullName = $user->surname . ' ' . $user->name;
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('user.military.all_applications_pdf', compact('applications', 'applicationCount', 'date', 'fullName'))
+            ->setPaper('a4', 'portrait');
+
+        return $pdf->download('all_applications_'.$user->id.'.pdf');
+    }
+    public function exportApplicationsToCSV()
+    {
+        $user = Auth::user(); // військовий
+        $applications = $user->applications()->with(['category', 'volunteer', 'images'])->get();
+
+        $filename = 'applications_' . $user->id . '_' . date('Y-m-d') . '.csv';
+
+        // Відкриваємо потік для виводу
+        $handle = fopen('php://output', 'w');
+
+        // Заголовки стовпців
+        $headers = ['№', 'Назва заявки', 'Опис', 'Категорія', 'Волонтер', 'Кількість фото'];
+        // Відправляємо заголовок для завантаження файлу
+        header('Content-Type: text/csv; charset=UTF-8');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+        header('Pragma: no-cache');
+        header('Expires: 0');
+
+        // Записуємо заголовки
+        fputcsv($handle, $headers);
+
+        $counter = 1;
+        foreach ($applications as $app) {
+            fputcsv($handle, [
+                $counter,
+                $app->title,
+                $app->description,
+                $app->category?->name ?? '',
+                $app->volunteer?->name ?? '',
+                $app->images->count(),
+            ]);
+            $counter++;
+        }
+
+        fclose($handle);
+        exit;
+    }
+
 
 }

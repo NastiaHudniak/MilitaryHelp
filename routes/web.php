@@ -214,5 +214,9 @@ Route::post('/send-feedback', [FeedbackController::class, 'send'])->name('feedba
 // routes/web.php
 Route::post('/applications/like/toggle/{application}', [ApplicationLikeController::class, 'toggleLike']);
 
+Route::get('/military/export/pdf', [MilitaryViewApplicationController::class, 'exportAllApplicationsToPDF'])
+    ->name('user.military.exportAllPDF');
+
+
 
 

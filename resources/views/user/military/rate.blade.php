@@ -1,8 +1,9 @@
 @extends('layouts.app')
+@include('layouts.header_military')
 
 @section('content')
     <link rel="stylesheet" href="{{ asset('css/global.css') }}">
-    <div class="main-content" style="font-family: 'Open Sans', sans-serif;">
+    <div class="main-content" style="font-family: 'Open Sans', sans-serif;" >
         <div class="card">
             <div class="card-header" style="margin: 0">
                 <h2>Оцінка волонтера</h2>
@@ -32,6 +33,7 @@
         </div>
 
     </div>
+    @include('layouts.footer')
 @endsection
 
 
@@ -147,5 +149,11 @@
     .save-button:hover {
         background-color: var(--green-dark);
         transform: scale(1.05);
+    }
+
+    @media (max-width: 768px) {
+        .card{
+            width: 85%;
+        }
     }
 </style>

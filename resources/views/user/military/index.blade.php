@@ -5,29 +5,96 @@
     @section('content')
         <link rel="stylesheet" href="{{ asset('css/alerts.css') }}">
         <div class="main-content" style="font-family: 'Open Sans', sans-serif;">
+            @php
+                use Carbon\Carbon;
+            @endphp
+
             @if($confirmedApplications->count())
                 @php
-                    $latestApp = $confirmedApplications->last();
+                    $recentApps = $confirmedApplications->filter(function($app) {
+                        return \Carbon\Carbon::parse($app->confirmed_at)->greaterThanOrEqualTo(now()->subDays(7));
+                    });
                 @endphp
-                <div class="alert-success-custom" id="confirmed-alert">
-                    <div class="alert-success-custom-text-block">
-                        <p class="alert-success-custom-text">
-                            Ваша заявка <strong>"{{ $latestApp->title }}"</strong> була підтверджена волонтером
-                            <strong>{{ $latestApp->volunteer?->surname }} {{ $latestApp->volunteer?->name }}</strong>.
-                        </p>
-                        <p>Чи хочете ви поставити рейтинг цьому волонтеру?</p>
-                        <div class="buttons-all">
-                            <div class="buttons-mess">
-                                <a href="{{ route('military.rate', $latestApp) }}"  class="alert-ok-btn">Так, оцінити</a>
-                                <a href="{{ route('military.index') }}"  class="alert-no-btn">Ні, дякую</a>
+
+                @if($recentApps->count())
+                    @foreach($recentApps as $app)
+                        @php
+                            $volunteer = $app->volunteer;
+                            $appId = $app->id;
+                            $message = 'Ваша заявка "' . $app->title . '" була підтверджена волонтером ' .
+                                        $volunteer?->surname . ' ' . $volunteer?->name . '. Хочете оцінити волонтера?';
+                        @endphp
+
+                        <div class="custom-toast toast-success confirmed-toast"
+                             data-app-id="{{ $appId }}"
+                             style="display: none;">
+                            <div class="toast-text-block">
+                                <div class="toast-message">
+                                    <img src="{{ asset('images/icon/alerts/done.svg') }}" alt="icon" width="24" height="24">
+                                    <span>{!! $message !!}</span>
+                                </div>
+                                <div style="display: flex; gap: 8px;">
+                                    <a href="{{ route('military.rate', $app) }}"
+                                       class="toast-close confirm-btn" data-app-id="{{ $appId }}">Так, оцінити</a>
+                                    <a href="{{ route('military.index') }}"
+                                       class="toast-close confirm-btn" data-app-id="{{ $appId }}">Ні, дякую</a>
+                                    <button class="toast-close">OK</button>
+                                </div>
                             </div>
-                            <button class="alert-ok-btn" onclick="document.getElementById('confirmed-alert').style.display='none'">OK</button>
                         </div>
+                    @endforeach
 
-                    </div>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', () => {
+                            const shownKey = 'confirmed_applications_seen';
+                            const seenApps = JSON.parse(localStorage.getItem(shownKey) || '[]');
+                            const allToasts = Array.from(document.querySelectorAll('.confirmed-toast'));
+                            const unviewedToasts = allToasts.filter(toast => !seenApps.includes(toast.dataset.appId));
 
-                </div>
+                            function showNextToast(index = 0) {
+                                if (index >= unviewedToasts.length) return;
+
+                                const toast = unviewedToasts[index];
+                                toast.style.display = 'flex';
+
+                                const removeToast = () => {
+                                    toast.classList.add('fade-out');
+                                    setTimeout(() => {
+                                        toast.remove();
+                                        showNextToast(index + 1);
+                                    }, 1000);
+                                };
+
+                                const confirmButtons = toast.querySelectorAll('.confirm-btn');
+                                confirmButtons.forEach(btn => {
+                                    btn.addEventListener('click', () => {
+                                        const appId = btn.dataset.appId;
+                                        if (!seenApps.includes(appId)) {
+                                            seenApps.push(appId);
+                                            localStorage.setItem(shownKey, JSON.stringify(seenApps));
+                                        }
+                                    });
+                                });
+
+                                const okBtn = toast.querySelector('button.toast-close');
+                                okBtn.addEventListener('click', () => {
+                                    toast.remove();
+                                    showNextToast(index + 1);
+                                });
+
+                                // Start timer only when toast becomes visible
+                                setTimeout(removeToast, 5000);
+                            }
+
+                            showNextToast();
+                        });
+                    </script>
+                @endif
             @endif
+
+
+
+
 
 
 

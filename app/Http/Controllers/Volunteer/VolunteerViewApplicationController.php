@@ -94,9 +94,10 @@ class VolunteerViewApplicationController extends Controller
 
     public function generatePDF($id)
     {
-        $application = Application::findOrFail($id);
+        $application = Application::with(['category', 'volunteer', 'images'])->findOrFail($id);
         $pdf = Pdf::loadView('user.volunteer.pdf', compact('application'));
 
-        return $pdf->download('application-'.$application->id.'.pdf');
+        return $pdf->download('application-' . $application->id . '.pdf');
     }
+
 }
