@@ -72,11 +72,24 @@ class MilitaryViewApplicationController extends Controller
     {
         $applications = Application::findOrFail($id);
 
+        $messages = [
+            'category_id.required' => '* Обов’язкове поле.',
+            'category_id.exists' => '* Обрана категорія не існує.',
+
+            'title.required' => '* Обов’язкове поле.',
+            'title.string' => '* Назва має бути рядком.',
+            'title.max' => '* Назва не може містити більше ніж 255 символів.',
+
+            'description.required' => '* Обов’язкове поле.',
+            'description.string' => '* Опис має бути рядком.',
+            'description.max' => '* Опис не може містити більше ніж 1000 символів.',
+        ];
+
         $validated = $request->validate([
             'category_id' => 'required|exists:categories,id',
             'title' => 'required|string|max:255',
             'description' => 'required|string|max:1000',
-        ]);
+        ], $messages);
         $validated['is_urgent'] = $request->has('is_urgent') ? 1 : 0;
 
         $applications->update($validated);
@@ -84,9 +97,9 @@ class MilitaryViewApplicationController extends Controller
         return redirect()->route('user.military.view_app')->with('success', 'Заявка оновлена успішно!');
     }
 
-    public function destroy(Application $applications)
+    public function destroy(Application $application)
     {
-        $applications->delete();
+        $application->delete();
         return redirect()->route('user.military.view_app')->with('error', 'Заявка видалена успішно!');
     }
 
@@ -150,6 +163,7 @@ class MilitaryViewApplicationController extends Controller
             elseif ($status == "cancel") $status = "відхилено";
             $query->where('status', $status);
         }
+
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function($q) use ($search) {
@@ -158,6 +172,9 @@ class MilitaryViewApplicationController extends Controller
             });
         }
 
+        if ($request->filled('urgent') && $request->urgent === 'true') {
+            $query->where('is_urgent', true);
+        }
         // Сортування
         $sort = $request->input('sort', 'urgent_oldest');
         if ($sort === 'urgent_oldest') {

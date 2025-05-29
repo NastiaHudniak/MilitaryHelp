@@ -3,7 +3,9 @@
 
 @section('content')
     <div class="main-content" style="font-family: 'Open Sans', sans-serif;">
-        <div class="filters-blocks">
+        <button class="filters-toggle-btn" onclick="toggleFilters()">Фільтри</button>
+
+        <div class="filters-blocks" id="filtersBlock">
             <div class="navigation-bar">
                 <nav class="navbar-search">
                     <div class="search-title">
@@ -47,6 +49,7 @@
 
                     </div>
                 </div>
+                <button id="filter-term" type="button" class="button-filter">Термінові</button>
 
                 <div class="sort-filter-block">
                     <label for="application-sort-filter" class="label-sort-filter">
@@ -77,8 +80,17 @@
             </div>
         </div>
 
-        <div id="no-results" class="alert alert-info" style="display: none; text-align: center;">
-            Заявок не знайдено.
+        <div id="no-results" class="not-found" style="display: none; text-align: center;">
+            <div class="not-found-block" style="display: flex; text-align: center; flex-direction: column; gap: 10px;">
+
+                <div class="not-found-image">
+                    <img src="{{ asset('images/logo/not-found.svg') }}" style="width: 350px; height: auto">
+                </div>
+                <div class="not-found-text" style="color: var(--orange-my); font-size: 32px; font-weight: bold">
+                    Нажаль за вашим запитом нічого не знайдено(
+                </div>
+            </div>
+
         </div>
 
         <div class="application-block" id="application-card-container">
@@ -87,97 +99,80 @@
             @endforeach
         </div>
 
-
     </div>
 
     <script>
 
-        function applyFilter() {
-            const sort = document.getElementById('sort-filter').value;
-            const category = document.getElementById('category-filter').value;
-            const status = document.getElementById('status-filter').value;
-            const search = document.getElementById('search').value;
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.getElementById('search');
+            const sortSelect = document.getElementById('sort-filter');
+            const filterTermBtn = document.getElementById('filter-term');
+            const categorySelect = document.getElementById('category-filter');
+            const statusSelect = document.getElementById('status-filter');
+            const resetBtn = document.getElementById('reset-filter');
+            const container = document.getElementById('application-card-container');
+            const noResults = document.getElementById('no-results');
 
-            const params = new URLSearchParams({
-                sort, category, status, search
+            let urgentFilterActive = false;
+
+            function fetchApplications() {
+                const search = searchInput.value;
+                const sort = sortSelect.value;
+                const category = categorySelect.value;
+                const status = statusSelect.value;
+                const urgent = urgentFilterActive ? 'true' : '';  // Якщо фільтр активний - додаємо urgent=true
+
+                const url = new URL("{{ route('user.military.filteredApplications') }}", window.location.origin);
+                if (search) url.searchParams.append('search', search);
+                if (sort) url.searchParams.append('sort', sort);
+                if (category) url.searchParams.append('category', category);
+                if (status) url.searchParams.append('status', status);
+                if (urgent) url.searchParams.append('urgent', urgent);
+
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        container.innerHTML = data.html;
+                        if (data.html.trim() === '') {
+                            noResults.style.display = 'block';
+                        } else {
+                            noResults.style.display = 'none';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Помилка під час завантаження:', error);
+                    });
+            }
+
+            // Обробка змін
+            searchInput.addEventListener('input', fetchApplications);
+            sortSelect.addEventListener('change', fetchApplications);
+            categorySelect.addEventListener('change', fetchApplications);
+            statusSelect.addEventListener('change', fetchApplications);
+
+            resetBtn.addEventListener('click', function () {
+                searchInput.value = '';
+                sortSelect.value = 'urgent_oldest';
+                categorySelect.value = '';
+                statusSelect.value = '';
+                urgentFilterActive = false;
+                filterTermBtn.classList.remove('active');
+                fetchApplications();
             });
 
-            fetch('/user/military/applications/filter?sort=newest&category=&status=&search=')
-                .then(res => res.json())
-                .then(data => {
-                    document.getElementById('application-card-container').innerHTML = data.html;
+            filterTermBtn.addEventListener('click', () => {
+                urgentFilterActive = !urgentFilterActive;  // Перемикач стану
+                if (urgentFilterActive) {
+                    filterTermBtn.classList.add('active');
+                } else {
+                    filterTermBtn.classList.remove('active');
+                }
+                fetchApplications();
+            });
 
-                    // Якщо немає заявок - показати повідомлення
-                    document.getElementById('no-results').style.display = data.html.trim().length ? 'none' : 'block';
-                })
-                .catch(console.error);
-        }
+            // Початкове завантаження
+            fetchApplications();
 
-        // Викликати applyFilter() на зміну фільтрів, сортування і пошук (input + change)
-        document.getElementById('sort-filter').addEventListener('change', applyFilter);
-        document.getElementById('category-filter').addEventListener('change', applyFilter);
-        document.getElementById('status-filter').addEventListener('change', applyFilter);
-        document.getElementById('search').addEventListener('input', applyFilter);
-        document.getElementById('reset-filter').addEventListener('click', () => {
-            document.getElementById('sort-filter').value = 'urgent_oldest';
-            document.getElementById('category-filter').value = '';
-            document.getElementById('status-filter').value = '';
-            document.getElementById('search').value = '';
-            applyFilter();
-        });
-
-
-        // document.addEventListener('DOMContentLoaded', function () {
-        //     const searchInput = document.getElementById('search');
-        //     const sortSelect = document.getElementById('sort-filter');
-        //     const categoryFilter = document.getElementById('category-filter');
-        //     const statusFilter = document.getElementById('status-filter');
-        //     const resetButton = document.getElementById('reset-filter');
-        //     const cards = document.querySelectorAll('#application-card-container .col-md-3');
-        //     const noResults = document.getElementById('no-results');
-        //
-        //     function filterCards() {
-        //         const search = searchInput.value.toLowerCase();
-        //         const category = categoryFilter.value;
-        //         const status = statusFilter.value;
-        //
-        //         let visibleCount = 0;
-        //
-        //         cards.forEach(card => {
-        //             const title = card.querySelector('.card-title').textContent.toLowerCase();
-        //             const categoryText = card.querySelector('.card-subtitle') ? card.querySelector('.card-subtitle').textContent : '';
-        //             const statusText = card.querySelector('.card-text span') ? card.querySelector('.card-text span').textContent : '';
-        //
-        //             const matchSearch = !search || title.includes(search);
-        //             const matchCategory = !category || categoryText.trim() === category;
-        //             const matchStatus = !status || statusText.trim() === status;
-        //
-        //             if (matchSearch && matchCategory && matchStatus) {
-        //                 card.style.display = '';
-        //                 visibleCount++;
-        //             } else {
-        //                 card.style.display = 'none';
-        //             }
-        //         });
-        //
-        //         noResults.style.display = visibleCount === 0 ? 'block' : 'none';
-        //     }
-        //
-        //     function resetFilters() {
-        //         searchInput.value = '';
-        //         categoryFilter.value = '';
-        //         statusFilter.value = '';
-        //         sortSelect.value = 'latest';
-        //         filterCards();
-        //     }
-        //
-        //     searchInput.addEventListener('input', filterCards);
-        //     categoryFilter.addEventListener('change', filterCards);
-        //     statusFilter.addEventListener('change', filterCards);
-        //     resetButton.addEventListener('click', resetFilters);
-        // });
-
-        document.addEventListener('DOMContentLoaded', function () {
             document.querySelectorAll('.generate-all-pdf').forEach(button => {
                 button.addEventListener('click', function (e) {
                     e.preventDefault();
@@ -212,6 +207,11 @@
                 });
             });
         });
+
+        function toggleFilters() {
+            const block = document.getElementById('filtersBlock');
+            block.classList.toggle('open');
+        }
     </script>
 
 
@@ -232,6 +232,20 @@
         max-width: 100%;
         margin: 0 auto;
     }
+    .filters-toggle-btn {
+        display: none;
+        width: 100%;
+        padding: 12px;
+        background-color: var(--green-light);
+        color: white;
+        font-weight: bold;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+        margin-bottom: 10px;
+        border-radius: 8px;
+    }
+
 
     .filters-blocks{
         width: 100%;
@@ -284,6 +298,47 @@
         font-size: 14px;
         font-weight: 500;
         line-height: 21px;
+        text-decoration: none;
+        border: none;
+    }
+    .search,
+    button {
+        border: none;
+        outline: none;
+        box-shadow: none;
+        text-decoration: none;
+    }
+
+    .search:focus,
+    button:focus,
+    .search:focus-visible,
+    button:focus-visible,
+    .search:active,
+    button:active {
+        border: none !important;
+        outline: none !important;
+        box-shadow: none !important;
+        text-decoration: none !important;
+    }
+    .button-filter{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: max-content;
+        height: fit-content;
+        background-color: var(--yellow-my);
+        border-radius: 16px;
+        border: 1px var(--main-green-dark) solid;
+        color: var(--main-green-dark);
+        gap: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 21px;
+        padding: 10px 12px;
+        text-align: center;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background-color 0.5s ease, color 0.5s ease;
     }
 
     .search::placeholder {
@@ -434,7 +489,27 @@
         }
     }
 
+    @media screen and (max-width: 768px) {
+        /* Ховаємо блок фільтрів за замовчуванням */
+        .filters-blocks {
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+            padding: 10px;
+            background-color: #f7f7f7;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            overflow-y: auto;
+        }
 
+        .filters-blocks.open {
+            display: flex;
+        }
+
+        .filters-toggle-btn {
+            display: block;
+        }
+    }
 
 
 

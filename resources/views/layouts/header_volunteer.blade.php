@@ -15,24 +15,50 @@
 
 
 
-<header class="header-volunteer">
+<header class="header-volunteer
+        {{ in_array(Route::currentRouteName(), ['user.volunteer.index']) ? 'header-index' : 'header-other' }}"
+>
     <div class="header-l-c">
         <div class="header-left">
-            <a class="logos" href="{{ route('user.volunteer.index') }}">
+            <a class="logos" href="{{ route('user.volunteer.index') }}" data-toggle="tooltip" title="Повернутись на головну">
                 <img src="{{ asset('images/logo/logo_mini.svg') }}" alt="Logo">
             </a>
-            <a id="add-icon" href="{{ route('user.volunteer.confirm.view_confirm_app') }}">
-                <img src="{{ asset('images/icon/sidebar/list.svg') }}" alt="Додати" >
+            <a id="add-icon" href="{{ route('user.volunteer.confirm.view_confirm_app') }}" data-toggle="tooltip" title="Переглянути підтверджені заявки">
+                <img src="{{ asset('images/icon/list.svg') }}" alt="Додати" >
             </a>
-            <a id="history-icon" href="{{ route('user.volunteer.view_app') }}">
+            <a id="history-icon" href="{{ route('user.volunteer.view_app') }}" data-toggle="tooltip" title="Переглянути заявки">
                 <img src="{{ asset('images/icon/history.svg') }}" alt="Історія" >
             </a>
         </div>
         <div class="header-center">
             <nav class="navbar-custom">
-                <a href="#home-section" class="nav-link active">Головна</a>
-                <a href="#actions-section" class="nav-link">Дії з заявками</a>
-                <a href="#analytics-section" class="nav-link">Аналітика</a>
+                @if(Route::currentRouteName() === 'user.volunteer.index')
+                    <a href="#home-section" class="nav-link active">Головна</a>
+                    <a href="#actions-section" class="nav-link">Дії з заявками</a>
+                    <a href="#analytics-section" class="nav-link">Аналітика</a>
+                @elseif(Route::currentRouteName() === 'user.volunteer.confirm_application')
+                    <a class="head-name">Підтвердження заявки</a>
+                @elseif(Route::currentRouteName() === 'user.volunteer.confirm.edit_confirm_app')
+                    <a class="head-name">Редагування підтвердженої заявки</a>
+                @elseif(Route::currentRouteName() === 'user.volunteer.confirm.view_confirm_app')
+                    <a class="head-name">Перегляд підтверджених заявок</a>
+                @elseif(Route::currentRouteName() === 'user.volunteer.edit')
+                    <a class="head-name">Редагування заявки</a>
+                @elseif(Route::currentRouteName() === 'user.volunteer.edit_account')
+                    <a class="head-name">Редагування персональної інформації</a>
+                @elseif(Route::currentRouteName() === 'user.volunteer.view_account')
+                    <a class="head-name">Особистий кабінет</a>
+                @elseif(Route::currentRouteName() === 'user.volunteer.view_app')
+                    <a class="head-name">Перегляд створених заявок</a>
+                @elseif(Route::currentRouteName() === 'user.volunteer.mil.view_military')
+                    <a class="head-name">Перегляд списку військових</a>
+                @elseif(Route::currentRouteName() === 'user.volunteer.account.edit_photo')
+                    <a class="head-name">Редагування фото профілю</a>
+                @elseif(Route::currentRouteName() === 'user.volunteer.view_info_military')
+                    <a class="head-name">Перегляд інформації про військового</a>
+                @else
+                    <a class="nav-link">Назад</a>
+                @endif
             </nav>
         </div>
     </div>
@@ -101,10 +127,34 @@
         z-index: 1000;
         flex-wrap: wrap;
     }
+
+    .header-index .header-l-c {
+        display: flex;
+        align-items: start;
+        gap: 400px;
+    }
+
+    /* --- Стилі для інших сторінок: центрування --- */
+    .header-other .header-l-c {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0;
+        width: 100%;
+    }
+
+    /* Центруємо навігацію між лівим і правим блоком */
+    .header-other .header-center {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
     .header-l-c{
         display: flex;
         align-items: start;
         gap: 350px;
+        max-width: calc(100% - 200px); /* залишаємо місце для header-right */
+        flex-shrink: 1;
     }
 
     .header-left {
@@ -136,6 +186,22 @@
         line-height: 27px;
     }
 
+    .head-name{
+        color: var(--orange-my);
+        font-size: 20px;
+        font-weight: 600;
+        line-height: 27px;
+        word-wrap: break-word;
+        text-decoration: none;
+    }
+    .head-name:hover{
+        color: var(--orange-my);
+        font-size: 20px;
+        font-weight: 600;
+        line-height: 27px;
+        word-wrap: break-word;
+        text-decoration: none;
+    }
     .navbar-custom .nav-link {
         color: var(--green-dark);
         position: relative;
@@ -290,9 +356,7 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
     function confirmLogout() {
-        if (confirm("Ви дійсно бажаєте вийти з акаунта?")) {
-            document.querySelector('form').submit();
-        }
+        return confirm("Ви дійсно бажаєте вийти з акаунта?");
     }
 
     document.addEventListener('DOMContentLoaded', function() {

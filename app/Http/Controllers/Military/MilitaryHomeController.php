@@ -43,7 +43,7 @@ class MilitaryHomeController extends Controller
             return view('user.military.rate', compact('application'));
         }
 
-        return redirect()->route('military.index')->with('message', 'Ви вже оцінили цього волонтера або не можете поставити рейтинг.');
+        return redirect()->route('user.military.index')->with('message', 'Ви вже оцінили цього волонтера або не можете поставити рейтинг.');
     }
 
     public function storeRating(Request $request, Application $application)
@@ -61,7 +61,7 @@ class MilitaryHomeController extends Controller
         // Оновлення статусу, що рейтинг вже поставлений
         $application->update(['rating_given' => true]);
 
-        return redirect()->route('military.index')->with('message', 'Рейтинг успішно збережено!');
+        return redirect()->route('user.military.index')->with('message', 'Рейтинг успішно збережено!');
     }
 
 

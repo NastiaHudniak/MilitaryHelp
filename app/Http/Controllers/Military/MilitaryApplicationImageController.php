@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Application;
 use App\Models\ApplicationImage;
+use Illuminate\Support\Facades\Storage;
 
 class MilitaryApplicationImageController extends Controller
 {
@@ -17,9 +18,14 @@ class MilitaryApplicationImageController extends Controller
 
     public function store(Request $request, Application $application)
     {
+        $messages = [
+            'image.required' => '* Обов`язкове поле.',
+            'image.max' => '* Зображення не може бути більшим за 10 МБ.',
+            'image.file' => '* Файл повинен бути зображенням.',
+        ];
         $request->validate([
             'image' => 'required|max:10240',
-        ]);
+        ], $messages);
 
         $imagePath = $request->file('image')->store('application_image', 'public');
 
@@ -28,7 +34,7 @@ class MilitaryApplicationImageController extends Controller
             'image_url' => $imagePath,
         ]);
 
-        return redirect()->route('user.military.index', $application)->with('success', 'Зображення додано успішно !!!');
+        return redirect()->route('user.military.view_app', $application)->with('success', 'Зображення додано успішно !!!');
     }
 
     public function edit(Application $application)
@@ -44,7 +50,7 @@ class MilitaryApplicationImageController extends Controller
         }
         $image->delete();
 
-        return redirect()->route('user.military.images.edit', ['applications' => $applications->id])->with('error', 'Зображення видалено успішно !!!');
+        return redirect()->route('user.military.images.edit', ['application ' => $application->id])->with('error', 'Зображення видалено успішно !!!');
     }
 
 

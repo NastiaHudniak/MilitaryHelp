@@ -19,13 +19,13 @@
 >
     <div class="header-l-c">
         <div class="header-left">
-            <a class="logos" href="{{ route('user.military.index') }}">
+            <a class="logos" href="{{ route('user.military.index') }}" data-toggle="tooltip" title="Повернутись на головну">
                 <img src="{{ asset('images/logo/logo_mini.svg') }}" alt="Logo">
             </a>
-            <a id="add-icon" href="{{ route('user.military.create') }}">
+            <a id="add-icon" href="{{ route('user.military.create') }}" data-toggle="tooltip" title="Додати заявки">
                 <img src="{{ asset('images/icon/znak.svg') }}" alt="Додати" >
             </a>
-            <a id="history-icon" href="{{ route('user.military.view_app') }}">
+            <a id="history-icon" href="{{ route('user.military.view_app') }}" data-toggle="tooltip" title="Переглянути заявки">
                 <img src="{{ asset('images/icon/history.svg') }}" alt="Історія" >
             </a>
         </div>
@@ -363,9 +363,7 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
     function confirmLogout() {
-        if (confirm("Ви дійсно бажаєте вийти з акаунта?")) {
-            document.querySelector('form').submit();
-        }
+        return confirm("Ви дійсно бажаєте вийти з акаунта?");
     }
 
     document.addEventListener("DOMContentLoaded", function () {

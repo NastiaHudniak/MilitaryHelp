@@ -61,23 +61,34 @@
                             </div>
                         </div>
                     @else
-                        <div class="row mb-4">
-                            <div class="infoblock" style="gap: 30px;">
-                                <div class="info">
-                                    <div class="title_info">
-                                        <p style="margin-bottom: 0; color: var(--green-800); font-size: 30px;">Ваш середній рейтинг</p>
-                                    </div>
-                                    <div class="info-body" style="color: var(--green-500);">
-                                        <p style="font-size: 25px;">Рейтинг ще не встановлено.</p>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="rate-block">
+                            <p class="rate-title">
+                                Ваш середній рейтинг ще не встановлено
+                            </p>
                         </div>
                     @endif
                 </div>
             </div>
 
         </div>
+
+        <section class="block-three" id="analytics-section" >
+            <h2 class="title-analytics">Досягнення</h2>
+            <div class="analytics">
+                <div class="analytics-block">
+                    <p class="analytics-number" data-target="{{ $totalApplications }}">0</p>
+                    <p class="analytics-label">заявки я підтвердив</p>
+                </div>
+                {{--                <div class="analytics-block">--}}
+                {{--                    <p class="analytics-number" data-target="{{ $acceptedApplications }}">0</p>--}}
+                {{--                    <p class="analytics-label">заявок виконано</p>--}}
+                {{--                </div>--}}
+                {{--                <div class="analytics-block">--}}
+                {{--                    <p class="analytics-number" data-target="2">0%</p>--}}
+                {{--                    <p class="analytics-label">заявки відхилено</p>--}}
+                {{--                </div>--}}
+            </div>
+        </section>
     </div>
 
     @include('layouts.footer')
@@ -337,10 +348,148 @@
 
 
 
+    .block-three {
+        width: 100%;
+        margin: 64px 0;
+        display: inline-flex;
+        background-color: var(--orange-my);
+        justify-content: space-between;
+        flex-direction: column;
+        align-items: center;
+        padding: 40px 190px;
+        gap: 32px;
+    }
+    .title-analytics{
+        color: var(--black-my);
+        display: inline-block;
+        font-size: 48px;
+        font-weight: 600;
+        line-height: 130%;
+        margin: 0;
+    }
+
+
+    .analytics {
+        display: flex;
+        justify-content: space-between;
+        padding: 0px 116px;
+        align-items: center;
+        width: 100%;
+    }
+    .analytics-block {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .analytics-number {
+        font-size: 58px;
+        font-weight: 600;
+        line-height: 130%;
+        color: var(--black-my);
+    }
+    .analytics-label {
+        font-size: 24px;
+        font-weight: 400;
+        line-height: 130%;
+        color: var(--black-my);
+        word-wrap: break-word;
+        width: 183px;
+    }
+
+    .buttons-all{
+        display: flex;
+        justify-content: space-between;
+        flex-direction: row;
+        width: 100%;
+    }
+
+    .buttons-mess{
+        display: flex;
+        justify-content: start;
+        flex-direction: row;
+        gap: 16px;
+        padding: 6px 0;
+    }
+
+    @media (max-width: 768px) {
+        .block-three {
+            width: 100%;
+            margin: 32px 0;
+            display: inline-flex;
+            justify-content: space-between;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 24px;
+            gap: 24px;
+        }
+
+        .title-analytics{
+            font-size: 24px;
+            text-align: center;
+        }
+
+        .analytics {
+            padding: 0;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            align-items: center;
+        }
+        .analytics-number {
+            font-size: 40px;
+            margin: 0;
+        }
+        .analytics-label {
+            width: 150px;
+            font-size: 20px;
+            margin: 0;
+        }
+    }
+
 
 
 </style>
 <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const animateNumber = (element, target, suffix = "", duration = 2000) => {
+            let start = 0;
+            const startTime = performance.now();
+
+            const update = (now) => {
+                const elapsed = now - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const value = Math.floor(progress * target);
+                element.textContent = value + suffix;
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                }
+            };
+
+            requestAnimationFrame(update);
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    const numbers = entry.target.querySelectorAll(".analytics-number");
+                    numbers.forEach((num) => {
+                        const target = parseInt(num.dataset.target, 10);
+                        const suffix = num.dataset.suffix || "";
+                        animateNumber(num, target, suffix);
+                    });
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        const analyticsSection = document.getElementById("analytics-section");
+        if (analyticsSection) {
+            observer.observe(analyticsSection);
+        }
+    });
+
+
     document.addEventListener("DOMContentLoaded", function () {
         const img = document.getElementById("zoom-image");
         const lens = document.getElementById("zoom-lens");

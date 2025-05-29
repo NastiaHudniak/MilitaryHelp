@@ -38,84 +38,111 @@
 
         </div>
 
-
-
-{{--        <div class="title-name">--}}
-{{--            <h style=" color: var(--green-800); font-size: 40px; text-shadow: 0.5px 0 0 var(--green-800), 0 0.5px 0 var(--green-800), -0.5px 0 0 var(--green-800), 0 -0.5px 0 var(--green-800);" class="b">Ваш особистий кабінет </h>--}}
-{{--            <span class="mr-3" style=" color: var(--green-800); font-size: 40px; "> Вітаємо, {{ $user->login }}!</span>--}}
-
-{{--        </div>--}}
-{{--        <div class="row mb-4">--}}
-{{--            <div class="infoblock" style="gap: 30px;">--}}
-{{--                <div class="info">--}}
-{{--                    <div class="title_info">--}}
-{{--                        <p style="margin-bottom: 0; color: var(--green-800); font-size: 30px;" >Контактна інформація</p>--}}
-{{--                        <a href="{{ route('user.military.edit_account', $user) }}" class="cuida--edit-outline" style="color: var(--green-800); font-size: 35px;"></a>--}}
-{{--                    </div>--}}
-
-{{--                    <div class="info-body" style="color: var(--green-500);">--}}
-{{--                        <div class="row d-flex " style="width: 100%;  align-items: flex-start; font-size: 25px;">--}}
-{{--                            <div class="col-md-4" style="align-items: flex-start;">--}}
-{{--                                <p style=" margin-bottom: 0;" class="card-text"><strong style="color: var(--green-800);">Логін:</strong> {{$user->login }}</p>--}}
-{{--                                <p style=" margin-bottom: 0;" class="card-text"><strong style="color: var(--green-800);">Прізвище:</strong> {{$user->surname }}</p>--}}
-{{--                                <p style=" margin-bottom: 0;" class="card-text"><strong style="color: var(--green-800);">Ім'я:</strong> {{$user->name }}</p>--}}
-{{--                            </div>--}}
-{{--                            <div class="col-md-5" style="width: 100%;  align-items: flex-start; font-size: 25px;">--}}
-{{--                                <p style=" margin-bottom: 0;" class="card-text"><strong style=" margin-bottom: 0; color: var(--green-800);">Електронна пошта:</strong> {{$user->email }}</p>--}}
-{{--                                <p style=" margin-bottom: 0;" class="card-text"><strong style="color: var(--green-800);">Телефон:</strong> {{$user->phone }}</p>--}}
-{{--                                <p style=" margin-bottom: 0;" class="card-text"><strong style="color: var(--green-800);">Адреса:</strong> {{$user->address }}</p>--}}
-{{--                            </div>--}}
-{{--                            <div class="col-md-3" style="width: 100%; font-size: 25px; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between;">--}}
-{{--                                @if ($userImage)--}}
-{{--                                    @if(str_contains($userImage->image_url,'images/acc.jpg'))--}}
-{{--                                        <img src="{{  url('/').'/'.$userImage->image_url }}" alt="User Image" style="width: 100px; height: 100px; border-radius: 50px;">--}}
-{{--                                    @else--}}
-{{--                                        <img src="{{ asset('storage/' . $userImage->image_url) }}" alt="User Image" style="width: 100px; height: 100px; border-radius: 50px;">--}}
-{{--                                    @endif--}}
-{{--                                @else--}}
-{{--                                    <p>No image available.</p>--}}
-{{--                                @endif--}}
-{{--                                    <button onclick="window.location.href='{{ route('user.military.account.edit_photo', $user->id) }}'" class="btn btn-outline " style="color: var(--green-500);border-color: var(--green-500);">--}}
-{{--                                        Редагувати фото--}}
-{{--                                    </button>--}}
-
-{{--                            </div>--}}
-
-
-
-
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-
-{{--                <div class="info">--}}
-{{--                    <div class="title_info">--}}
-{{--                        <p style="margin-bottom: 0; color: var(--green-800); font-size: 30px;">Ваші заявки</p>--}}
-{{--                        <a id="history-icon" class="solar--history-bold-duotone" style="color: var(--green-800); font-size: 37px; " href="{{ route('user.military.view_app') }}"></a>--}}
-{{--                    </div>--}}
-{{--                    <div class="info-body" style="color: var(--green-500);">--}}
-{{--                        <div class="row d-flex" style="width: 100%; align-items: flex-start; font-size: 25px;">--}}
-{{--                            <div class="col-md-6" style="align-items: flex-start;">--}}
-{{--                                <p style="margin-bottom: 0;" class="card-text">--}}
-{{--                                    <strong style="color: var(--green-800);">Загальна кількість заявок:</strong> {{ $totalApplications }}--}}
-{{--                                </p>--}}
-{{--                                <p style="margin-bottom: 0;" class="card-text">--}}
-{{--                                    <strong style="color: var(--green-800);">Прийняті заявки:</strong> {{ $acceptedApplications }}--}}
-{{--                            </div>--}}
-
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-
-
-
-
-{{--            </div>--}}
-{{--        </div>--}}
+        <section class="block-three" id="analytics-section" >
+            <h2 class="title-analytics">Досягнення</h2>
+            <div class="analytics">
+                <div class="analytics-block">
+                    <p class="analytics-number" data-target="{{ $totalApplications }}">0</p>
+                    <p class="analytics-label">заявки я опублікував</p>
+                </div>
+                <div class="analytics-block">
+                    <p class="analytics-number" data-target="{{ $acceptedApplications }}">0</p>
+                    <p class="analytics-label">заявок виконано</p>
+                </div>
+                <div class="analytics-block">
+                    <p class="analytics-number" data-target="2">0%</p>
+                    <p class="analytics-label">заявки відхилено</p>
+                </div>
+            </div>
+        </section>
     </div>
 
     @include('layouts.footer')
 @endsection
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const img = document.getElementById("zoom-image");
+        const lens = document.getElementById("zoom-lens");
+
+        if (!img || !lens) return;
+
+        // Дочекаємось завантаження зображення
+        img.onload = function () {
+            const zoomFactor = 3; // кратність збільшення
+
+            lens.style.backgroundImage = `url('${img.src}')`;
+            lens.style.backgroundRepeat = "no-repeat";
+            lens.style.backgroundSize = `${img.width * zoomFactor}px ${img.height * zoomFactor}px`;
+
+
+            const moveLens = (e) => {
+                const rect = img.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                const lensWidth = lens.offsetWidth / 2;
+                const lensHeight = lens.offsetHeight / 2;
+
+                let left = x - lensWidth;
+                let top = y - lensHeight;
+
+                // обмеження в межах зображення
+                left = Math.max(0, Math.min(left, img.width - lens.offsetWidth));
+                top = Math.max(0, Math.min(top, img.height - lens.offsetHeight));
+
+                lens.style.left = `${left}px`;
+                lens.style.top = `${top}px`;
+
+                lens.style.backgroundPosition = `-${x * zoomFactor - lensWidth}px -${y * zoomFactor - lensHeight}px`;
+            };
+
+            img.addEventListener("mousemove", moveLens);
+            lens.addEventListener("mousemove", moveLens);
+            img.addEventListener("mouseenter", () => lens.style.display = "block");
+            img.addEventListener("mouseleave", () => lens.style.display = "none");
+        };
+    });
+
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const animateNumber = (element, target, suffix = "", duration = 2000) => {
+            let start = 0;
+            const startTime = performance.now();
+
+            const update = (now) => {
+                const elapsed = now - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const value = Math.floor(progress * target);
+                element.textContent = value + suffix;
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                }
+            };
+
+            requestAnimationFrame(update);
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    const numbers = entry.target.querySelectorAll(".analytics-number");
+                    numbers.forEach((num) => {
+                        const target = parseInt(num.dataset.target, 10);
+                        const suffix = num.dataset.suffix || "";
+                        animateNumber(num, target, suffix);
+                    });
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        const analyticsSection = document.getElementById("analytics-section");
+        if (analyticsSection) {
+            observer.observe(analyticsSection);
+        }
+    });
+</script>
 
 <style>
     body {
@@ -282,48 +309,88 @@
         border-radius: 50%;
         box-shadow: 0 0 10px rgba(0,0,0,0.3);
     }
+
+    .block-three {
+        width: 100%;
+        margin: 64px 0;
+        display: inline-flex;
+        background-color: var(--orange-my);
+        justify-content: space-between;
+        flex-direction: column;
+        align-items: center;
+        padding: 40px 190px;
+        gap: 32px;
+    }
+    .title-analytics{
+        color: var(--black-my);
+        display: inline-block;
+        font-size: 48px;
+        font-weight: 600;
+        line-height: 130%;
+        margin: 0;
+    }
+
+
+    .analytics {
+        display: flex;
+        justify-content: space-between;
+        padding: 0px 64px;
+        align-items: center;
+        width: 100%;
+    }
+    .analytics-block {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .analytics-number {
+        font-size: 58px;
+        font-weight: 600;
+        line-height: 130%;
+        color: var(--black-my);
+    }
+    .analytics-label {
+        font-size: 24px;
+        font-weight: 400;
+        line-height: 130%;
+        color: var(--black-my);
+        word-wrap: break-word;
+        width: 183px;
+    }
+
+    @media (max-width: 768px) {
+        .block-three {
+            width: 100%;
+            margin: 32px 0;
+            display: inline-flex;
+            justify-content: space-between;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 24px;
+            gap: 24px;
+        }
+
+        .title-analytics{
+            font-size: 24px;
+            text-align: center;
+        }
+
+        .analytics {
+            padding: 0;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            align-items: center;
+        }
+        .analytics-number {
+            font-size: 40px;
+            margin: 0;
+        }
+        .analytics-label {
+            width: 150px;
+            font-size: 20px;
+            margin: 0;
+        }
+    }
 </style>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const img = document.getElementById("zoom-image");
-        const lens = document.getElementById("zoom-lens");
-
-        if (!img || !lens) return;
-
-        // Дочекаємось завантаження зображення
-        img.onload = function () {
-            const zoomFactor = 3; // кратність збільшення
-
-            lens.style.backgroundImage = `url('${img.src}')`;
-            lens.style.backgroundRepeat = "no-repeat";
-            lens.style.backgroundSize = `${img.width * zoomFactor}px ${img.height * zoomFactor}px`;
-
-
-            const moveLens = (e) => {
-                const rect = img.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-
-                const lensWidth = lens.offsetWidth / 2;
-                const lensHeight = lens.offsetHeight / 2;
-
-                let left = x - lensWidth;
-                let top = y - lensHeight;
-
-                // обмеження в межах зображення
-                left = Math.max(0, Math.min(left, img.width - lens.offsetWidth));
-                top = Math.max(0, Math.min(top, img.height - lens.offsetHeight));
-
-                lens.style.left = `${left}px`;
-                lens.style.top = `${top}px`;
-
-                lens.style.backgroundPosition = `-${x * zoomFactor - lensWidth}px -${y * zoomFactor - lensHeight}px`;
-            };
-
-            img.addEventListener("mousemove", moveLens);
-            lens.addEventListener("mousemove", moveLens);
-            img.addEventListener("mouseenter", () => lens.style.display = "block");
-            img.addEventListener("mouseleave", () => lens.style.display = "none");
-        };
-    });
-</script>

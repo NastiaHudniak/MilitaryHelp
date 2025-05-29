@@ -2,9 +2,18 @@
     <div class="card-application">
         <div class="card-foto">
             <div class="image-scroll-container" style="overflow-x: auto; white-space: nowrap; margin: 0">
-                @foreach ($application->images as $image)
-                    <img src="{{ asset('storage/' . $image->image_url) }}" alt="Зображення заявки" class="img-fluid" style="max-height: 130px; object-fit: cover; display: inline-block">
-                @endforeach
+                @if($application->images->isEmpty())
+                    <!-- Заглушка: картинка або текст -->
+                    <div class="no-image-placeholder" style="height: 130px; width: 100%; display: flex; justify-content: center; align-items: center; background: var(--yellow-my); color: var(--green-dark); font-size: 16px; border-radius: 8px;">
+                        Зображень немає
+                    </div>
+                    {{-- або замість тексту можете вставити зображення заглушки: --}}
+                    {{-- <img src="{{ asset('images/no-image.png') }}" alt="Зображень немає" style="max-height: 130px; object-fit: contain;"> --}}
+                @else
+                    @foreach ($application->images as $image)
+                        <img src="{{ asset('storage/' . $image->image_url) }}" alt="Зображення заявки" class="img-fluid" style="max-height: 130px; object-fit: cover; display: inline-block">
+                    @endforeach
+                @endif
             </div>
         </div>
         <div class="card-header-app">
@@ -66,9 +75,15 @@
 
             <div class="modal-foto">
                 <div class="image-scroll-container" style="overflow-x: auto; white-space: nowrap; margin: 0">
-                    @foreach ($application->images as $image)
-                        <img src="{{ asset('storage/' . $image->image_url) }}" alt="Зображення заявки" class="img-fluid" style="max-height: 130px; object-fit: cover; display: inline-block">
-                    @endforeach
+                    @if($application->images->isEmpty())
+                        <div class="no-image-placeholder" style="height: 130px; width: 100%; display: flex; justify-content: center; align-items: center; background: #f0f0f0; color: #888; font-size: 16px; border-radius: 8px;">
+                            Зображень немає
+                        </div>
+                    @else
+                        @foreach ($application->images as $image)
+                            <img src="{{ asset('storage/' . $image->image_url) }}" alt="Зображення заявки" class="img-fluid" style="max-height: 130px; object-fit: cover; display: inline-block">
+                        @endforeach
+                    @endif
                 </div>
                 <div class="navigation-modal-photo">
                     <a href="{{ route('user.military.images.create', $application) }}" class="button-images" type="button">
@@ -536,6 +551,12 @@
 
 </style>
 <script>
+
+    function confirmDelete(title) {
+        return confirm(`Видалити заявку "${title}"?`);
+    }
+
+
     document.addEventListener('DOMContentLoaded', function () {
         document.querySelectorAll('.generate-one-pdf').forEach(button => {
             button.addEventListener('click', function (e) {

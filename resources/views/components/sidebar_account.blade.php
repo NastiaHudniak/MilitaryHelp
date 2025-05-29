@@ -167,14 +167,23 @@
         }
 
     }
+
+    .sidebar-block-account *:focus,
+    .sidebar-block-account *:active {
+        outline: none !important;
+        text-decoration: none !important;
+        box-shadow: none !important;
+        color: inherit !important;
+        background-color: inherit !important;
+    }
+
 </style>
 
 
 <script>
     function confirmLogout() {
-        if (confirm("Ви дійсно бажаєте вийти з акаунта?")) {
-            document.querySelector('form').submit();
-        }
+        return confirm("Ви дійсно бажаєте вийти з акаунта?");
     }
 </script>
+
 

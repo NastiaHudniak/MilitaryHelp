@@ -81,7 +81,7 @@
                                     toast.remove();
                                     showNextToast(index + 1);
                                 });
-                                setTimeout(removeToast, 5000);
+                                setTimeout(removeToast, 9000);
                             }
 
                             showNextToast();

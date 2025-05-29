@@ -113,6 +113,7 @@ Route::prefix('user')->group(function () {
     Route::get('/military/{user}/edit_account', [MilitaryEditUserController::class, 'edit'])->name('user.military.edit_account');
     Route::put('/military/{user}', [MilitaryEditUserController::class, 'update'])->name('user.military.update_account');
     Route::get('/military/vol/view_volunteer', [MilitaryViewVolunteerController::class, 'index'])->name('user.military.vol.view_volunteer');
+    Route::get('/military/vol/view_volunteer/filter', [MilitaryViewVolunteerController::class, 'filter'])->name('user.military.vol.view_volunteer.filter');
     Route::get('/military/vol/search', [MilitaryViewVolunteerController::class, 'search'])->name('user.military.vol.search');
 });
 
@@ -140,7 +141,7 @@ Route::prefix('user')->group(function () {
     Route::delete('/military/{application}', [MilitaryViewApplicationController::class, 'destroy'])->name('user.military.destroy');
     Route::get('/military/search', [MilitaryViewApplicationController::class, 'search'])->name('user.military.search');
     Route::get('/military/applications/filter', [MilitaryViewApplicationController::class, 'getFilteredApplications'])
-        ->name('military.applications.filter');
+        ->name('user.military.filteredApplications');
 
 
     Route::get('/military/export', [MilitaryViewApplicationController::class, 'export'])->name('user.military.export');
