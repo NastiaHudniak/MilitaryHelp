@@ -2,32 +2,19 @@
 @include('layouts.header_military')
 
 @section('content')
-    <div class="container" style="max-width: 1300px; padding: 50px 0px;">
-        <div class="row mb-4">
-            <div class="col-md-4">
-                <h3>Список волонтерів</h3>
-            </div>
-        </div>
-
-        <div id="no-results" class="alert alert-info" style="display: none; text-align: center;">
-            Волонтерів не знайдено.
-        </div>
-
-        <div class="row" id="volunteer-card-container">
+    <div class="main-content" style="font-family: 'Open Sans', sans-serif;">
+        <div class="volunteer-block" id="volunteer-card-container">
             @foreach ($volunteers as $volunteer)
-                <div class="col-md-3 mb-4">
-                    <div class="card h-100">
-                        <div class="card-header" style="background-color: var(--green-400);">
-                            @if(count($volunteer->images) > 0)
-                        <img src="{{ asset('storage/' . $volunteer->images[0]->image_url) }}" alt="User Image"  style="width:70px; height:70px;  border-radius: 50px;">
-                            @else
-                        <img src="{{ asset('images/acc.jpg') }}" alt="User Image"  style="width:70px; height:70px;  border-radius: 50px;">
-                            @endif
-                            <div class="card-headers" >
-                                <h5 class="card-title" style="color: var(--green-800);">{{ $volunteer->name }}</h5>
-                                <h5 class="card-title" style="color: var(--green-800);">{{ $volunteer->surname }}</h5>
-                            </div>
-                        </div>
+                <div class="card-volunteer">
+                    <div class="card-foto">
+                        @if(count($volunteer->images) > 0)
+                            <img src="{{ asset('storage/' . $volunteer->images[0]->image_url) }}" alt="User Image"  style="border-radius: 500px;">
+                        @else
+                            <img src="{{ asset('images/acc.jpg') }}" alt="User Image"  style=" border-radius: 50px;">
+                        @endif
+                    </div>
+                    <div class="card-header-app">
+                        <h5 class="card-title-app">{{ $volunteer->name }} {{ $volunteer->surname }}</h5>
                         <div class="star-rating">
                             @for($i = 1; $i <= 5; $i++)
                                 <div class="star">
@@ -43,20 +30,85 @@
                                     @endif
                                 </div>
                             @endfor
-                            <p>Середній рейтинг: {{ number_format($volunteer->average_rating, 1) }}</p>
+                            <p>{{ number_format($volunteer->average_rating, 1) }}</p>
                         </div>
-                        <div class="card-footer" style="background-color: var(--green-200);">
-                            <a href="javascript:void(0);" class="btn btn-sm"  data-toggle="modal" data-target="#applicationModal{{ $volunteer->id }}" style="background-color: var(--yellow-500);" >
-                                <i class="fas fa-ellipsis-v" style="font-size: 15px;"></i> Переглянути більше
-                            </a>
-                        </div>
+                    </div>
+                    <div class="buttons-blocks">
+                        <button class="favorite-btn" type="button" data-id="{{ $volunteer->id }}">
+                            <img src="{{ auth()->user()->favorites->contains($volunteer->id) ? asset('images/icon/bookmarks/bookmark-filled.svg') : asset('images/icon/bookmarks/bookmark.svg') }}"
+                                 alt="Favorite"
+                                 class="favorite-icon"
+                                 data-outline="{{ asset('images/icon/bookmarks/bookmark.svg') }}"
+                                 data-filled="{{ asset('images/icon/bookmarks/bookmark-filled.svg') }}">
+                        </button>
+                        <a href="javascript:void(0);" class="button-view-info" data-toggle="modal" data-target="#applicationModal{{ $volunteer->id }}">
+                            Детальніше
+                            <img src="{{ asset('images/icon/info.svg') }}">
+                        </a>
                     </div>
                 </div>
             @endforeach
                 @foreach ($volunteers as $volunteer)
+                    <div class="modal" id="applicationModal{{ $volunteer->id }}" tabindex="-1" aria-labelledby="applicationModalLabel{{ $volunteer->id }}" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" style="top: 10%; left: 30%;">
+                        <div class="modal-info-block">
+                            <div class="modal-status-close">
+                                <div class="modal-title" id="applicationModalLabel{{ $volunteer->id }}">
+                                    <p class="info-title">{{ $volunteer->name }} {{ $volunteer->surname }}</p>
+                                </div>
+                                <button type="button" class="close-button" data-bs-dismiss="modal" aria-label="Close">
+                                    <img src="{{ asset('images/icon/cancell.svg') }}">
+                                </button>
+                            </div>
+                            <div class="modal-foto-text">
+                                <div class="modal-foto">
+                                    @if(count($volunteer->images) > 0)
+                                        <img src="{{ asset('storage/' . $volunteer->images[0]->image_url) }}" alt="User Image"  style="border-radius: 500px;">
+                                    @else
+                                        <img src="{{ asset('images/acc.jpg') }}" alt="User Image"  style=" border-radius: 50px;">
+                                    @endif
+                                </div>
+                                <div class="modal-description">
+                                    <p class="info-description">{{ $volunteer->email }}</p>
+                                    <p class="info-description">{{ $volunteer->phone }}</p>
+                                    <p class="info-description">{{ $volunteer->address }}</p>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <div class="star-rating">
+                                    @for($i = 1; $i <= 5; $i++)
+                                        <div class="star">
+                                            @if($volunteer->average_rating >= $i)
+                                                <!-- Повністю заповнена зірочка -->
+                                                <div class="full"></div>
+                                            @elseif($volunteer->average_rating >= $i - 0.5 && $volunteer->average_rating < $i)
+                                                <!-- Половинно заповнена зірочка -->
+                                                <div class="half"></div>
+                                            @else
+                                                <!-- Порожня зірочка -->
+                                                <div class="empty"></div>
+                                            @endif
+                                        </div>
+                                    @endfor
+                                    <p>{{ number_format($volunteer->average_rating, 1) }}</p>
+                                </div>
+                                <button class="favorite-btn" type="button" data-id="{{ $volunteer->id }}">
+                                    <img src="{{ auth()->user()->favorites->contains($volunteer->id) ? asset('images/icon/bookmarks/bookmark-filled.svg') : asset('images/icon/bookmarks/bookmark.svg') }}"
+                                         alt="Favorite"
+                                         class="favorite-icon"
+                                         data-outline="{{ asset('images/icon/bookmarks/bookmark.svg') }}"
+                                         data-filled="{{ asset('images/icon/bookmarks/bookmark-filled.svg') }}">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+
+
                     <div class="modal fade" id="applicationModal{{ $volunteer->id }}" tabindex="-1" aria-labelledby="applicationModalLabel{{ $volunteer->id }}" aria-hidden="true">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
+
                                 <div class="modal-header" style="background-color: var(--green-400);">
                                     <h5 class="modal-title" id="applicationModalLabel{{ $volunteer->id }}">Інформація про волонтера</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -76,14 +128,12 @@
                         </div>
                     </div>
                 @endforeach
+
         </div>
     </div>
 
 <script>
-    document.getElementById('search').addEventListener('input', function() {
-    const query = document.getElementById('search').value;
-    fetchVolunteers(query);
-});
+
 
 function fetchVolunteers(query) {
     const url = `{{ route('user.military.vol.search') }}?query=${encodeURIComponent(query)}`;
@@ -130,6 +180,55 @@ function fetchVolunteers(query) {
 }
 
 
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll('.favorite-btn .favorite-icon').forEach(function (icon) {
+        icon.addEventListener('click', function (e) {
+            e.stopPropagation();
+
+            const btn = icon.closest('.favorite-btn');
+            const userId = btn.dataset.id;
+            const outlineSrc = icon.dataset.outline;
+            const filledSrc = icon.dataset.filled;
+
+            fetch(`/users/${userId}/favorite`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({})
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        if (response.status === 401) {
+                            alert('Спочатку увійдіть, щоб додати до обраного!');
+                            return;
+                        }
+                        throw new Error('Помилка мережі');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (!data) return;
+
+                    if (data.status === 'added') {
+                        icon.setAttribute('src', filledSrc);
+                        btn.classList.add('favorited');
+                    } else if (data.status === 'removed') {
+                        icon.setAttribute('src', outlineSrc);
+                        btn.classList.remove('favorited');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Сталася помилка.');
+                });
+        });
+    });
+});
+
+
+
 </script>
 
 @include('layouts.footer')
@@ -137,105 +236,369 @@ function fetchVolunteers(query) {
 
 <style>
 
+    body {
+        overflow-x: hidden;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    .main-content {
+        background-color: var(--main-white);
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
+    .volunteer-block{
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 36px;
+        padding: 64px 80px;
+    }
+
+    @media (max-width: 768px) {
+
+        .volunteer-block{
+            gap: 12px;
+            padding: 24px;
+        }
+    }
+
+
+    .card-volunteer{
+        width: calc(25% - 27px);
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        flex-direction: column;
+        padding: 16px;
+        gap: 24px;
+        background-color: var(--yellow-my);
+        border-radius: 16px;
+    }
+
+    .card-foto{
+        padding: 0;
+    }
+    .card-foto img{
+        padding: 0;
+        width: 120px;
+        height: 120px;
+    }
+
+    .card-header-app{
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-direction: column;
+        gap: 0;
+        background-color: transparent; !important;
+        border: none; !important;
+
+    }
+
+    .card-title-app {
+        color: var(--black-my);
+        font-size: 20px;
+        font-weight: 600;
+        line-height: 130%;
+        word-wrap: break-word;
+        margin: 0;
+    }
+
+    .star-rating{
+        display: flex;
+        flex-direction: row;
+        gap: 4px;
+        align-items: center;
+        justify-content: center;
+        color: var(--green-dark);
+        font-size: 18px;
+        font-weight: 400;
+        word-wrap: break-word;
+        margin: 0;
+    }
+
+    .star-rating p{
+        margin: 0;
+    }
 
     .star {
         display: inline-block;
-        width: 30px;
-        height: 30px;
-        margin-right: 5px;
+        width: 20px;
+        height: 20px;
+        margin-right: 3px;
         position: relative;
         background: transparent;
     }
 
     .star .full {
-        border: 2px solid gold;
-        background-color: gold;
+        border: 2px solid var(--orange-my);
+        background-color: var(--orange-my);
         width: 100%;
         height: 100%;
         clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-        border-radius: 4px; /* Додаємо заокруглення */
-        box-shadow: 0 0 0 2px gold;
+        border-radius: 4px;
+        box-shadow: 0 0 0 2px var(--orange-my);
     }
 
     .star .half {
-        border: 2px solid gold;
-        background: linear-gradient(90deg, gold 50%, red 50%);
+        border: 2px solid var(--orange-my);
+        background: linear-gradient(90deg, var(--orange-my) 50%, var(--blue-my) 50%);
         width: 100%;
         height: 100%;
         clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-        border-radius: 4px; /* Додаємо заокруглення */
-        box-shadow: 0 0 0 2px gold;
+        border-radius: 4px;
+        box-shadow: 0 0 0 2px var(--orange-my);
     }
 
     .star .empty {
-        background-color: red;
-        border: 2px solid gold;
+        background-color: var(--blue-my);
+        border: 2px solid var(--orange-my);
         width: 100%;
         height: 100%;
         clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-        border-radius: 4px; /* Додаємо заокруглення */
-        box-shadow: 0 0 0 2px gold;
+        border-radius: 4px;
+        box-shadow: 0 0 0 2px var(--orange-my);
     }
 
 
 
 
-    .btn {
-        transition: background-color 0.3s ease, color 0.3s ease;
-    }
 
-    .btn:hover {
-        background-color: var(--green-800);
-        text-decoration: none;
-        transform: scale(1.1);
-    }
-
-    .card {
-        transition: box-shadow 0.3s ease;
-        box-shadow: 0 6px 10px rgba(43, 67, 36, 0.6);
-    }
-
-    .card:hover {
-        box-shadow: 0px 0px 15px rgba(43, 67, 36, 0.3);
-        transform: scale(1.01);
-    }
-
-    .card-body {
+    .buttons-blocks{
+        width: 100%;
         display: flex;
-        flex-direction: column;
-    }
-    .card-headers {
-        min-height: 93px; /* Фіксована мінімальна висота для card-header */
-        max-height: 93px; /* Фіксована максимальна висота для card-header */
-        overflow: hidden; /* Обмеження тексту, якщо він виходить за межі */
-        display: flex;
-        flex-direction: column;
         justify-content: space-between;
-        padding: 20px 0;
+        padding: 0;
+        background-color: transparent;
+        border: none;
     }
 
-    .card-header{
+    .button-view-info{
         display: flex;
-        flex-direction: row;
-        gap: 15px;
         align-items: center;
+        justify-content: center;
+        width: auto;
+        height: fit-content;
+        background-color: var(--yellow-my);
+        border-radius: 16px;
+        border: 1px var(--main-green-dark) solid;
+        color: var(--main-green-dark);
+        gap: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 130%;
+        padding: 6px 16px;
+        text-align: center;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background-color 0.5s ease, color 0.5s ease;
     }
 
-    .card-footer{
+    .favorite-btn {
+        background: none;
+        border: none;
+        padding: 0;
+        margin: 0;
+        outline: none;
+        cursor: pointer;
+        appearance: none;
+    }
+
+    .favorite-btn:focus,
+    .favorite-btn:active {
+        outline: none;
+        box-shadow: none;
+    }
+
+    .favorite-icon {
+        width: 32px;
+        height: 32px;
+        display: block;
+    }
+
+
+
+
+
+
+    .modal-status-close{
         display: flex;
-        flex-direction: row;
         justify-content: space-between;
+        flex-direction: row;
+        padding: 0;
+        margin: 0;
+
     }
 
-    .card-text {
-        margin-bottom: 10px;
+    .modal-info-block{
+        width: 40%;
+        display: flex;
+        justify-content: start;
+        flex-direction: column;
+        gap: 24px;
+        border-radius: 16px;
+        padding: 24px;
+        background-color: var(--main-white);
     }
 
-    .card-title, .card-subtitle {
-        margin-bottom: 10px;
+
+    .close-button{
+        padding: 0;
+        margin: 0;
+        background-color: transparent;
+        border: none;
     }
 
-    .h-100 {
-        height: 100%;
+    .modal-foto-text{
+        display: flex;
+        justify-content: start;
+        flex-direction: row;
+        gap: 32px;
     }
+
+    .modal-foto{
+        padding: 0;
+    }
+    .modal-foto img{
+        padding: 0;
+        width: 180px;
+        height: 180px;
+    }
+
+
+
+    .modal-title, .modal-description{
+        display: flex;
+        justify-content: start;
+        flex-direction: column;
+        gap: 8px;
+
+    }
+
+    .info-title{
+        color: var(--black-my);
+        font-size: 20px;
+        font-weight: 600;
+        line-height: 130%;
+        word-wrap: break-word;
+        margin: 0;
+    }
+
+    .info-description{
+        color: var(--green-dark);
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 130%;
+        word-wrap: break-word;
+        margin: 0;
+    }
+
+    .modal-foto{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-direction: row;
+        gap: 16px;
+    }
+
+
+    .modal-footer{
+        width: 100%;
+        display: flex;
+        align-items: start;
+        justify-content: start;
+        flex-direction: row;
+        gap: 16px;
+    }
+
+    @media (max-width: 768px) {
+
+        .card-volunteer{
+            width: calc(50% - 12px);
+            gap: 12px;
+        }
+
+        .card-title-app {
+            font-size: 16px;
+        }
+
+
+        .buttons-blocks{
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+            gap: 8px;
+        }
+
+        .modal {
+            top: 5% !important;
+            left: 5% !important;
+            right: 5% !important;
+            width: 90% !important;
+            margin: 0 auto;
+            padding: 0;
+        }
+
+        .modal-info-block {
+            width: 100% !important;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 16px;
+            box-sizing: border-box;
+        }
+
+        .modal-foto img{
+            padding: 0;
+            width: 110px;
+            height: 110px;
+        }
+
+        .modal-status-close{
+            display: flex;
+            justify-content: space-between;
+            flex-direction: row;
+            padding: 0;
+            margin: 0;
+
+        }
+
+
+
+        .modal-title, .modal-description{
+            display: flex;
+            justify-content: start;
+            flex-direction: column;
+            gap: 0;
+
+        }
+
+        .info-title{
+            font-size: 18px;
+        }
+
+        .info-description{
+            font-size: 14px;
+        }
+
+
+        .modal-footer{
+            width: 100%;
+            display: flex;
+            align-items: start;
+            justify-content: space-between !important;
+            flex-direction: row;
+            gap: 16px;
+        }
+
+    }
+
+
+
+
+
 </style>

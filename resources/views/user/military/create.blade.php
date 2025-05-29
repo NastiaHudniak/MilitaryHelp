@@ -43,6 +43,15 @@
                     <div class="text-danger">{{ $message }}</div>
                     @enderror
                 </div>
+                <div class="form-group role-group">
+                    <div class="role-options">
+                        <label class="role-option">
+                            <input type="checkbox" name="is_urgent" value="1" {{ old('is_urgent') ? 'checked' : '' }}>
+                            Термінова
+                        </label>
+                    </div>
+                </div>
+
                 <div class="form-buttons">
                     <button type="submit" class="create-button">Створити заявку</button>
                     <div class="label-create">
@@ -50,6 +59,8 @@
                         <a href="{{ route('user.military.index') }}">Назад</a>
                     </div>
                 </div>
+
+
             </form>
         </div>
     </div>
@@ -160,6 +171,32 @@
         flex-direction: column;
         gap: 0.75rem;
     }
+
+    .role-group {
+        color: var(--green-dark);
+    }
+
+    .role-options {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+    }
+
+    .role-option {
+        display: flex;
+        align-items: center;
+        font-size: 1rem;
+        font-weight: 500;
+        gap: 6px;
+        cursor: pointer;
+    }
+
+    .role-option input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+        accent-color: var(--green-light);
+    }
+
 
     .create-button {
         display: flex;

@@ -29,6 +29,16 @@
                             </div>
                         </div>
                         <div class="card-footer" style="background-color: var(--green-200);">
+                            <button class="favorite-btn" type="button" data-id="{{ $military->id }}" style="background: none; border: none; cursor: pointer;">
+                                <img
+                                    src="{{ auth()->user()->favorites->contains($military->id) ? asset('images/icon/bookmarks/bookmark-filled.svg') : asset('images/icon/bookmarks/bookmark.svg') }}"
+                                    alt="Favorite"
+                                    class="favorite-icon"
+                                    data-outline="{{ asset('images/icon/bookmarks/bookmark.svg') }}"
+                                    data-filled="{{ asset('images/icon/bookmarks/bookmark-filled.svg') }}"
+                                    style="width: 24px; height: 24px;"
+                                >
+                            </button>
                             <a href="{{ route('user.volunteer.view_info_military', $military->id) }}" class="btn btn-sm" style="color: var(--green-500);">
                                 <i class="fas fa-eye"></i> Переглянути
                             </a>
@@ -41,10 +51,6 @@
     </div>
 
     <script>
-        document.getElementById('search').addEventListener('input', function() {
-    const query = document.getElementById('search').value;
-    fetchVolunteers(query);
-});
 
 function fetchVolunteers(query) {
     const url = `{{ route('user.volunteer.mil.search') }}?query=${encodeURIComponent(query)}`;
@@ -89,6 +95,53 @@ function fetchVolunteers(query) {
                 })
                 .catch(error => console.error('Error:', error));
         }
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.favorite-btn .favorite-icon').forEach(function (icon) {
+                icon.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    const btn = icon.closest('.favorite-btn');
+                    const userId = btn.dataset.id;
+                    const outlineSrc = icon.dataset.outline;
+                    const filledSrc = icon.dataset.filled;
+
+                    fetch(`/users/${userId}/favorite`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({})
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                if (response.status === 401) {
+                                    alert('Будь ласка, увійдіть, щоб додати в обрані');
+                                    return;
+                                }
+                                throw new Error('Помилка мережі');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (!data) return;
+
+                            if (data.status === 'added') {
+                                icon.setAttribute('src', filledSrc);
+                                btn.classList.add('favorited');
+                            } else if (data.status === 'removed') {
+                                icon.setAttribute('src', outlineSrc);
+                                btn.classList.remove('favorited');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('Сталася помилка.');
+                        });
+                });
+            });
+        });
     </script>
     @include('layouts.footer')
 @endsection

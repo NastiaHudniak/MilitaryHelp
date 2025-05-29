@@ -20,40 +20,44 @@
                     <a class="btn-log" href="{{ url('auth/login') }}"> Увійти в акаунт </a>
                 </div>
             </div>
+
             <div class="right-image">
-                    <img src="{{ asset('images/logo/image_military.svg') }}" alt="Image-Military">
+                <img src="{{ asset('images/logo/image_military.svg') }}" alt="Image-Military">
             </div>
         </section>
 
-        <section  class="block-two" id="help-section" >
+        <section class="block-two" id="help-section">
             <h2 class="title-info">Військові публікують заявки зі своїми потребами - волонтери допомагають</h2>
             <p class="subtitle-info">Що ми можемо надати?</p>
             <div class="helps-info-block">
                 <div class="helps-info">
                     <div class="helps-info-icon">
-                        <object type="image/svg+xml" data="{{ asset('images/icon/landing_about.svg') }}" class="icon-helps"></object>
+                        <object type="image/svg+xml" data="{{ asset('images/icon/landing_about.svg') }}"
+                                class="icon-helps"></object>
                     </div>
                     <p class="helps-title">Перша допомога</p>
                     <p class="helps-subtitle">Медикаменти, спідня білизна, засоби особистої гігієни</p>
                 </div>
                 <div class="helps-info">
                     <div class="helps-info-icon">
-                        <object type="image/svg+xml" data="{{ asset('images/icon/landing_about-1.svg') }}" class="icon-helps"></object>
+                        <object type="image/svg+xml" data="{{ asset('images/icon/landing_about-1.svg') }}"
+                                class="icon-helps"></object>
                     </div>
                     <p class="helps-title">Життєво необхідне</p>
                     <p class="helps-subtitle">Павербанки, ліхтарики, таблетки для очищення води</p>
                 </div>
                 <div class="helps-info">
                     <div class="helps-info-icon">
-                        <object type="image/svg+xml" data="{{ asset('images/icon/landing_about-2.svg') }}" class="icon-helps"></object>
+                        <object type="image/svg+xml" data="{{ asset('images/icon/landing_about-2.svg') }}"
+                                class="icon-helps"></object>
                     </div>
                     <p class="helps-title">Гігієна в польових умовах</p>
                     <p class="helps-subtitle">Серветки, мило, одноразові душі, зубні щітки</p>
                 </div>
             </div>
-        </section >
+        </section>
 
-        <section  class="block-three" id="analytics-section">
+        <section class="block-three" id="analytics-section">
             <h2 class="title-analytics">Результати нашої роботи</h2>
             <div class="analytics">
                 <div class="analytics-block">
@@ -69,33 +73,37 @@
                     <p class="analytics-label">заявок опрацьовано</p>
                 </div>
             </div>
-        </section >
+        </section>
 
-        <section  class="block-four" id="about-section" >
+        <section class="block-four" id="about-section">
             <div class="block-four-inside">
                 <h2 class="title-block-why-us">Чому саме ми?</h2>
                 <div class="why-us-info-block">
                     <div class="why-us-info">
                         <p class="why-us-title">Ефективність</p>
-                        <p class="why-us-subtitle">Ми знаємо де взяти найкращі технології для наших військових та де вони найзатребуваніші. Тому допомагаємо ЗСУ.</p>
+                        <p class="why-us-subtitle">Ми знаємо де взяти найкращі технології для наших військових та де
+                            вони найзатребуваніші. Тому допомагаємо ЗСУ.</p>
                     </div>
                     <div class="why-us-info">
                         <p class="why-us-title">100% на допомогу ЗСУ</p>
-                        <p class="why-us-subtitle">Всі наші сили ми направляємо на допомогу військовим, щоб 100% донатів перетворювати на технології для ЗСУ.</p>
+                        <p class="why-us-subtitle">Всі наші сили ми направляємо на допомогу військовим, щоб 100% донатів
+                            перетворювати на технології для ЗСУ.</p>
                     </div>
                     <div class="why-us-info">
                         <p class="why-us-title">Прозорість</p>
-                        <p class="why-us-subtitle">Ми регулярно звітуємо на сайті та в соціальних мережах, як і на що ми витрачаємо ресурси та кошти для ЗСУ.</p>
+                        <p class="why-us-subtitle">Ми регулярно звітуємо на сайті та в соціальних мережах, як і на що ми
+                            витрачаємо ресурси та кошти для ЗСУ.</p>
                     </div>
                     <div class="why-us-info">
                         <p class="why-us-title">Єдність</p>
-                        <p class="why-us-subtitle">Всі волонтери вже працюють з нами. Згрупувавшись усі разом - допомагаємо нашій армії.</p>
+                        <p class="why-us-subtitle">Всі волонтери вже працюють з нами. Згрупувавшись усі разом -
+                            допомагаємо нашій армії.</p>
                     </div>
                 </div>
             </div>
-        </section >
+        </section>
 
-        <section  class="block-five" id="volunteers-section">
+        <section class="block-five" id="volunteers-section">
             <div class="volunteers-header">
                 <div class="title-block-volunteer">
                     Наші <span class="highlight">волонтери</span> - завжди допоможуть та підтримають
@@ -109,7 +117,8 @@
                             <div class="img-vol">
                                 @if($volunteer->images->isNotEmpty())
                                     @foreach ($volunteer->images as $image)
-                                        <img  class="img1-icon" alt="" src="{{ asset('storage/' . $image->image_url) }}" />
+                                        <img class="img1-icon" alt=""
+                                             src="{{ asset('storage/' . $image->image_url) }}"/>
                                     @endforeach
                                 @else
                                     <p>No images available for this volunteer.</p>
@@ -129,9 +138,9 @@
                     @endforeach
                 </div>
             </div>
-        </section >
+        </section>
     </div>
-        @include('layouts.footer')
+    @include('layouts.footer')
 
 
     <style>
@@ -229,14 +238,17 @@
             text-align: center;
             cursor: pointer;
             text-decoration: none;
-            transition: background-color 0.5s ease, color 0.5s ease;
+            transition: background-color 0.6s ease,
+            color 0.6s ease,
+            border-color 0.6s ease,
+            transform 0.6s ease;
         }
 
         .btn-more:hover {
             background-color: var(--green-dark);
             color: var(--main-white);
             text-decoration: none;
-            transform: scale(1.1);
+            transform: scale(1.05);
         }
 
         .btn-log {
@@ -256,7 +268,10 @@
             text-align: center;
             cursor: pointer;
             text-decoration: none;
-            transition: background-color 0.5s ease, color 0.5s ease;
+            transition: background-color 0.6s ease,
+            color 0.6s ease,
+            border-color 0.6s ease,
+            transform 0.6s ease;
         }
 
         .btn-log:hover {
@@ -264,7 +279,18 @@
             border: 1px solid var(--green-dark);
             color: var(--main-white);
             text-decoration: none;
-            transform: scale(1.1);
+            transform: scale(1.05);
+        }
+
+        .right-image {
+            transition: background-color 0.6s ease,
+            color 0.6s ease,
+            border-color 0.6s ease,
+            transform 0.6s ease;
+        }
+
+        .right-image:hover {
+            transform: scale(1.03);
         }
 
         @media (max-width: 768px) {
@@ -335,7 +361,7 @@
             border-radius: 16px;
         }
 
-        .title-info{
+        .title-info {
             color: var(--green-dark);
             display: inline-block;
             font-size: 48px;
@@ -345,7 +371,8 @@
             text-align: center;
             word-wrap: break-word;
         }
-        .subtitle-info{
+
+        .subtitle-info {
             color: var(--black-my);
             display: inline-block;
             font-size: 32px;
@@ -353,7 +380,7 @@
             margin: 0;
         }
 
-        .helps-info-block{
+        .helps-info-block {
             display: flex;
             justify-content: center;
             padding: 0;
@@ -362,32 +389,40 @@
             gap: 96px;
 
         }
+
         .helps-info {
             display: flex;
             flex-direction: column;
             align-items: flex-start;
             text-align: left;
             gap: 16px;
-        }
-        .helps-info:hover, .why-us-info:hover, .analytics-block:hover{
-            transform: scale(1.1);
+            transition: background-color 0.6s ease,
+            color 0.6s ease,
+            border-color 0.6s ease,
+            transform 0.6s ease;
         }
 
-        .helps-info-icon{
+        .helps-info:hover, .why-us-info:hover, .analytics-block:hover {
+            transform: scale(1.05);
+        }
+
+        .helps-info-icon {
             padding: 10px;
             background-color: var(--orange-my);
             border-radius: 16px;
             width: 60px;
             height: 60px;
         }
-        .helps-title{
+
+        .helps-title {
             font-size: 24px;
             font-weight: 600;
             line-height: 130%;
             color: var(--black-my);
             margin: 0;
         }
-        .helps-subtitle{
+
+        .helps-subtitle {
             font-size: 20px;
             font-weight: 400;
             line-height: 30px;
@@ -421,7 +456,7 @@
                 gap: 18px;
             }
 
-            .helps-info-icon{
+            .helps-info-icon {
                 padding: 4px;
                 background-color: var(--orange-my);
                 border-radius: 16px;
@@ -429,7 +464,7 @@
                 height: 40px;
             }
 
-            .icon-helps{
+            .icon-helps {
                 width: 32px;
                 height: 32px;
             }
@@ -452,8 +487,6 @@
         }
 
 
-
-
         .block-three {
             width: 100%;
             margin: 64px 0;
@@ -465,7 +498,8 @@
             padding: 40px 190px;
             gap: 32px;
         }
-        .title-analytics{
+
+        .title-analytics {
             color: var(--black-my);
             display: inline-block;
             font-size: 48px;
@@ -481,18 +515,25 @@
             align-items: center;
             width: 100%;
         }
+
         .analytics-block {
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
+            transition: background-color 0.6s ease,
+            color 0.6s ease,
+            border-color 0.6s ease,
+            transform 0.6s ease;
         }
+
         .analytics-number {
             font-size: 58px;
             font-weight: 600;
             line-height: 130%;
             color: var(--black-my);
         }
+
         .analytics-label {
             font-size: 24px;
             font-weight: 400;
@@ -514,7 +555,7 @@
                 gap: 24px;
             }
 
-            .title-analytics{
+            .title-analytics {
                 font-size: 24px;
                 text-align: center;
             }
@@ -526,17 +567,17 @@
                 gap: 8px;
                 align-items: center;
             }
+
             .analytics-number {
                 font-size: 40px;
                 margin: 0;
             }
+
             .analytics-label {
                 font-size: 20px;
                 margin: 0;
             }
         }
-
-
 
 
         .block-four {
@@ -568,33 +609,39 @@
             justify-content: space-between;
             padding: 40px 110px;
         }
-        .title-block-why-us{
+
+        .title-block-why-us {
             color: var(--orange-my);
             display: inline-block;
             font-size: 48px;
             font-weight: 600;
-            line-height:  130%;
+            line-height: 130%;
             word-wrap: break-word;
             margin: 0;
             text-align: center;
         }
 
-        .why-us-info-block{
+        .why-us-info-block {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             gap: 24px;
         }
 
-        .why-us-info{
+        .why-us-info {
             flex: 0 1 calc(50% - 12px);
             display: flex;
             flex-direction: column;
             align-items: flex-start;
             text-align: left;
             gap: 8px;
+            transition: background-color 0.6s ease,
+            color 0.6s ease,
+            border-color 0.6s ease,
+            transform 0.6s ease;
         }
-        .why-us-title{
+
+        .why-us-title {
             margin: 0;
             color: var(--green-dark);
             font-size: 28px;
@@ -602,12 +649,13 @@
             line-height: 130%;
             word-wrap: break-word
         }
-        .why-us-subtitle{
+
+        .why-us-subtitle {
             margin: 0;
             color: var(--main-green-dark);
             font-size: 20px;
             font-weight: 400;
-            line-height:  130%;
+            line-height: 130%;
             word-wrap: break-word
         }
 
@@ -622,35 +670,33 @@
                 gap: 24px;
             }
 
-            .title-block-why-us{
+            .title-block-why-us {
                 font-size: 32px;
                 margin: 0;
             }
 
-            .why-us-info-block{
+            .why-us-info-block {
                 display: flex;
                 justify-content: center;
                 flex-direction: column;
                 gap: 20px;
             }
 
-            .why-us-info{
+            .why-us-info {
                 flex-direction: column;
                 align-items: center;
                 text-align: center;
                 gap: 8px;
             }
-            .why-us-title{
+
+            .why-us-title {
                 font-size: 20px;
             }
-            .why-us-subtitle{
+
+            .why-us-subtitle {
                 font-size: 16px;
             }
         }
-
-
-
-
 
 
         .block-five {
@@ -674,6 +720,7 @@
             color: var(--main-green-dark);
             text-align: center;
         }
+
         .title-block-volunteer .highlight {
             background-image: linear-gradient(90deg, #556B2F 0%, #D97706 100%);
             -webkit-background-clip: text;
@@ -687,6 +734,7 @@
             padding-top: 100px;
             padding-bottom: 20px;
         }
+
         .volunteer-block {
             display: flex;
             justify-content: center;
@@ -700,15 +748,17 @@
         .volunteer-block-outer::-webkit-scrollbar {
             height: 8px;
         }
+
         .volunteer-block-outer::-webkit-scrollbar-thumb {
             background-color: var(--green-dark);
             border-radius: 4px;
         }
+
         .volunteer-block-outer::-webkit-scrollbar-track {
             background: transparent;
         }
 
-        .volunteer-card{
+        .volunteer-card {
             position: relative;
             display: flex;
             justify-content: space-between;
@@ -717,8 +767,18 @@
             align-items: center;
             flex: 0 0 calc((100% - 3 * 36px) / 4); /* 4 картки + 3 відступи між ними */
             max-width: calc((100% - 3 * 36px) / 4); /* Додатково обмежуємо максимальну ширину */
+            transition: background-color 0.6s ease,
+            color 0.6s ease,
+            border-color 0.6s ease,
+            transform 0.6s ease;
         }
-        .img-vol{
+
+
+        .volunteer-card:hover {
+            transform: scale(1.05);
+        }
+
+        .img-vol {
             width: 183px;
             height: 183px;
             position: absolute;
@@ -728,6 +788,7 @@
             justify-content: center;
             align-items: center;
         }
+
         .img-vol img {
             width: 100%;
             height: 100%;
@@ -735,7 +796,7 @@
             border-radius: 50%;
         }
 
-        .text-block-volunteer{
+        .text-block-volunteer {
             background-color: var(--beige-light);
             border-radius: 16px;
             display: flex;
@@ -748,14 +809,16 @@
             width: 100%;
             gap: 24px;
         }
-        .volunteer-name{
+
+        .volunteer-name {
             color: var(--black-my);
             font-size: 24px;
             font-weight: 500 !important;
             line-height: 130%;
             word-wrap: break-word;
         }
-        .volunteer-text-more{
+
+        .volunteer-text-more {
             color: var(--green-dark);
             font-size: 18px;
             font-weight: 400 !important;
@@ -772,24 +835,29 @@
                 padding: 32px 24px;
                 gap: 2px;
             }
+
             .title-block-volunteer {
                 width: fit-content;
                 font-size: 24px;
             }
+
             .volunteer-block {
                 flex-direction: column;
                 align-items: center;
                 gap: 90px;
             }
-            .volunteer-card{
+
+            .volunteer-card {
                 max-width: 80%;
                 width: 80%;
             }
-            .img-vol{
+
+            .img-vol {
                 width: 120px;
                 height: 120px;
                 top: -60px;
             }
+
             .img-vol img {
                 width: 100%;
                 height: 100%;
@@ -797,19 +865,19 @@
                 border-radius: 50%;
             }
 
-            .text-block-volunteer{
+            .text-block-volunteer {
                 padding-top: 60px;
                 gap: 8px;
             }
-            .volunteer-name{
+
+            .volunteer-name {
                 font-size: 20px;
             }
-            .volunteer-text-more{
+
+            .volunteer-text-more {
                 font-size: 16px;
             }
         }
-
-
 
 
     </style>
@@ -844,7 +912,7 @@
                         observer.unobserve(entry.target);
                     }
                 });
-            }, { threshold: 0.5 });
+            }, {threshold: 0.5});
 
             const analyticsSection = document.getElementById("analytics-section");
             if (analyticsSection) {

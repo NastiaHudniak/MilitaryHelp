@@ -275,7 +275,7 @@
         font-weight: 400;
         line-height: 21px;
         word-wrap: break-word;
-        color: var(--greey-my);
+        color: var(--black-my);
     }
 
     .input-message::placeholder {

@@ -16,8 +16,10 @@
                         <img src="{{ asset('images/icon/znak-white.svg') }}" >
                         Додати заявку
                     </a>
-                    <a type="submit" href="{{ route('user.military.exportAllPDF') }}"  class="button-report">
-                        <img src="{{ asset('images/icon/pdf.svg') }}" >
+                    <a href="#"
+                       class="button-report generate-all-pdf"
+                       data-url="{{ route('user.military.exportAllPDF') }}">
+                        <img src="{{ asset('images/icon/pdf.svg') }}">
                         Сформувати звіт в .pdf
                     </a>
                     <a type="submit" class="button-report">
@@ -37,10 +39,12 @@
                     </label>
                     <div class="sort-select" >
                         <select id="sort-filter" class="sort-input">
-                            <option value="latest">Останнi</option>
-                            <option value="oldest">Старіші</option>
-                            <option value="status">Статус</option>
+                            <option value="urgent_oldest">Термінові + старіші</option>
+                            <option value="oldest">Старіші → новіші</option>
+                            <option value="newest">Новіші → старіші</option>
+                            <option value="title">За назвою</option>
                         </select>
+
                     </div>
                 </div>
 
@@ -87,57 +91,127 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const searchInput = document.getElementById('search');
-            const sortSelect = document.getElementById('sort-filter');
-            const categoryFilter = document.getElementById('category-filter');
-            const statusFilter = document.getElementById('status-filter');
-            const resetButton = document.getElementById('reset-filter');
-            const cards = document.querySelectorAll('#application-card-container .col-md-3');
-            const noResults = document.getElementById('no-results');
 
-            function filterCards() {
-                const search = searchInput.value.toLowerCase();
-                const category = categoryFilter.value;
-                const status = statusFilter.value;
+        function applyFilter() {
+            const sort = document.getElementById('sort-filter').value;
+            const category = document.getElementById('category-filter').value;
+            const status = document.getElementById('status-filter').value;
+            const search = document.getElementById('search').value;
 
-                let visibleCount = 0;
+            const params = new URLSearchParams({
+                sort, category, status, search
+            });
 
-                cards.forEach(card => {
-                    const title = card.querySelector('.card-title').textContent.toLowerCase();
-                    const categoryText = card.querySelector('.card-subtitle') ? card.querySelector('.card-subtitle').textContent : '';
-                    const statusText = card.querySelector('.card-text span') ? card.querySelector('.card-text span').textContent : '';
+            fetch('/user/military/applications/filter?sort=newest&category=&status=&search=')
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('application-card-container').innerHTML = data.html;
 
-                    const matchSearch = !search || title.includes(search);
-                    const matchCategory = !category || categoryText.trim() === category;
-                    const matchStatus = !status || statusText.trim() === status;
+                    // Якщо немає заявок - показати повідомлення
+                    document.getElementById('no-results').style.display = data.html.trim().length ? 'none' : 'block';
+                })
+                .catch(console.error);
+        }
 
-                    if (matchSearch && matchCategory && matchStatus) {
-                        card.style.display = '';
-                        visibleCount++;
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
-
-                noResults.style.display = visibleCount === 0 ? 'block' : 'none';
-            }
-
-            function resetFilters() {
-                searchInput.value = '';
-                categoryFilter.value = '';
-                statusFilter.value = '';
-                sortSelect.value = 'latest';
-                filterCards();
-            }
-
-            searchInput.addEventListener('input', filterCards);
-            categoryFilter.addEventListener('change', filterCards);
-            statusFilter.addEventListener('change', filterCards);
-            resetButton.addEventListener('click', resetFilters);
+        // Викликати applyFilter() на зміну фільтрів, сортування і пошук (input + change)
+        document.getElementById('sort-filter').addEventListener('change', applyFilter);
+        document.getElementById('category-filter').addEventListener('change', applyFilter);
+        document.getElementById('status-filter').addEventListener('change', applyFilter);
+        document.getElementById('search').addEventListener('input', applyFilter);
+        document.getElementById('reset-filter').addEventListener('click', () => {
+            document.getElementById('sort-filter').value = 'urgent_oldest';
+            document.getElementById('category-filter').value = '';
+            document.getElementById('status-filter').value = '';
+            document.getElementById('search').value = '';
+            applyFilter();
         });
 
 
+        // document.addEventListener('DOMContentLoaded', function () {
+        //     const searchInput = document.getElementById('search');
+        //     const sortSelect = document.getElementById('sort-filter');
+        //     const categoryFilter = document.getElementById('category-filter');
+        //     const statusFilter = document.getElementById('status-filter');
+        //     const resetButton = document.getElementById('reset-filter');
+        //     const cards = document.querySelectorAll('#application-card-container .col-md-3');
+        //     const noResults = document.getElementById('no-results');
+        //
+        //     function filterCards() {
+        //         const search = searchInput.value.toLowerCase();
+        //         const category = categoryFilter.value;
+        //         const status = statusFilter.value;
+        //
+        //         let visibleCount = 0;
+        //
+        //         cards.forEach(card => {
+        //             const title = card.querySelector('.card-title').textContent.toLowerCase();
+        //             const categoryText = card.querySelector('.card-subtitle') ? card.querySelector('.card-subtitle').textContent : '';
+        //             const statusText = card.querySelector('.card-text span') ? card.querySelector('.card-text span').textContent : '';
+        //
+        //             const matchSearch = !search || title.includes(search);
+        //             const matchCategory = !category || categoryText.trim() === category;
+        //             const matchStatus = !status || statusText.trim() === status;
+        //
+        //             if (matchSearch && matchCategory && matchStatus) {
+        //                 card.style.display = '';
+        //                 visibleCount++;
+        //             } else {
+        //                 card.style.display = 'none';
+        //             }
+        //         });
+        //
+        //         noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+        //     }
+        //
+        //     function resetFilters() {
+        //         searchInput.value = '';
+        //         categoryFilter.value = '';
+        //         statusFilter.value = '';
+        //         sortSelect.value = 'latest';
+        //         filterCards();
+        //     }
+        //
+        //     searchInput.addEventListener('input', filterCards);
+        //     categoryFilter.addEventListener('change', filterCards);
+        //     statusFilter.addEventListener('change', filterCards);
+        //     resetButton.addEventListener('click', resetFilters);
+        // });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.generate-all-pdf').forEach(button => {
+                button.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const url = this.getAttribute('data-url');
+                    if (!url) return;
+
+                    showToast('Формується PDF...', 'info');
+
+                    fetch(url, {
+                        method: 'GET',
+                        headers: {'X-Requested-With': 'XMLHttpRequest'}
+                    })
+                        .then(response => {
+                            if (!response.ok) throw new Error('PDF не вдалося згенерувати.');
+                            return response.blob();
+                        })
+                        .then(blob => {
+                            const downloadUrl = window.URL.createObjectURL(blob);
+                            const a = document.createElement('a');
+                            a.href = downloadUrl;
+                            a.download = 'звіт.pdf';
+                            document.body.appendChild(a);
+                            a.click();
+                            a.remove();
+                            window.URL.revokeObjectURL(downloadUrl);
+                            showToast('Завантаження почалося!', 'success');
+                        })
+                        .catch(error => {
+                            console.error(error);
+                            showToast('Сталася помилка при генерації PDF.', 'error');
+                        });
+                });
+            });
+        });
     </script>
 
 

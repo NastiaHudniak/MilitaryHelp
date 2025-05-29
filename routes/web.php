@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\EditMilitaryImageController;
 use App\Http\Controllers\EditVolunteerImageController;
+use App\Http\Controllers\FavoriteUserController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\LabController;
@@ -138,6 +139,10 @@ Route::prefix('user')->group(function () {
 
     Route::delete('/military/{application}', [MilitaryViewApplicationController::class, 'destroy'])->name('user.military.destroy');
     Route::get('/military/search', [MilitaryViewApplicationController::class, 'search'])->name('user.military.search');
+    Route::get('/military/applications/filter', [MilitaryViewApplicationController::class, 'getFilteredApplications'])
+        ->name('military.applications.filter');
+
+
     Route::get('/military/export', [MilitaryViewApplicationController::class, 'export'])->name('user.military.export');
     Route::get('military/pdf/{id}', [MilitaryViewApplicationController::class, 'generatePDF'])->name('user.military.pdf');
 
@@ -217,6 +222,8 @@ Route::post('/applications/like/toggle/{application}', [ApplicationLikeControlle
 Route::get('/military/export/pdf', [MilitaryViewApplicationController::class, 'exportAllApplicationsToPDF'])
     ->name('user.military.exportAllPDF');
 
+
+Route::post('/users/{user}/favorite', [FavoriteUserController::class, 'toggle']);
 
 
 

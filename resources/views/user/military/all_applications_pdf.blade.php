@@ -110,7 +110,7 @@
 
         <div class="small-gap">
             <span class="label">Заявка {{ $index + 1 }}:</span>
-            <span class="title">{{ $application->title }}</span>
+            <span class="title">Назва "{{ $application->title }}"</span>
         </div>
 
         <div class="small-gap"><span class="label">Категорія:</span> {{ $application->category->name }}</div>

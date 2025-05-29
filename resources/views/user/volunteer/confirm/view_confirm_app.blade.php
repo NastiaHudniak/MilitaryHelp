@@ -2,9 +2,9 @@
 @include('layouts.header_volunteer')
 
 @section('content')
-    <div class="container" style="max-width: 1300px; padding: 50px 0px;">
+    <div class="main-content" style="font-family: 'Open Sans', sans-serif;">
         <div class="row mb-4">
-        <div class="nawb">
+            <div class="nawb">
                 <label for="application-sort-filter" class="form-label" >Сортування за:</label>
                 <div class="input-group" style="width: 250px; ">
                     <select id="sort-filter" class="form-control">
@@ -13,7 +13,7 @@
                     </select>
                 </div>
             </div>
-    <div class="nawb">
+            <div class="nawb">
                 <label for="application-category-filter" class="form-label" >Фільтр за категорією заявки</label>
                 <div class="input-group" style="width: 250px; ">
                     <div class="input-group-prepend">
@@ -35,83 +35,15 @@
                 </div>
             </div>
         </div>
-
         <div id="no-results" class="alert alert-info" style="display: none; text-align: center;">
             Заявок не знайдено.
         </div>
 
-        <div class="row" id="application-card-container">
+        <div class="application-block" id="application-card-container">
             @foreach ($applications as $application)
-                <div class="col-md-3 mb-4">
-                    <div class="card h-100">
-                        <div class="card-header" style="background-color: var(--green-400);">
-                            <h5 class="card-title" style="color: var(--green-800);">{{ $application->title }}</h5>
-                            <h6 class="card-subtitle" style="color: #556155;">{{ $application->category->name }}</h6>
-                        </div>
-                        <div class="card-body d-flex flex-column" style="background-color: var(--green-300); color: var(--green-800);">
-
-                        <div class="image-scroll-container mb-3" style="overflow-x: auto; white-space: nowrap; padding-bottom: 10px;">
-        @foreach ($application->images as $image)
-            <img src="{{ asset('storage/' . $image->image_url) }}" alt="Зображення заявки" class="img-fluid" style="max-height: 150px; object-fit: cover; display: inline-block; margin-right: 10px;">
-        @endforeach
-    </div>
-
-                            <p class="card-text flex-grow-1">{{ $application->description }}</p>
-                            <p class="card-text">
-                                <strong style="color: #000000;">Статус:</strong>
-                                <span class="
-        @if ($application->status === 'створено') text-primary
-        @elseif ($application->status === 'прийнято') text-success
-        @elseif ($application->status === 'відхилено') text-danger
-        @endif
-    ">
-        {{ $application->status }}
-    </span>
-                            </p>
-                        </div>
-                        <div class="card-footer" style="background-color: var(--green-200);">
-                            <a href="javascript:void(0);" class="btn btn-sm"  data-toggle="modal" data-target="#applicationModal{{ $application->id }}" style="background-color: var(--yellow-500);" >
-                                <i class="fas fa-ellipsis-v" style="font-size: 15px;"></i> Переглянути більше
-                            </a>
-                            <a href="{{ route('user.volunteer.confirm.edit_confirm_app', $application->id) }}" class="btn btn-sm" style="color: var(--green-500);">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                            <a href="{{ route('user.volunteer.pdf', $application->id) }}" class="btn btn-sm" style="background-color: var(--yellow-500);">PDF</a>
-
-
-                        </div>
-                    </div>
-                </div>
-            @endforeach
-            @foreach ($applications as $application)
-                <div class="modal fade" id="applicationModal{{ $application->id }}" tabindex="-1" aria-labelledby="applicationModalLabel{{ $application->id }}" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header" style="background-color: var(--green-400);">
-                                <h5 class="modal-title" id="applicationModalLabel{{ $application->id }}">Інформація про заявку</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body" style="background-color: var(--green-300); color: var(--green-800);">
-                                <h5>{{ $application->title }}</h5>
-                                <p><strong>Категорія:</strong> {{ $application->category->name }}</p>
-                                <p><strong>Опис:</strong> {{ $application->description }}</p>
-                                <p><strong>Статус:</strong> {{ $application->status }}</p>
-                                <p><strong>Коментар:</strong> {{ $application->comment }}</p>
-                                <p><strong>Волонтер:</strong> {{ $application->volunteer->name ?? 'Немає' }}</p>
-                                <p><strong>Військовий:</strong> {{ $application->millitary->name ?? 'Немає' }}</p>
-                            </div>
-                            <div class="modal-footer" style="background-color: var(--green-200);">
-                                <button type="button" class="btn btn" style="background-color: var(--yellow-500);" data-dismiss="modal">Закрити</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @include('components.application-card-vol', ['application' => $application])
             @endforeach
         </div>
-
-
     </div>
 
     <script>
@@ -206,80 +138,223 @@
      @include('layouts.footer')
 @endsection
 
+
 <style>
-
-.image-scroll-container::-webkit-scrollbar {
-    height: 8px;
-}
-
-.image-scroll-container::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
-
-.image-scroll-container::-webkit-scrollbar-thumb {
-    background: var(--green-500);
-    border-radius: 10px;
-}
-
-.image-scroll-container::-webkit-scrollbar-thumb:hover {
-    background: #45a049;
-}
-.image-scroll-container img {
-    height: 150px;
-    width: auto;
-    object-fit: cover;
-    display: inline-block;
-    margin-right: 10px;
-}
-
-
-    .btn {
-        transition: background-color 0.3s ease, color 0.3s ease;
+    body {
+        overflow-x: hidden;
     }
 
-    .btn:hover {
-        background-color: var(--green-800);
-        text-decoration: none;
-        transform: scale(1.1);
+    * {
+        box-sizing: border-box;
     }
 
-    .card {
-        transition: box-shadow 0.3s ease;
-        box-shadow: 0 6px 10px rgba(43, 67, 36, 0.6);
+    .main-content {
+        background-color: var(--main-white);
+        max-width: 100%;
+        margin: 0 auto;
     }
 
-    .card:hover {
-        box-shadow: 0px 0px 15px rgba(43, 67, 36, 0.3);
-        transform: scale(1.01);
-    }
-
-    .card-body {
-        display: flex;
-        flex-direction: column;
-    }
-    .card-header {
-        min-height: 93px; /* Фіксована мінімальна висота для card-header */
-        max-height: 93px; /* Фіксована максимальна висота для card-header */
-        overflow: hidden; /* Обмеження тексту, якщо він виходить за межі */
-        display: flex;
-        flex-direction: column;
-    }
-
-    .card-footer{
-        display: flex;
-        flex-direction: row;
+    .filters-blocks{
+        width: 100%;
+        height: fit-content;
+        display: inline-flex;
         justify-content: space-between;
+        flex-direction: column;
+        gap: 24px;
+        padding: 24px 80px;
     }
 
-    .card-text {
-        margin-bottom: 10px;
+    .navigation-bar{
+        width: 100%;
+        height: fit-content;
+        display: inline-flex;
+        justify-content: space-between;
+        flex-direction: row;
+        gap: 24px;
     }
 
-    .card-title, .card-subtitle {
-        margin-bottom: 10px;
+    .navbar-search{
+        margin: 0;
+        width: 315px;
     }
 
-    .h-100 {
-        height: 100%;
+    .search-title{
+        display: flex;
+        align-items: center;
+        justify-content: left;
+        width: 100%;
+        height: fit-content;
+        background-color: var(--main-white);
+        border-radius: 16px;
+        outline: 1px var(--orange-my) solid;
+        color: var(--green-dark);
+        gap: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 21px;
+        padding: 10px 12px;
+        text-align: center;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background-color 0.5s ease, color 0.5s ease;
+        margin: 0;
     }
+
+    .search{
+        padding: 0;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 21px;
+    }
+
+    .search::placeholder {
+        color: var(--greey-my);
+    }
+
+    .buttons{
+        display: flex;
+        height: fit-content;
+        align-items: center;
+        justify-content: flex-end;
+        flex-direction: row;
+        gap: 16px;
+    }
+
+    .button-add-application{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: auto;
+        height: fit-content;
+        background-color: var(--green-light);
+        border-radius: 16px;
+        color: var(--main-white);
+        gap: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 21px;
+        padding: 10px 12px;
+        text-align: center;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background-color 0.5s ease, color 0.5s ease;
+    }
+
+    .button-report{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: max-content;
+        height: fit-content;
+        background-color: var(--yellow-my);
+        border-radius: 16px;
+        border: 1px var(--main-green-dark) solid;
+        color: var(--main-green-dark);
+        gap: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 21px;
+        padding: 10px 12px;
+        text-align: center;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background-color 0.5s ease, color 0.5s ease;
+    }
+
+    .filter-bar{
+        width: 100%;
+        height: fit-content;
+        display: inline-flex;
+        justify-content: space-between;
+        flex-direction: row;
+        gap: 24px;
+    }
+
+    .sort-filter-block{
+        width: fit-content;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: row;
+        gap: 6px;
+        border-radius: 16px;
+        padding: 0 16px;
+        background-color: var(--white-my);
+        box-shadow: 2px 2px 6px rgba(83, 47, 4, 0.25);
+    }
+
+    .label-sort-filter{
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: fit-content;
+        height: fit-content;
+        color: var(--main-green-dark);
+        gap: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 21px;
+        padding: 12px 12px;
+        border-right: 1px solid var(--orange-my);
+
+
+    }
+
+    .sort-select{
+        padding: 12px 16px;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        color: var(--greey-my);
+    }
+
+    .sort-input{
+        width: 180px;
+        border: none;
+
+        color: var(--greey-my);
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 21px;
+    }
+
+    .button-reset{
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: fit-content;
+        height: fit-content;
+        color: var(--orange-my);
+        gap: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 21px;
+        padding: 12px 12px;
+        border: none;
+        background-color: transparent;
+    }
+
+    .application-block{
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 36px;
+        padding: 64px 80px;
+    }
+
+    @media (max-width: 768px) {
+
+        .application-block{
+            gap: 12px;
+            padding: 24px;
+        }
+    }
+
+
 </style>
+

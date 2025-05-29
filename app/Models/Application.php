@@ -17,12 +17,14 @@ class Application extends Model
         'description',
         'status',
         'comment',
+        'is_urgent',
     ];
 
     protected $casts = [
         'category_id' => 'integer',
         'volunteer_id' => 'integer',
         'millitary_id' => 'integer',
+        'is_urgent' => 'boolean',
     ];
 
     public function category()

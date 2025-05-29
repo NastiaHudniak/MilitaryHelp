@@ -21,8 +21,11 @@ class MilitaryViewApplicationController extends Controller
         $categories = Category::all();
         $user_id = Auth::user()->id;
         $applications = Application::with(['images', 'category', 'volunteer'])
-            ->withCount('likedByUsers') // <-- додаємо підрахунок лайків
+            ->withCount('likedByUsers') // підрахунок лайків
             ->where('millitary_id', $user_id)
+            ->orderByDesc('is_urgent')
+            ->orderBy('created_at', 'asc')
+
             ->get();
 
         return view('user.military.view_app', compact('applications', 'users', 'categories'));
@@ -74,6 +77,7 @@ class MilitaryViewApplicationController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required|string|max:1000',
         ]);
+        $validated['is_urgent'] = $request->has('is_urgent') ? 1 : 0;
 
         $applications->update($validated);
 
@@ -115,24 +119,85 @@ class MilitaryViewApplicationController extends Controller
                 ->orWhere('description', 'like', "%{$query}%");
             });
 
-        if ($sort === 'latest') {
-            $applications->orderBy('created_at', 'desc');
+        if ($sort === 'urgent_first') {
+            $applications->orderByDesc('is_urgent')->orderBy('created_at', 'asc');
         } elseif ($sort === 'oldest') {
             $applications->orderBy('created_at', 'asc');
-        } elseif ($sort === 'status') {
-            $applications->orderBy('status', 'asc');
+        } elseif ($sort === 'latest') {
+            $applications->orderBy('created_at', 'desc');
+        } elseif ($sort === 'title') {
+            $applications->orderBy('title', 'asc');
         }
 
         return response()->json(['applications' => $applications->get()]);
     }
 
+
+    public function getFilteredApplications(Request $request)
+    {
+        $user_id = Auth::id();
+        $query = Application::with(['images', 'category', 'volunteer'])
+            ->where('millitary_id', $user_id);
+
+        // Фільтри
+        if ($request->filled('category')) {
+            $query->where('category_id', $request->category);
+        }
+        if ($request->filled('status')) {
+            $status = $request->status;
+            if ($status == "created") $status = "створено";
+            elseif ($status == "accept") $status = "прийнято";
+            elseif ($status == "cancel") $status = "відхилено";
+            $query->where('status', $status);
+        }
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+
+        // Сортування
+        $sort = $request->input('sort', 'urgent_oldest');
+        if ($sort === 'urgent_oldest') {
+            $query->orderByDesc('is_urgent')->orderBy('created_at', 'asc');
+        } elseif ($sort === 'oldest') {
+            $query->orderBy('created_at', 'asc');
+        } elseif ($sort === 'newest') {
+            $query->orderBy('created_at', 'desc');
+        } elseif ($sort === 'title') {
+            $query->orderBy('title', 'asc');
+        }
+
+
+        $applications = $query->get();
+
+        // Генеруємо HTML через компонент Blade
+        $html = '';
+        foreach ($applications as $application) {
+            $html .= view('components.application-card-mil', compact('application'))->render();
+        }
+
+        return response()->json([
+            'sort' => $sort,
+            // 'query' => $query->toSql(), // якщо потрібно
+            'html' => $html,
+        ]);
+    }
+
+
+
+
     public function generatePDF($id)
     {
+        $user = Auth::user(); // військовий
+        $date = \Carbon\Carbon::now()->format('d.m.Y');
+        $fullName = $user->surname . ' ' . $user->name;
         $application = Application::with(['category', 'volunteer', 'images'])->findOrFail($id);
-        $pdf = Pdf::loadView('user.military.pdf', compact('application'));
+        $pdf = Pdf::loadView('user.military.pdf', compact('application', 'date', 'fullName'));
         //return view('user.military.pdf', compact('application'));
         return $pdf->download('application-'.$application->id.'.pdf');
-
 
     }
 

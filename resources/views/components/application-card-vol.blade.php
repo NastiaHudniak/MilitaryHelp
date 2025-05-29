@@ -8,11 +8,7 @@
             </div>
         </div>
         <div class="card-header-app">
-            <h5 class="card-title-app">{{ $application->title }}
-                @if($application->is_urgent)
-                    <span class="term">Термінова</span>
-                @endif
-            </h5>
+            <h5 class="card-title-app">{{ $application->title }}</h5>
             <h6 class="card-subtitle-app">{{ $application->category->name }}</h6>
         </div>
         <div class="buttons-blocks">
@@ -20,21 +16,33 @@
                 Детальніше
                 <img src="{{ asset('images/icon/info.svg') }}">
             </a>
+
             <div class="card-buttons">
-                <div class="like-count">
-                    <img src="{{ asset('images/icon/likes/like-filled.svg') }}" style="width: 24px; height: 24px;">
-                    <span>{{ $application->liked_by_users_count }}</span>
-                </div>
-                <a href="{{ route('user.military.edit', $application) }}" class="button-actions">
-                    <img src="{{ asset('images/icon/edit.svg') }}">
-                </a>
-                <form action="{{ route('user.military.destroy', $application) }}" method="POST" style="display:inline;" onsubmit="return confirmDelete('{{ $application->title }}')">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="button-actions">
-                        <img src="{{ asset('images/icon/delete.svg') }}" style="width: 32px; height: 32px">
-                    </button>
-                </form>
+                @php
+                    $isLiked = in_array($application->id, $userLikedApplicationIds);
+                @endphp
+                <button class="like-btn" type="button" data-id="{{ $application->id }}">
+                    <img src="{{ $isLiked ? asset('images/icon/likes/like-filled.svg') : asset('images/icon/likes/like.svg') }}"
+                         alt="Like"
+                         class="like-icon"
+                         data-outline="{{ asset('images/icon/likes/like.svg') }}"
+                         data-filled="{{ asset('images/icon/likes/like-filled.svg') }}">
+                </button>
+                @php
+                    $isConfirmedByThisVolunteer = $application->volunteer_id === auth()->id();
+                @endphp
+                @if($isConfirmedByThisVolunteer)
+                    <a href="{{ route('user.volunteer.confirm.edit_confirm_app', $application->id) }}" class="button-report" type="button" style="color: var(--green-500);">
+                        <img src="{{ asset('images/icon/edit.svg') }}" alt="Редагувати">
+
+                    </a>
+                @else
+                    <a href="{{ route('user.volunteer.confirm_application', ['id' => $application->id]) }}" class="button-report" type="button">
+                        <img src="{{ asset('images/icon/znak.svg') }}" alt="Підтвердити">
+
+                    </a>
+                @endif
+
             </div>
         </div>
     </div>
@@ -60,8 +68,10 @@
                     <p class="info-category">{{ $application->category->name }}</p>
                 </div>
                 <div class="modal-description">
-                    <p class="info-description">{{ $application->description }}</p>
+                    <p class="info-description">{{ $application->description }}
+                    <p class="info-description"> Заявку створив:{{ $application->millitary->name }} {{ $application->millitary->surname }}</p>
                 </div>
+
             </div>
 
             <div class="modal-foto">
@@ -70,57 +80,25 @@
                         <img src="{{ asset('storage/' . $image->image_url) }}" alt="Зображення заявки" class="img-fluid" style="max-height: 130px; object-fit: cover; display: inline-block">
                     @endforeach
                 </div>
-                <div class="navigation-modal-photo">
-                    <a href="{{ route('user.military.images.create', $application) }}" class="button-images" type="button">
-                        <img src="{{ asset('images/icon/znak.svg') }}">
-                    </a>
-                    <a href="{{ route('user.military.images.edit', $application) }}" class="button-images" type="button">
-                        <img src="{{ asset('images/icon/edit.svg') }}" style="width: 28px">
-                    </a>
-                </div>
             </div>
 
-            @if ($application->volunteer)
-                <div class="modal-text-volunteers">
-                    <p class="info-vol">
-                        <strong class="info-vol">Заявку прийняв волонтер:</strong>
-                        {{ $application->volunteer->name }}
-                    </p>
-                    <p class="info-vol">
-                        <strong class="info-vol">Коментар:</strong>
-                        {{ $application->comment }}
-                    </p>
-                    @if ($application->status === 'прийнято')
-                        <a href="{{ route('military.rate', $application) }}" class="button-report" type="button">
-                            Оцінити волонтера
-                        </a>
-                    @endif
-                </div>
-            @endif
 
             <div class="modal-footer">
-
-                <a href="#"
-                   class="button-report generate-one-pdf"
-                   data-url="{{ route('user.military.pdf', $application->id) }}">
+                <a href="{{ route('user.military.pdf', $application->id) }}" class="button-report" type="button">
                     <img src="{{ asset('images/icon/pdf.svg') }}">
                     Сформувати .pdf
                 </a>
                 <div class="card-buttons-f">
-                    <div class="like-count">
-                        <img src="{{ asset('images/icon/likes/like-filled.svg') }}" style="width: 24px; height: 24px;">
-                        <span>{{ $application->liked_by_users_count }}</span>
-                    </div>
-                    <a href="{{ route('user.military.edit', $application) }}" class="button-actions" type="button">
-                        <img src="{{ asset('images/icon/edit.svg') }}" style="width: 32px; height: 32px">
-                    </a>
-                    <form action="{{ route('user.military.destroy', $application) }}" method="POST" style="display:inline;" onsubmit="return confirmDelete('{{ $application->title }}')">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="button-actions">
-                            <img src="{{ asset('images/icon/delete.svg') }}" style="width: 32px; height: 32px">
-                        </button>
-                    </form>
+                    @php
+                        $isLiked = in_array($application->id, $userLikedApplicationIds);
+                    @endphp
+                    <button class="like-btn" type="button" data-id="{{ $application->id }}">
+                        <img src="{{ $isLiked ? asset('images/icon/likes/like-filled.svg') : asset('images/icon/likes/like.svg') }}"
+                             alt="Like"
+                             class="like-icon"
+                             data-outline="{{ asset('images/icon/likes/like.svg') }}"
+                             data-filled="{{ asset('images/icon/likes/like-filled.svg') }}">
+                    </button>
                 </div>
             </div>
         </div>
@@ -149,7 +127,7 @@
         justify-content: flex-start;
         align-items: flex-start;
         flex-direction: column;
-        gap: 10px;
+        gap: 0;
         background-color: transparent; !important;
         border: none; !important;
 
@@ -162,16 +140,6 @@
         line-height: 130%;
         word-wrap: break-word;
         margin: 0;
-    }
-
-    .term{
-        border-radius: 16px;
-        font-size: 14px;
-        font-weight: 600;
-        line-height: 130%;
-        background-color: var(--red-100);
-        color: var(--red-100-15);
-        padding: 4px 8px;
     }
 
     .card-subtitle-app{
@@ -206,12 +174,28 @@
         display: inline-block;
     }
 
-    .like-count{
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        gap: 1px;
+    .like-btn, .button-report {
+        background: none;
+        border: none;
+        padding: 0;
+        margin: 0;
+        outline: none;
+        cursor: pointer;
+        appearance: none;
     }
+
+    .like-btn:focus,
+    .like-btn:active {
+        outline: none;
+        box-shadow: none;
+    }
+
+    .like-icon {
+        width: 24px;
+        height: 24px;
+        display: block;
+    }
+
 
     .buttons-blocks{
         width: 100%;
@@ -535,49 +519,3 @@
 
 
 </style>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('.generate-one-pdf').forEach(button => {
-            button.addEventListener('click', function (e) {
-                e.preventDefault();
-
-                if (button.disabled) return;  // блокування подвійних кліків
-                button.disabled = true;
-
-                const url = this.getAttribute('data-url');
-                if (!url) return;
-
-                showToast('Формується PDF...', 'info');
-
-                fetch(url, {
-                    method: 'GET',
-                    headers: {'X-Requested-With': 'XMLHttpRequest'}
-                })
-                    .then(response => {
-                        if (!response.ok) throw new Error('PDF не вдалося згенерувати.');
-                        return response.blob();
-                    })
-                    .then(blob => {
-                        const downloadUrl = window.URL.createObjectURL(blob);
-                        const a = document.createElement('a');
-                        a.href = downloadUrl;
-                        a.download = 'Звіт.pdf';
-                        document.body.appendChild(a);
-                        a.click();
-                        a.remove();
-                        window.URL.revokeObjectURL(downloadUrl);
-                        showToast('Файл успішно завантажено', 'success');
-                    })
-                    .catch(error => {
-                        console.error(error);
-                        showToast('Сталася помилка при генерації PDF.', 'error');
-                    })
-                    .finally(() => {
-                        button.disabled = false;
-                    });
-            });
-        });
-    });
-
-
-</script>

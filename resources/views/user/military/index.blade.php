@@ -81,8 +81,6 @@
                                     toast.remove();
                                     showNextToast(index + 1);
                                 });
-
-                                // Start timer only when toast becomes visible
                                 setTimeout(removeToast, 5000);
                             }
 

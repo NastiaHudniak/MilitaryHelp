@@ -23,7 +23,7 @@
             let scrollY = window.pageYOffset;
 
             sections.forEach((current) => {
-                const sectionTop = current.offsetTop - 130; // враховуємо висоту header
+                const sectionTop = current.offsetTop - 130;
                 const sectionHeight = current.offsetHeight;
                 const sectionId = current.getAttribute("id");
 
@@ -41,7 +41,6 @@
         window.addEventListener("scroll", activateNavLink);
     });
 </script>
-<!-- Admin Header -->
 <header class="header-admin">
     <div class="header-l-c">
         <div class="header-left">
@@ -193,6 +192,8 @@
         background-color: var(--orange-dark);
         color: var(--main-white);
         transform: scale(1.05);
+        text-decoration: none;
+
     }
 
     @media (max-width: 768px) {

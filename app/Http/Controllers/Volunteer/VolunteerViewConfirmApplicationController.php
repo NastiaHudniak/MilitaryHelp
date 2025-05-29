@@ -20,12 +20,20 @@ class VolunteerViewConfirmApplicationController extends Controller
         $volunteer_id = Auth::id();
         $users = User::all();
         $categories = Category::all();
-        $applications = Application::with('images') 
+        $applications = Application::with('images')
             ->where('volunteer_id', $volunteer_id)
             ->get();
 
-        return view('user.volunteer.confirm.view_confirm_app', compact('applications', 'users', 'categories'));
-    }
+        $userLikedApplicationIds = auth()->check()
+            ? auth()->user()->likedApplications()->pluck('application_id')->toArray()
+            : [];
+
+        return view('user.volunteer.confirm.view_confirm_app', compact(
+            'applications',
+            'users',
+            'categories',
+            'userLikedApplicationIds'
+        )); }
 
     public function edit($id)
     {
@@ -64,8 +72,8 @@ class VolunteerViewConfirmApplicationController extends Controller
     public function rejectApplication($applicationId)
     {
         $application = Application::find($applicationId);
-        $application->status = 'створено'; 
-        $application->volunteer_id = null; 
+        $application->status = 'створено';
+        $application->volunteer_id = null;
         $application->comment = 'немає';
         $application->save();
 
@@ -102,7 +110,7 @@ class VolunteerViewConfirmApplicationController extends Controller
             $applications->orderBy('created_at', 'desc');
         } elseif ($sort === 'oldest') {
             $applications->orderBy('created_at', 'asc');
-        } 
+        }
 
         return response()->json(['applications' => $applications->get()]);
     }
@@ -138,7 +146,7 @@ class VolunteerViewConfirmApplicationController extends Controller
     {
         $application = Application::findOrFail($id);
         $pdf = Pdf::loadView('user.volunteer.pdf', compact('application'));
-        
+
         return $pdf->download('application-'.$application->id.'.pdf');
     }
 }

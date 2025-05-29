@@ -145,7 +145,10 @@
 </head>
 <body>
 <div class="modal-info-block">
-    <div class="modal-status-close">
+    <h2>Заявка військового: {{ $fullName }}</h2>
+    <p>Дата: {{ $date }}</p>
+
+    <div class="modal-status-close" style="margin-top: 10px">
         <p class="info-status
                 @if ($application->status === 'створено') status-created
                 @elseif ($application->status === 'прийнято') status-accepted
@@ -157,7 +160,7 @@
 
     <div class="modal-text">
         <div class="modal-title">
-            <p class="info-title">{{ $application->title }}</p>
+            <p class="info-title">Назва заявки "{{ $application->title }}"</p>
             <p class="info-category">{{ $application->category->name }}</p>
         </div>
         <div class="modal-description">
@@ -171,10 +174,6 @@
             </div>
         @endforeach
     </div>
-
-
-
-
 
 
 @if ($application->volunteer)

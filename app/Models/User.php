@@ -77,6 +77,22 @@ class User extends Authenticatable
         return $this->belongsToMany(Application::class, 'application_likes', 'user_id', 'application_id')->withTimestamps();
     }
 
+// User.php
+
+    // Кого поточний користувач додав в улюблені
+    public function favorites()
+    {
+        return $this->belongsToMany(User::class, 'favorite_users', 'user_id', 'favorite_user_id')
+            ->withTimestamps();
+    }
+
+// Користувачі, яким подобається поточний користувач
+    public function favoritedBy()
+    {
+        return $this->belongsToMany(User::class, 'favorite_users', 'favorite_user_id', 'user_id')
+            ->withTimestamps();
+    }
+
 
 
 

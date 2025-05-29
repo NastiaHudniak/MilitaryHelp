@@ -14,7 +14,9 @@
 <body>
 
 <!-- Admin Header -->
-<header class="header-military">
+<header class="header-military
+        {{ in_array(Route::currentRouteName(), ['user.military.index']) ? 'header-index' : 'header-other' }}"
+>
     <div class="header-l-c">
         <div class="header-left">
             <a class="logos" href="{{ route('user.military.index') }}">
@@ -29,11 +31,39 @@
         </div>
         <div class="header-center">
             <nav class="navbar-custom">
-                <a href="#home-section" class="nav-link active">Головна</a>
-                <a href="#actions-section" class="nav-link">Дії з заявками</a>
-                <a href="#analytics-section" class="nav-link">Аналітика</a>
+                @if(Route::currentRouteName() === 'user.military.index')
+                    <a href="#home-section" class="nav-link active">Головна</a>
+                    <a href="#actions-section" class="nav-link">Дії з заявками</a>
+                    <a href="#analytics-section" class="nav-link">Аналітика</a>
+                @elseif(Route::currentRouteName() === 'user.military.create')
+                    <a class="head-name">Нова заявка</a>
+                @elseif(Route::currentRouteName() === 'user.military.edit')
+                    <a class="head-name">Редагування заявки</a>
+                @elseif(Route::currentRouteName() === 'user.military.edit_account')
+                    <a class="head-name">Редагування персональної інформації</a>
+                @elseif(Route::currentRouteName() === 'user.military.rate')
+                    <a class="head-name">Виставлення рейтингу</a>
+                @elseif(Route::currentRouteName() === 'user.military.view_account')
+                    <a class="head-name">Особистий кабінет</a>
+                @elseif(Route::currentRouteName() === 'user.military.view_app')
+                    <a class="head-name">Перегляд створених заявок</a>
+                @elseif(Route::currentRouteName() === 'user.military.vol.view_volunteer')
+                    <a class="head-name">Перегляд списку волонтерів</a>
+                @elseif(Route::currentRouteName() === 'user.military.account.edit_photo')
+                    <a class="head-name">Редагування фото профілю</a>
+                @elseif(Route::currentRouteName() === 'user.military.images.edit')
+                    <a class="head-name">Редагування фото заявки</a>
+                @elseif(Route::currentRouteName() === 'user.military.images.create')
+                    <a class="head-name">Додавання фото до заявки</a>
+{{--                @elseif(Route::currentRouteName() === 'user.military.vol.old_volunteer')--}}
+{{--                    <a class="head-name">Волонтери, з якими вже співпрацювали</a>--}}
+                @else
+                    <a class="nav-link">Назад</a>
+                @endif
             </nav>
         </div>
+
+
     </div>
     <div class="header-right">
         @if (!empty(Auth::user()->login))
@@ -100,10 +130,33 @@
         z-index: 1000;
         flex-wrap: wrap;
     }
+    .header-index .header-l-c {
+        display: flex;
+        align-items: start;
+        gap: 400px;
+    }
+
+    /* --- Стилі для інших сторінок: центрування --- */
+    .header-other .header-l-c {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0;
+        width: 100%;
+    }
+
+    /* Центруємо навігацію між лівим і правим блоком */
+    .header-other .header-center {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
     .header-l-c{
         display: flex;
         align-items: start;
         gap: 350px;
+        max-width: calc(100% - 200px); /* залишаємо місце для header-right */
+        flex-shrink: 1;
     }
 
     .header-left {
@@ -172,9 +225,11 @@
     }
 
     .header-right {
+        flex-shrink: 0; /* не звужуватись */
         display: flex;
         align-items: center;
         gap: 8px;
+        white-space: nowrap;
     }
 
     .text-log{
@@ -183,6 +238,23 @@
         font-weight: 600;
         line-height: 27px;
         word-wrap: break-word
+    }
+
+    .head-name{
+        color: var(--orange-my);
+        font-size: 20px;
+        font-weight: 600;
+        line-height: 27px;
+        word-wrap: break-word;
+        text-decoration: none;
+    }
+    .head-name:hover{
+        color: var(--orange-my);
+        font-size: 20px;
+        font-weight: 600;
+        line-height: 27px;
+        word-wrap: break-word;
+        text-decoration: none;
     }
 
     @media (max-width: 768px) {
@@ -343,16 +415,7 @@
         });
     });
 
-    document.addEventListener('DOMContentLoaded', function() {
-        const accountInfoToggle = document.getElementById('account-info-toggle');
-        const accountInfoExtra = document.getElementById('account-info-extra');
 
-        // Додаємо обробник події на "Інформація про акаунт"
-        accountInfoToggle.addEventListener('click', function() {
-            // Перемикаємо видимість додаткових полів
-            accountInfoExtra.style.display = accountInfoExtra.style.display === 'none' ? 'block' : 'none';
-        });
-    });
 
 
 
