@@ -2,13 +2,26 @@
     <div class="card-application">
         <div class="card-foto">
             <div class="image-scroll-container" style="overflow-x: auto; white-space: nowrap; margin: 0">
-                @foreach ($application->images as $image)
-                    <img src="{{ asset('storage/' . $image->image_url) }}" alt="Зображення заявки" class="img-fluid" style="max-height: 130px; object-fit: cover; display: inline-block">
-                @endforeach
+                @if($application->images->isEmpty())
+                    <!-- Заглушка: картинка або текст -->
+                    <div class="no-image-placeholder" style="height: 130px; width: 100%; display: flex; justify-content: center; align-items: center; background: var(--yellow-my); color: var(--green-dark); font-size: 16px; border-radius: 8px;">
+                        Зображень немає
+                    </div>
+                    {{-- або замість тексту можете вставити зображення заглушки: --}}
+                    {{-- <img src="{{ asset('images/no-image.png') }}" alt="Зображень немає" style="max-height: 130px; object-fit: contain;"> --}}
+                @else
+                    @foreach ($application->images as $image)
+                        <img src="{{ asset('storage/' . $image->image_url) }}" alt="Зображення заявки" class="img-fluid" style="max-height: 130px; object-fit: cover; display: inline-block">
+                    @endforeach
+                @endif
             </div>
         </div>
         <div class="card-header-app">
-            <h5 class="card-title-app">{{ $application->title }}</h5>
+            <h5 class="card-title-app">{{ $application->title }}
+                @if($application->is_urgent)
+                    <span class="term">Термінова</span>
+                @endif
+            </h5>
             <h6 class="card-subtitle-app">{{ $application->category->name }}</h6>
         </div>
         <div class="buttons-blocks">
@@ -18,26 +31,26 @@
             </a>
 
             <div class="card-buttons">
-                @php
-                    $isLiked = in_array($application->id, $userLikedApplicationIds);
-                @endphp
-                <button class="like-btn" type="button" data-id="{{ $application->id }}">
-                    <img src="{{ $isLiked ? asset('images/icon/likes/like-filled.svg') : asset('images/icon/likes/like.svg') }}"
-                         alt="Like"
-                         class="like-icon"
-                         data-outline="{{ asset('images/icon/likes/like.svg') }}"
-                         data-filled="{{ asset('images/icon/likes/like-filled.svg') }}">
-                </button>
+{{--                @php--}}
+{{--                    $isLiked = in_array($application->id, $userLikedApplicationIds);--}}
+{{--                @endphp--}}
+{{--                <button class="like-btn" type="button" data-id="{{ $application->id }}">--}}
+{{--                    <img src="{{ $isLiked ? asset('images/icon/likes/like-filled.svg') : asset('images/icon/likes/like.svg') }}"--}}
+{{--                         alt="Like"--}}
+{{--                         class="like-icon"--}}
+{{--                         data-outline="{{ asset('images/icon/likes/like.svg') }}"--}}
+{{--                         data-filled="{{ asset('images/icon/likes/like-filled.svg') }}">--}}
+{{--                </button>--}}
                 @php
                     $isConfirmedByThisVolunteer = $application->volunteer_id === auth()->id();
                 @endphp
                 @if($isConfirmedByThisVolunteer)
-                    <a href="{{ route('user.volunteer.confirm.edit_confirm_app', $application->id) }}" class="button-report" type="button" style="color: var(--green-500);">
+                    <a href="{{ route('user.volunteer.confirm.edit_confirm_app', $application->id) }}" class="button-reports" type="button" >
                         <img src="{{ asset('images/icon/edit.svg') }}" alt="Редагувати">
 
                     </a>
                 @else
-                    <a href="{{ route('user.volunteer.confirm_application', ['id' => $application->id]) }}" class="button-report" type="button">
+                    <a href="{{ route('user.volunteer.confirm_application', ['id' => $application->id]) }}" class="button-reports" type="button">
                         <img src="{{ asset('images/icon/znak.svg') }}" alt="Підтвердити">
 
                     </a>
@@ -89,16 +102,16 @@
                     Сформувати .pdf
                 </a>
                 <div class="card-buttons-f">
-                    @php
-                        $isLiked = in_array($application->id, $userLikedApplicationIds);
-                    @endphp
-                    <button class="like-btn" type="button" data-id="{{ $application->id }}">
-                        <img src="{{ $isLiked ? asset('images/icon/likes/like-filled.svg') : asset('images/icon/likes/like.svg') }}"
-                             alt="Like"
-                             class="like-icon"
-                             data-outline="{{ asset('images/icon/likes/like.svg') }}"
-                             data-filled="{{ asset('images/icon/likes/like-filled.svg') }}">
-                    </button>
+{{--                    @php--}}
+{{--                        $isLiked = in_array($application->id, $userLikedApplicationIds);--}}
+{{--                    @endphp--}}
+{{--                    <button class="like-btn" type="button" data-id="{{ $application->id }}">--}}
+{{--                        <img src="{{ $isLiked ? asset('images/icon/likes/like-filled.svg') : asset('images/icon/likes/like.svg') }}"--}}
+{{--                             alt="Like"--}}
+{{--                             class="like-icon"--}}
+{{--                             data-outline="{{ asset('images/icon/likes/like.svg') }}"--}}
+{{--                             data-filled="{{ asset('images/icon/likes/like-filled.svg') }}">--}}
+{{--                    </button>--}}
                 </div>
             </div>
         </div>
@@ -133,6 +146,15 @@
 
     }
 
+    .term{
+        border-radius: 16px;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 130%;
+        background-color: var(--red-100);
+        color: var(--red-100-15);
+        padding: 4px 8px;
+    }
     .card-title-app {
         color: var(--black-my);
         font-size: 20px;

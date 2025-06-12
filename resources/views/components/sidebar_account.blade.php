@@ -78,7 +78,42 @@
                 Перегляд військових
             </a>
         </div>
+
+
+    @elseif (Auth::user()->role_id == 1)
+        <div class="sidebar-navigation-account" id="sidebar-1">
+            <a href="{{ route('admin.users.index') }}"
+               class="sidebar-menu {{ request()->routeIs('admin.users.index') ? 'active' : '' }}">
+                <img src="{{ asset(request()->routeIs('admin.users.index') ? 'images/icon/sidebar/user.svg' : 'images/icon/sidebar/user-g.svg') }}"
+                     alt="Кабінет">
+                Користувачі
+            </a>
+
+            <a href="{{ route('admin.applications.index') }}"
+               class="sidebar-menu {{ request()->routeIs('admin.applications.index') ? 'active' : '' }}">
+                <img src="{{ asset(request()->routeIs('admin.applications.index') ? 'images/icon/sidebar/list-w.svg' : 'images/icon/sidebar/list.svg') }}"
+                     alt="Змінити дані">
+                Заявки
+            </a>
+
+            <a href="{{ route('admin.categories.index') }}"
+               class="sidebar-menu {{ request()->routeIs('admin.categories.index') ? 'active' : '' }}">
+                <img src="{{ asset(request()->routeIs('admin.categories.index') ? 'images/icon/sidebar/znak-w.svg' : 'images/icon/sidebar/znak.svg') }}"
+                     alt="Змінити дані">
+                Категорії
+            </a>
+        </div>
+
+        <div class="sidebar-navigation-account" id="sidebar-2">
+            <a href="{{ route('admin.home.index') }}"
+               class="sidebar-menu {{ request()->routeIs('admin.home.index') ? 'active' : '' }}">
+                <img src="{{ asset(request()->routeIs('admin.home.index') ? 'images/icon/sidebar/history-w.svg' : 'images/icon/sidebar/history.svg') }}"
+                     alt="Заявки">
+                Перегляд аналітики
+            </a>
+        </div>
     @endif
+
 
     <div class="sidebar-navigation-account" id="sidebar-3">
         <form method="POST" action="{{ route('logout') }}" class="sidebar-menu logout-form">

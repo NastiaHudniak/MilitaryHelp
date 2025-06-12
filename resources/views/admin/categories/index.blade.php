@@ -3,41 +3,43 @@
 
     @section('content')
 
-        <div class="container mx-auto" style="width: 80%; padding: 50px 0px;">
+        <div class="main-content" style="font-family: 'Open Sans', sans-serif;">
 
 
-            <div class="row mb-4 ">
-                <div class="col-md-4 d-flex align-items-end">
-                    <a href="{{ route('admin.categories.create') }}" class="btn" style="width: 260px; white-space: nowrap; background-color: var(--green-500);">
-                        <i class="fas fa-plus"></i> Додати категорію
-                    </a>
-                </div>
-                <div class="col-md-4 d-flex align-items-end">
-    
-                    <a href="{{ route('admin.categories.export') }}" class="btn" style="width: 260px; white-space: nowrap; background-color: var(--yellow-400);">
-                    <i class="fas fa-file-pdf"></i> Експортувати в PDF
-                </a>
-                </div>
+            <div class="filters-blocks" id="filtersBlock">
 
-                <div class="col-md-4 d-flex align-items-end">
-                    <div class="input-group" style="width: 300px; margin-left: auto;">
-                        <input type="text" class="form-control" id="search" placeholder="Пошук за назвою">
-                        <div class="input-group-append">
-                            <span class="input-group-text">
-                                <i class="fas fa-search"></i>
-                            </span>
-                        </div>
+                <div class="navigation-bar">
+                    <div class="buttons">
+                        <a type="submit" class="button-add-application" href="{{ route('admin.categories.create') }}">
+                            <img src="{{ asset('images/icon/znak-white.svg') }}" >
+                            Додати категорію
+                        </a>
+                        <a href="#"
+                           class="button-report generate-all-pdf"
+                           data-url="{{ route('admin.categories.export') }}">
+                            <img src="{{ asset('images/icon/pdf.svg') }}">
+                            Сформувати звіт в .pdf
+                        </a>
                     </div>
+
+                    <nav class="navbar-search">
+                        <div class="search-title">
+                            <img src="{{ asset('images/icon/search.svg') }}" >
+                            <input type="text" class="search" id="search" placeholder="Пошук за назвою">
+                        </div>
+                    </nav>
                 </div>
+
             </div>
+
 
             <div id="no-results" class="alert alert-info" style="display: none; text-align: center;">
                 Заявок не знайдено.
             </div>
 
-            <div class="table-responsive mx-auto" style="max-height: 560px; overflow-y: auto; width: 100%;">
-                <table class="table table-bordered" style="background-color: var(--green-300);">
-                    <thead class="thead-light" style="background-color: var(--green-500);">
+            <div class="table-responsive" style="max-height: 440px; overflow-y: auto;">
+                <table class="table table-bordered table-sm" style="background-color: var(--yellow-my); table-layout: fixed;">
+                    <thead class="thead-light" style="background-color: var(--green-light);">
                     <tr>
                         <th style="min-width: 120px; position: sticky; top: 0; z-index: 1; cursor: pointer;" onclick="sortTable(0)">
                             Назва <i id="sortIcon0" class="fas fa-sort"></i>
@@ -116,13 +118,293 @@
 
     @endsection
     <style>
-        .btn{
-            transition: background-color 0.3s ease, color 0.3s ease; /* Анімація зміни кольору */
+        .main-content {
+            background-color: var(--main-white);
+            max-width: 100%;
+            margin: 0 auto;
         }
 
-        .btn:hover {
-            background-color: var(--green-800);
-            text-decoration: none;
-            transform: scale(1.1);
+        .table-responsive{
+            padding: 0 80px;
         }
+
+        .filters-toggle-btn {
+            display: none;
+            width: 100%;
+            padding: 12px;
+            background-color: var(--green-light);
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+
+
+        .filters-blocks{
+            width: 100%;
+            height: fit-content;
+            display: inline-flex;
+            justify-content: space-between;
+            flex-direction: column;
+            gap: 24px;
+            padding: 24px 80px;
+        }
+
+        .navigation-bar{
+            width: 100%;
+            height: fit-content;
+            display: inline-flex;
+            justify-content: space-between;
+            flex-direction: row;
+            gap: 24px;
+        }
+
+        .navbar-search{
+            margin: 0;
+            width: 315px;
+        }
+
+        .search-title{
+            display: flex;
+            align-items: center;
+            justify-content: left;
+            width: 100%;
+            height: fit-content;
+            background-color: var(--main-white);
+            border-radius: 16px;
+            outline: 1px var(--orange-my) solid;
+            color: var(--green-dark);
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 21px;
+            padding: 10px 12px;
+            text-align: center;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.5s ease, color 0.5s ease;
+            margin: 0;
+        }
+
+        .search{
+            padding: 0;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 21px;
+            text-decoration: none;
+            border: none;
+        }
+        .search,
+        button {
+            border: none;
+            outline: none;
+            box-shadow: none;
+            text-decoration: none;
+        }
+
+        .search:focus,
+        button:focus,
+        .search:focus-visible,
+        button:focus-visible,
+        .search:active,
+        button:active {
+            border: none !important;
+            outline: none !important;
+            box-shadow: none !important;
+            text-decoration: none !important;
+        }
+        .button-filter{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: max-content;
+            height: fit-content;
+            background-color: var(--yellow-my);
+            border-radius: 16px;
+            border: 1px var(--main-green-dark) solid;
+            color: var(--main-green-dark);
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 21px;
+            padding: 10px 12px;
+            text-align: center;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        .search::placeholder {
+            color: var(--greey-my);
+        }
+
+        .buttons{
+            display: flex;
+            height: fit-content;
+            align-items: center;
+            justify-content: flex-end;
+            flex-direction: row;
+            gap: 16px;
+        }
+
+        .button-add-application{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: auto;
+            height: fit-content;
+            background-color: var(--green-light);
+            border-radius: 16px;
+            color: var(--main-white);
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 21px;
+            padding: 10px 12px;
+            text-align: center;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        .button-report{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: max-content;
+            height: fit-content;
+            background-color: var(--yellow-my);
+            border-radius: 16px;
+            border: 1px var(--main-green-dark) solid;
+            color: var(--main-green-dark);
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 21px;
+            padding: 10px 12px;
+            text-align: center;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        .filter-bar{
+            width: 100%;
+            height: fit-content;
+            display: inline-flex;
+            justify-content: space-between;
+            flex-direction: row;
+            gap: 24px;
+        }
+
+        .sort-filter-block{
+            width: fit-content;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: row;
+            gap: 6px;
+            border-radius: 16px;
+            padding: 0 16px;
+            background-color: var(--white-my);
+            box-shadow: 2px 2px 6px rgba(83, 47, 4, 0.25);
+        }
+
+        .label-sort-filter{
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: fit-content;
+            height: fit-content;
+            color: var(--main-green-dark);
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 21px;
+            padding: 12px 12px;
+            border-right: 1px solid var(--orange-my);
+
+
+        }
+
+        .sort-select{
+            padding: 12px 16px;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            color: var(--greey-my);
+        }
+
+        .sort-input{
+            width: 180px;
+            border: none;
+
+            color: var(--greey-my);
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 21px;
+        }
+
+        .button-reset{
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: fit-content;
+            height: fit-content;
+            color: var(--orange-my);
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 21px;
+            padding: 12px 12px;
+            border: none;
+            background-color: transparent;
+        }
+
+        .application-block{
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 36px;
+            padding: 64px 80px;
+        }
+
+        @media (max-width: 768px) {
+
+            .application-block{
+                gap: 12px;
+                padding: 24px;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            /* Ховаємо блок фільтрів за замовчуванням */
+            .filters-blocks {
+                display: none;
+                flex-direction: column;
+                gap: 12px;
+                padding: 10px;
+                background-color: #f7f7f7;
+                border-radius: 8px;
+                margin-bottom: 20px;
+                overflow-y: auto;
+            }
+
+            .filters-blocks.open {
+                display: flex;
+            }
+
+            .filters-toggle-btn {
+                display: block;
+            }
+        }
+
     </style>

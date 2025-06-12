@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @include('layouts.header_volunteer')
-@section('content')
+@section('content')<meta name="csrf-token" content="{{ csrf_token() }}">
     <div class="main-content" style="font-family: 'Open Sans', sans-serif;">
         <section class="block-one" id="home-section" style="font-family: 'Open Sans', sans-serif;">
             <div class="left-title">
@@ -48,6 +48,16 @@
                 </div>
             </div>
         </section>
+
+        <div class="application-block" id="application-card-container">
+            @if($applications->isEmpty())
+                <p>Немає термінових заявок</p>
+            @else
+                @foreach ($applications as $application)
+                    @include('components.application-card-vol', ['application' => $application])
+                @endforeach
+            @endif
+        </div>
 
         <section class="block-three" id="analytics-section" >
             <h2 class="title-analytics">Досягнення</h2>
@@ -452,6 +462,22 @@
         }
     }
 
+    .application-block{
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 36px;
+        padding: 64px 80px;
+    }
+
+    @media (max-width: 768px) {
+
+        .application-block{
+            gap: 12px;
+            padding: 24px;
+        }
+    }
 </style>
 <script>
     document.addEventListener("DOMContentLoaded", () => {

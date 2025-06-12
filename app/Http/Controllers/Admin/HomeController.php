@@ -12,9 +12,10 @@ class HomeController extends Controller
 {
     public function index()
     {
+        $user = auth()->user()->load('role');
         $totalApplications = Application::count();
         $totalUsers = User::count();
-        $totalVolunteers = User::where('role_id', 3)->count(); 
+        $totalVolunteers = User::where('role_id', 3)->count();
         $topMilitary = DB::table('applications')
             ->select('millitary_id', DB::raw('count(*) as total'))
             ->groupBy('millitary_id')
@@ -38,6 +39,7 @@ class HomeController extends Controller
                         });
 
         return view('admin.home.index', [
+            'user' => $user,
             'totalApplications' => $totalApplications,
             'totalUsers' => $totalUsers,
             'totalVolunteers' => $totalVolunteers,

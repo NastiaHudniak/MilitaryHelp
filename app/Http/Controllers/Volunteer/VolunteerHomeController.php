@@ -11,15 +11,15 @@ class VolunteerHomeController extends Controller
     public function index()
     {
         $user = auth()->user()->load('role');
-// Отримати заявки з описом, що містить слово "ТЕРМІНОВО"
-$urgentOrCreatedApplications = Application::where('status', 'створено')
-->where('description', 'like', '%ТЕРМІНОВО%')
-->get();
 
+        $applications = Application::with('images')
+            ->whereNull('volunteer_id')
+            -> where('is_urgent',1)
+            ->get();
         $totalApplications = Application::where('volunteer_id', $user->id)->count();
 
-       
-        return view('user.volunteer.index', compact('user','urgentOrCreatedApplications', 'totalApplications'));
+
+        return view('user.volunteer.index', compact('user', 'applications','totalApplications'));
 
     }
 

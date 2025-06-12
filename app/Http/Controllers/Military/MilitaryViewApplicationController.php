@@ -150,6 +150,7 @@ class MilitaryViewApplicationController extends Controller
     {
         $user_id = Auth::id();
         $query = Application::with(['images', 'category', 'volunteer'])
+            ->withCount('likedByUsers')
             ->where('millitary_id', $user_id);
 
         // Фільтри

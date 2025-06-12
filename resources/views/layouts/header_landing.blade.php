@@ -14,33 +14,7 @@
 
 </head>
 <body>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const sections = document.querySelectorAll("section[id]");
-        const navLinks = document.querySelectorAll(".navbar-custom .nav-link");
 
-        function activateNavLink() {
-            let scrollY = window.pageYOffset;
-
-            sections.forEach((current) => {
-                const sectionTop = current.offsetTop - 130;
-                const sectionHeight = current.offsetHeight;
-                const sectionId = current.getAttribute("id");
-
-                if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
-                    navLinks.forEach((link) => {
-                        link.classList.remove("active");
-                        if (link.getAttribute("href") === `#${sectionId}`) {
-                            link.classList.add("active");
-                        }
-                    });
-                }
-            });
-        }
-
-        window.addEventListener("scroll", activateNavLink);
-    });
-</script>
 <header class="header-admin">
     <div class="header-l-c">
         <div class="header-left">
@@ -70,7 +44,33 @@
     @yield('content')
 </div>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const sections = document.querySelectorAll("section[id]");
+        const navLinks = document.querySelectorAll(".navbar-custom .nav-link");
 
+        function activateNavLink() {
+            let scrollY = window.pageYOffset;
+
+            sections.forEach((current) => {
+                const sectionTop = current.offsetTop - 130;
+                const sectionHeight = current.offsetHeight;
+                const sectionId = current.getAttribute("id");
+
+                if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+                    navLinks.forEach((link) => {
+                        link.classList.remove("active");
+                        if (link.getAttribute("href") === `#${sectionId}`) {
+                            link.classList.add("active");
+                        }
+                    });
+                }
+            });
+        }
+
+        window.addEventListener("scroll", activateNavLink);
+    });
+</script>
 <style>
     section {
         scroll-margin-top: 120px;

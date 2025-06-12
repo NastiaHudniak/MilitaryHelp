@@ -6,42 +6,123 @@
 
 
     <div class="main-content" style="font-family: 'Open Sans', sans-serif;">
-        <div class="naw">
-            <div class="nawb">
-                <label for="application-sort-filter" class="form-label" >Сортування за:</label>
-                <div class="input-group" style="width: 250px; ">
-                    <select id="sort-filter" class="form-control">
-                        <option value="latest">Останнi</option>
-                        <option value="oldest">Старіші</option>
-                    </select>
+{{--        <div class="naw">--}}
+{{--            <div class="nawb">--}}
+{{--                <label for="application-sort-filter" class="form-label" >Сортування за:</label>--}}
+{{--                <div class="input-group" style="width: 250px; ">--}}
+{{--                    <select id="sort-filter" class="form-control">--}}
+{{--                        <option value="latest">Останнi</option>--}}
+{{--                        <option value="oldest">Старіші</option>--}}
+{{--                    </select>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--            <div class="nawb">--}}
+{{--                <label for="application-category-filter" class="form-label" >Фільтр за категорією заявки</label>--}}
+{{--                <div class="input-group" style="width: 250px; ">--}}
+{{--                    <div class="input-group-prepend">--}}
+{{--                        <span class="input-group-text">--}}
+{{--                            <i class="fas fa-filter"></i>--}}
+{{--                        </span>--}}
+{{--                    </div>--}}
+{{--                    <select id="category-filter" class="form-control">--}}
+{{--                        <option value="">Усі заявки</option>--}}
+{{--                        @foreach ($categories as $category)--}}
+{{--                            <option value="{{ $category->id }}">{{ $category->name }}</option>--}}
+{{--                        @endforeach--}}
+{{--                    </select>--}}
+{{--                    <div class="input-group-append">--}}
+{{--                        <button id="reset-filter" class="btn btn-outline-secondary" type="button">--}}
+{{--                            <i class="fas fa-times"></i>--}}
+{{--                        </button>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+
+        <button class="filters-toggle-btn" onclick="toggleFilters()">Фільтри</button>
+
+        <div class="filters-blocks" id="filtersBlock">
+            <div class="navigation-bar">
+                <nav class="navbar-search">
+                    <div class="search-title">
+                        <img src="{{ asset('images/icon/search.svg') }}" >
+                        <input type="text" class="search" id="search" placeholder="Пошук за назвою">
+                    </div>
+                </nav>
+                <div class="buttons">
+                    <a href="#"
+                       class="button-report generate-all-pdf">
+{{--                       data-url="{{ route('user.military.exportAllPDF') }}">--}}
+                        <img src="{{ asset('images/icon/pdf.svg') }}">
+                        Сформувати звіт в .pdf
+                    </a>
+                    <a type="submit" class="button-report">
+                        <img src="{{ asset('images/icon/excel.svg') }}" >
+                        Сформувати звіт в .xslx
+                    </a>
+
+
+
                 </div>
             </div>
-            <div class="nawb">
-                <label for="application-category-filter" class="form-label" >Фільтр за категорією заявки</label>
-                <div class="input-group" style="width: 250px; ">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">
-                            <i class="fas fa-filter"></i>
-                        </span>
+            <div class="filter-bar">
+                <div class="sort-filter-block">
+                    <label for="application-sort-filter" class="label-sort-filter">
+                        <img src="{{ asset('images/icon/sort.svg') }}">
+                        Сортування за:
+                    </label>
+                    <div class="sort-select" >
+                        <select id="sort-filter" class="sort-input">
+                            <option value="urgent_oldest">Термінові + старіші</option>
+                            <option value="oldest">Старіші → новіші</option>
+                            <option value="newest">Новіші → старіші</option>
+                            <option value="title">За назвою</option>
+                        </select>
+
                     </div>
-                    <select id="category-filter" class="form-control">
-                        <option value="">Усі заявки</option>
-                        @foreach ($categories as $category)
-                            <option value="{{ $category->id }}">{{ $category->name }}</option>
-                        @endforeach
-                    </select>
-                    <div class="input-group-append">
-                        <button id="reset-filter" class="btn btn-outline-secondary" type="button">
-                            <i class="fas fa-times"></i>
-                        </button>
+                </div>
+                <button id="filter-term" type="button" class="button-filter">Термінові</button>
+
+                <div class="sort-filter-block">
+                    <label for="application-sort-filter" class="label-sort-filter">
+                        <img src="{{ asset('images/icon/filter.svg') }}">
+                        Фільтр за:
+                    </label>
+                    <div class="sort-select" style="border-right: 1px solid var(--orange-my);">
+                        <select id="category-filter" class="sort-input" >
+                            <option value="">Усі заявки</option>
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
+                    <div class="sort-select" style="border-right: 1px solid var(--orange-my);">
+                        <select id="status-filter" class="sort-input">
+                            <option value="">Усі статуси</option>
+                            <option value="created">створено</option>
+                            <option value="accept">прийнято</option>
+                            <option value="cancel">відхилено</option>
+                        </select>
+                    </div>
+                    <button id="reset-filter" class="button-reset" type="button">
+                        <img src="{{ asset('images/icon/reset.svg') }}">
+                        Скинути фільтр
+                    </button>
                 </div>
             </div>
         </div>
 
+        <div id="no-results" class="not-found" style="display: none; text-align: center;">
+            <div class="not-found-block" style="display: flex; text-align: center; flex-direction: column; gap: 10px;">
 
-        <div id="no-results" class="alert alert-info" style="display: none; text-align: center;">
-            Заявок не знайдено.
+                <div class="not-found-image">
+                    <img src="{{ asset('images/logo/not-found.svg') }}" style="width: 350px; height: auto">
+                </div>
+                <div class="not-found-text" style="color: var(--orange-my); font-size: 32px; font-weight: bold">
+                    Нажаль за вашим запитом нічого не знайдено(
+                </div>
+            </div>
+
         </div>
 
         <div class="application-block" id="application-card-container">
@@ -205,6 +286,21 @@
         margin: 0 auto;
     }
 
+    .filters-toggle-btn {
+        display: none;
+        width: 100%;
+        padding: 12px;
+        background-color: var(--green-light);
+        color: white;
+        font-weight: bold;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+        margin-bottom: 10px;
+        border-radius: 8px;
+    }
+
+
     .filters-blocks{
         width: 100%;
         height: fit-content;
@@ -256,6 +352,47 @@
         font-size: 14px;
         font-weight: 500;
         line-height: 21px;
+        text-decoration: none;
+        border: none;
+    }
+    .search,
+    button {
+        border: none;
+        outline: none;
+        box-shadow: none;
+        text-decoration: none;
+    }
+
+    .search:focus,
+    button:focus,
+    .search:focus-visible,
+    button:focus-visible,
+    .search:active,
+    button:active {
+        border: none !important;
+        outline: none !important;
+        box-shadow: none !important;
+        text-decoration: none !important;
+    }
+    .button-filter{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: max-content;
+        height: fit-content;
+        background-color: var(--yellow-my);
+        border-radius: 16px;
+        border: 1px var(--main-green-dark) solid;
+        color: var(--main-green-dark);
+        gap: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 21px;
+        padding: 10px 12px;
+        text-align: center;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background-color 0.5s ease, color 0.5s ease;
     }
 
     .search::placeholder {
@@ -297,17 +434,17 @@
         justify-content: center;
         width: max-content;
         height: fit-content;
-        background-color: var(--yellow-my);
+        background-color: var(--yellow-my) !important;
         border-radius: 16px;
-        border: 1px var(--main-green-dark) solid;
-        color: var(--main-green-dark);
+        border: 1px var(--main-green-dark) solid !important;
+        color: var(--main-green-dark) !important;
         gap: 8px;
         font-size: 14px;
         font-weight: 500;
         line-height: 21px;
-        padding: 10px 12px;
+        padding: 10px 12px !important;
         text-align: center;
-        cursor: pointer;
+        cursor: pointer !important;
         text-decoration: none;
         transition: background-color 0.5s ease, color 0.5s ease;
     }
@@ -405,6 +542,30 @@
             padding: 24px;
         }
     }
+
+    @media screen and (max-width: 768px) {
+        /* Ховаємо блок фільтрів за замовчуванням */
+        .filters-blocks {
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+            padding: 10px;
+            background-color: #f7f7f7;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            overflow-y: auto;
+        }
+
+        .filters-blocks.open {
+            display: flex;
+        }
+
+        .filters-toggle-btn {
+            display: block;
+        }
+    }
+
+
 
 
 </style>

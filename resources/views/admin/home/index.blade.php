@@ -4,134 +4,115 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <link href="{{ asset('css/icon.css') }}" rel="stylesheet">
     <link href="{{ asset('css/global.css') }}" rel="stylesheet">
-</head> 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
 @section('content')
+    <div class="main-content" style="font-family: 'Open Sans', sans-serif;">
+        <div class="main-info">
+            @include('components.sidebar_account', ['user' => $user])
 
-<div class="container" style="max-width: 1300px; padding: 50px 0;">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <div class="info">
+                <div class="info-blocks">
+                    <div class="info-card" style="background-color: var(--blue-100-15);">
+                        <div class="info-content">
+                            <p class="info-label">Всього заявок</p>
+                            <h4 class="info-value" style="color: var(--blue-100);">{{ $totalApplications }}</h4>
+                        </div>
+                        <div class="info-icon" style="background-color: var(--blue-100);"><i class="fas fa-file-alt"></i></div>
+                    </div>
 
-    <div class="row mt-4">
-        <div class="col-md-4">
-            
+                    <div class="info-card" style="background-color: var(--orange-100-15);">
+                        <div class="info-content">
+                            <p class="info-label">Всього користувачів</p>
+                            <h4 class="info-value" style="color: var(--orange-100);">{{ $totalUsers }}</h4>
+                        </div>
+                        <div class="info-icon" style="background-color: var(--orange-100);"><i class="fas fa-users"></i></div>
+                    </div>
 
-            <div class="card text-center mb-4 shadow position-relative">
-                <div class="card-body" style="background-color: var(--green-400);">
-                    <div class="circle-number "style="background-color: var(--yellow-400);">1</div>
-                    <h5 class="card-title">Управління користувачами</h5>
-                    <p class="card-text">Переглянути всіх користувачів.</p>
-                    <a href="{{ route('admin.users.index') }}" class="btn btn" style="background-color: var(--yellow-500);">Перейти</a>
+                    <div class="info-card" style="background-color: var(--green-100-15);">
+                        <div class="info-content">
+                            <p class="info-label">Всього волонтерів</p>
+                            <h4 class="info-value" style="color: var(--green-100);">{{ $totalVolunteers }}</h4>
+                        </div>
+                        <div class="info-icon" style="background-color: var(--green-100);"><i class="fas fa-hand-holding-heart"></i></div>
+                    </div>
+
+                    <div class="info-card" style="background-color: var(--red-100-15);">
+                        <div class="info-content">
+                            <p class="info-label">Найбільше заявок у військового</p>
+                            <h4 class="info-value" style="color: var(--red-100);">{{ $topMilitaryName }}</h4>
+                        </div>
+                        <div class="info-icon" style="background-color: var(--red-100);"><i class="fas fa-user-shield"></i></div>
+                    </div>
                 </div>
-            </div>
-            <div class="card text-center mb-4 shadow position-relative">
-                <div class="card-body" style="background-color: var(--green-400);">
-                    <div class="circle-number " style="background-color: var(--yellow-400);">2</div>
-                    <h5 class="card-title">Управління заявками</h5>
-                    <p class="card-text">Переглянути всі заявки.</p>
-                    <a href="{{ route('admin.applications.index') }}" class="btn btn" style="background-color: var(--yellow-500);">Перейти</a>
-                </div>
-            </div>
-            <div class="card text-center mb-4 shadow position-relative">
-                <div class="card-body" style="background-color: var(--green-400);">
-                    <div class="circle-number "style="background-color: var(--yellow-400);">3</div>
-                    <h5 class="card-title">Управління категоріями</h5>
-                    <p class="card-text">Переглянути всі категорії.</p>
-                    <a href="{{ route('admin.categories.index') }}" class="btn btn" style="background-color: var(--yellow-500);">Перейти</a>
+                <div class="status-cards-container">
+                    <div class="status-card ">
+                        <p class="status-label">Заявки зі статусом - створено</p>
+                        <h4 class="status-value">{{ $applicationsCreated }}</h4>
+                    </div>
+                    <div class="status-card ">
+                        <p class="status-label">Заявки зі статусом - прийнято</p>
+                        <h4 class="status-value">{{ $applicationsAccepted }}</h4>
+                    </div>
+                    <div class="status-card ">
+                        <p class="status-label">Заявки зі статусом - відхилено</p>
+                        <h4 class="status-value">{{ $applicationsRejected }}</h4>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-8 info-blocks">
-            <div class="info-card shadow"style="background-color: var(--yellow-200);">
-                <div class="info-icon bg-primary"><i class="fas fa-file-alt"></i></div>
-                <div class="info-content">
-                    <p class="info-label">Всього заявок</p>
-                    <h4 class="info-value">{{ $totalApplications }}</h4>
-                </div>
-            </div>
-
-            <div class="info-card shadow"style="background-color: var(--yellow-200);">
-                <div class="info-icon bg-secondary"><i class="fas fa-users"></i></div>
-                <div class="info-content">
-                    <p class="info-label">Всього користувачів</p>
-                    <h4 class="info-value">{{ $totalUsers }}</h4>
-                </div>
-            </div>
-
-            <div class="info-card shadow"style="background-color: var(--yellow-200);">
-                <div class="info-icon bg-success"><i class="fas fa-hand-holding-heart"></i></div>
-                <div class="info-content">
-                    <p class="info-label">Волонтерів</p>
-                    <h4 class="info-value">{{ $totalVolunteers }}</h4>
-                </div>
-            </div>
-
-            <div class="info-card shadow"style="background-color: var(--yellow-200);">
-                <div class="info-icon bg-warning"><i class="fas fa-user-shield"></i></div>
-                <div class="info-content">
-                    <p class="info-label">Найбільше заявок у військового</p>
-                    <h4 class="info-value">{{ $topMilitaryName }}</h4>
-                </div>
-            </div>
-
-            <div class="status-cards-container">
-    <div class="status-card shadow "style="background-color: var(--yellow-400);">
-        <p class="status-label">Заявки зі статусом - створено</p>
-        <h4 class="status-value">{{ $applicationsCreated }}</h4>
-    </div>
-    <div class="status-card shadow "style="background-color: var(--yellow-400);">
-        <p class="status-label">Заявки зі статусом - прийнято</p>
-        <h4 class="status-value">{{ $applicationsAccepted }}</h4>
-    </div>
-    <div class="status-card shadow "style="background-color: var(--yellow-400);">
-        <p class="status-label">Заявки зі статусом - відхилено</p>
-        <h4 class="status-value">{{ $applicationsRejected }}</h4>
-    </div>
-</div>
-
+        <div class="container">
+            <canvas id="applicationsChart" width="400" height="200"></canvas>
         </div>
     </div>
 
-    <div class="container">
-    <canvas id="applicationsChart" width="400" height="200"></canvas>
-</div>
-</div>
 
 @endsection
 
 <style>
-    .circle-number {
-        position: absolute;
-        top: -15px;
-        left: -15px;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
+    body {
+        overflow-x: hidden;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    .main-content {
+        background-color: var(--main-white);
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
+    .main-info{
         display: flex;
+        justify-content: left;
+        flex-direction: row;
         align-items: center;
-        justify-content: center;
-        font-size: 1.2rem;
-        font-weight: bold;
+        padding: 64px 80px;
+        gap: 80px;
     }
 
     .info-blocks {
         display: flex;
-        flex-wrap: wrap;
+        flex-direction: row;
+        gap: 20px;
+    }
+    .info {
+        display: flex;
+        flex-direction: column;
         gap: 20px;
     }
 
     .info-card, .status-card {
         display: flex;
+        justify-content: space-between;
         align-items: center;
-        padding: 15px;
-        border-radius: 10px;
+        padding: 16px;
+        border-radius: 16px;
         transition: transform 0.3s;
         position: relative;
-        margin-bottom: 20px;
-        width: 48%;
-    }
-
-    .info-card {
-        background-color: #fff;
     }
 
     .info-icon {
@@ -143,7 +124,7 @@
         justify-content: center;
         font-size: 1.5rem;
         color: #fff;
-        margin-right: 15px;
+        margin: 0;
     }
 
     .info-content {
@@ -151,24 +132,29 @@
     }
 
     .info-label {
-        font-size: 1rem;
-        color: #666;
+        color: var(--green-dark) !important;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 130%;
     }
 
     .info-value {
-        font-size: 1.8rem;
-        font-weight: bold;
-        color: #333;
+        font-size: 22px;
+        font-weight: 600;
+        line-height: 130%;
     }
 
     .status-card {
+        background-color: var(--white-my);
         display: flex;
         flex-direction: column;
         justify-content: center;
         text-align: center;
-        padding: 15px;
+        padding: 16px;
         width: 100%;
-        border-radius: 15px;
+        border-radius: 16px;
+
+        border: 1px solid var(--orange-my);
     }
 
     .status-label {
@@ -179,7 +165,7 @@
     .status-value {
         font-size: 2rem;
         font-weight: bold;
-        color: #333;
+        color: var(--orange-my);
     }
 
     .status-cards-container {
@@ -216,12 +202,12 @@
                 datasets: [{
                     label: 'Кількість заявок кожного військового',
                     data: dataValues,
-                    backgroundColor: '#8fbc82', 
-                    borderColor: '#2B4324',       
+                    backgroundColor: '#8fbc82',
+                    borderColor: '#2B4324',
                     borderWidth: 2,
-                    borderRadius: 10,                           
-                    hoverBackgroundColor: '#f8f9ab', 
-                    hoverBorderColor: '#F5F786'     
+                    borderRadius: 10,
+                    hoverBackgroundColor: '#f8f9ab',
+                    hoverBorderColor: '#F5F786'
                 }]
             },
             options: {
@@ -230,7 +216,7 @@
                     legend: {
                         display: true,
                         labels: {
-                            color: '#2B4324',                    
+                            color: '#2B4324',
                             font: {
                                 size: 14,
                                 weight: 'bold'
@@ -238,7 +224,7 @@
                         }
                     },
                     tooltip: {
-                        backgroundColor: '#2B4324', 
+                        backgroundColor: '#2B4324',
                         titleColor: '#fff',
                         bodyColor: '#fff',
                         titleFont: {
@@ -259,13 +245,13 @@
                             }
                         },
                         ticks: {
-                            color: '#333',                    
+                            color: '#333',
                             font: {
                                 size: 12
                             }
                         },
                         grid: {
-                            color: 'rgba(200, 200, 200, 0.3)' 
+                            color: 'rgba(200, 200, 200, 0.3)'
                         }
                     },
                     x: {
@@ -285,7 +271,7 @@
                             }
                         },
                         grid: {
-                            color: 'rgba(200, 200, 200, 0.1)'  
+                            color: 'rgba(200, 200, 200, 0.1)'
                         }
                     }
                 }

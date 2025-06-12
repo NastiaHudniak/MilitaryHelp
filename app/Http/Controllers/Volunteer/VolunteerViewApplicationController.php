@@ -21,6 +21,7 @@ class VolunteerViewApplicationController extends Controller
         $categories = Category::all();
         $applications = Application::with('images')
         ->whereNull('volunteer_id')
+            ->orderByDesc('is_urgent')
         ->get();
         $userLikedApplicationIds = auth()->check()
             ? auth()->user()->likedApplications()->pluck('application_id')->toArray()

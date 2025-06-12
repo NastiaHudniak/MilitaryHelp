@@ -106,6 +106,7 @@ class AuthController extends Controller
 
             'password.required' => '* Обов`язкове поле.',
             'password.string' => '* Пароль має бути рядком.',
+            'password.min' => '* Пароль повинен містити не менше 8 символів.',
         ];
 
         $validator = Validator::make($request->all(), [
