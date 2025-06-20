@@ -120,27 +120,71 @@ class VolunteerViewConfirmApplicationController extends Controller
 //
 //
 //
-    public function filter(Request $request)
+    public function getFilteredApplications(Request $request)
     {
-        $query = $request->input('query');
-        $category = $request->input('category_id');
-        $status = $request->input('status');
+        $user_id = Auth::id();
 
-        $applications = Application::with(['category', 'volunteer', 'millitary'])
-            ->when($query, function($queryBuilder) use ($query) {
-                $queryBuilder->where('title', 'like', "%{$query}%")
-                    ->orWhere('description', 'like', "%{$query}%");
-            })
-            ->when($category, function($queryBuilder) use ($category) {
-                $queryBuilder->where('category_id', $category);
-            })
-            ->when($status, function($queryBuilder) use ($status) {
-                $queryBuilder->where('status', $status);
-            })
-            ->get();
+        $query = Application::with(['images', 'category', 'millitary', 'likedByUsers'])
+            ->where('volunteer_id', $user_id);
 
-        return response()->json(['applications' => $applications]);
+
+        // Фільтри
+        if ($request->filled('category')) {
+            $query->where('category_id', $request->category);
+        }
+
+        if ($request->filled('status')) {
+            $status = $request->status;
+            if ($status === "created") $status = "створено";
+            elseif ($status === "accept") $status = "прийнято";
+            elseif ($status === "cancel") $status = "відхилено";
+            $query->where('status', $status);
+        }
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('urgent') && $request->urgent === 'true') {
+            $query->where('is_urgent', true);
+        }
+
+        // Сортування
+        $sort = $request->input('sort', 'urgent_oldest');
+        if ($sort === 'urgent_oldest') {
+            $query->orderByDesc('is_urgent')->orderBy('created_at', 'asc');
+        } elseif ($sort === 'oldest') {
+            $query->orderBy('created_at', 'asc');
+        } elseif ($sort === 'newest') {
+            $query->orderBy('created_at', 'desc');
+        } elseif ($sort === 'title') {
+            $query->orderBy('title', 'asc');
+        }
+
+        $applications = $query->get();
+
+        // Позначаємо, які заявки лайкнуті поточним волонтером
+        $applications->map(function ($application) use ($user_id) {
+            $application->is_liked = $application->likedByUsers->contains('id', $user_id);
+            return $application;
+        });
+
+        // HTML рендеринг
+        $html = '';
+        foreach ($applications as $application) {
+            $html .= view('components.application-card-vol', compact('application'))->render();
+        }
+
+        return response()->json([
+            'sort' => $sort,
+            'html' => $html,
+        ]);
     }
+
 
     public function generatePDF($id)
     {
@@ -149,4 +193,26 @@ class VolunteerViewConfirmApplicationController extends Controller
 
         return $pdf->download('application-'.$application->id.'.pdf');
     }
+
+    public function exportAllApplicationsToPDF()
+    {
+        $user = Auth::user();
+        $user_id = $user->id;
+
+        $applications = \App\Models\Application::with(['category', 'volunteer', 'images'])
+            ->where('volunteer_id', $user_id)
+            ->get();
+
+        $applicationCount = $applications->count();
+        $date = \Carbon\Carbon::now()->format('d.m.Y');
+        $fullName = $user->surname . ' ' . $user->name;
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView(
+            'user.military.all_applications_pdf', // перевір цей шлях
+            compact('applications', 'applicationCount', 'date', 'fullName')
+        )->setPaper('a4', 'portrait');
+
+        return $pdf->download('all_applications_'.$user->id.'.pdf');
+    }
+
 }

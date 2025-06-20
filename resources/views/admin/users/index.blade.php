@@ -13,12 +13,12 @@
                         <img src="{{ asset('images/icon/znak-white.svg') }}" >
                         Додати заявку
                     </a>
-                    <a href="#"
-                       class="button-report generate-all-pdf"
-                       data-url="{{ route('admin.users.export') }}">
+                    <a href="{{ route('admin.users.export') }}" class="button-report generate-all-pdf">
                         <img src="{{ asset('images/icon/pdf.svg') }}">
                         Сформувати звіт в .pdf
                     </a>
+
+
                 </div>
 
                 <nav class="navbar-search">
@@ -117,6 +117,42 @@
     </div>
 
     <script>
+        document.querySelector('.generate-all-pdf').addEventListener('click', function(e) {
+            e.preventDefault();
+
+            const btn = this;
+            btn.style.pointerEvents = 'none';  // заборона повторних кліків
+            btn.innerHTML = '<img src="{{ asset("images/icon/pdf.svg") }}" style="opacity: 0.5;"> Завантаження...';
+            showToast('Формується PDF...', 'info');
+            fetch(btn.href)
+                .then(response => {
+                    if (!response.ok) throw new Error('Помилка при формуванні PDF');
+                    return response.blob();  // отримуємо PDF як Blob
+                })
+                .then(blob => {
+                    // створюємо тимчасовий URL для завантаження
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'users_report.pdf';  // ім'я файлу для завантаження
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                    window.URL.revokeObjectURL(url);
+
+                    btn.innerHTML = '<img src="{{ asset("images/icon/pdf.svg") }}"> Сформувати звіт в .pdf';
+                    btn.style.pointerEvents = 'auto';
+                    showToast('Файл успішно завантажено', 'success');
+                })
+                .catch(err => {
+                    console.error(err);
+                    showToast('Сталася помилка при генерації PDF.', 'error');
+                    btn.innerHTML = '<img src="{{ asset("images/icon/pdf.svg") }}"> Сформувати звіт в .pdf';
+                    btn.style.pointerEvents = 'auto';
+                });
+        });
+
+
         document.getElementById('search').addEventListener('input', function() {
             const query = document.getElementById('search').value;
             const role = document.getElementById('role-filter').value;

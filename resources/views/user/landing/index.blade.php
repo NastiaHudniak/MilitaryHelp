@@ -1,13 +1,5 @@
 @extends('layouts.app')
 @include('layouts.header_landing')
-@section('head')
-
-    <link rel="icon" href="{{ asset('favicon.png') }}" type="image/png">
-    <link href="{{ asset('css/icon.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/global.css') }}" rel="stylesheet">
-@endsection
-
-
 @section('content')
     <div class="main-content" style="font-family: 'Open Sans', sans-serif;">
         <section class="block-one" id="home-section" style="font-family: 'Open Sans', sans-serif;">

@@ -34,14 +34,12 @@
                                 <img src="{{ asset('images/icon/delete.svg') }}" style="width: 32px; height: 32px">
                             </button>
                         </form>
-                        <form action="{{ route('user.volunteer.confirm.reject_application', $application->id) }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('PUT')
-                            <button type="submit" class="reject-button" >Відхилити заявку</button>
-                        </form>
-
                     </div>
-
+                    <form action="{{ route('user.volunteer.confirm.reject_application', $application->id) }}" method="POST" style="display:inline;">
+                        @csrf
+                        @method('PUT')
+                        <button type="submit" class="reject-button" >Відхилити заявку</button>
+                    </form>
 
                     <div class="label-create">
                         <p>Не хочете редагувати заявку? </p>

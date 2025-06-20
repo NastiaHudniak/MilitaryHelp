@@ -13,15 +13,22 @@ class HomeController extends Controller
     public function index()
     {
         $user = auth()->user()->load('role');
-        $totalApplications = Application::count();
+        $totalApplications = cache()->remember('total_applications', 60, function () {
+            return Application::count();
+        });
+
         $totalUsers = User::count();
         $totalVolunteers = User::where('role_id', 3)->count();
-        $topMilitary = DB::table('applications')
-            ->select('millitary_id', DB::raw('count(*) as total'))
-            ->groupBy('millitary_id')
-            ->orderBy('total', 'desc')
-            ->first();
-        $topMilitaryName = $topMilitary ? User::find($topMilitary->millitary_id)->name : 'Немає';
+        $topMilitary = cache()->remember('top_military', 300, function () {
+            return DB::table('applications')
+                ->join('users', 'applications.millitary_id', '=', 'users.id')
+                ->select('applications.millitary_id', 'users.name', DB::raw('count(*) as total'))
+                ->groupBy('applications.millitary_id', 'users.name')
+                ->orderBy('total', 'desc')
+                ->first();
+        });
+        $topMilitaryName = $topMilitary->name ?? 'Немає';
+
 
         $applicationsCreated = Application::where('status', 'створено')->count();
         $applicationsAccepted = Application::where('status', 'прийнято')->count();

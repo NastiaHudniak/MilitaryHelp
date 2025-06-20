@@ -195,87 +195,109 @@
         const labels = userApplications.map(data => data.user);
         const dataValues = userApplications.map(data => data.total);
 
+        // Створимо градієнт із лівого (темно-зелений) до правого (помаранчевий)
+        const gradient = ctx.createLinearGradient(0, 0, 0, ctx.canvas.height);
+        gradient.addColorStop(0, '#556B2F99');  // Зверху - темно-зелений (60% прозорості)
+        gradient.addColorStop(1, '#D9770699');  // Знизу - помаранчевий (60% прозорості)
+
         new Chart(ctx, {
-            type: 'bar',
+            type: 'line',
             data: {
                 labels: labels,
                 datasets: [{
                     label: 'Кількість заявок кожного військового',
                     data: dataValues,
-                    backgroundColor: '#8fbc82',
-                    borderColor: '#2B4324',
-                    borderWidth: 2,
-                    borderRadius: 10,
-                    hoverBackgroundColor: '#f8f9ab',
-                    hoverBorderColor: '#F5F786'
+                    fill: true,
+                    backgroundColor: gradient,
+                    borderColor: '#556B2F',  // темно-зелений для лінії
+                    pointBackgroundColor: '#D97706', // помаранчевий для точок
+                    pointBorderColor: '#556B2F',
+                    pointHoverBackgroundColor: '#556B2F',
+                    pointHoverBorderColor: '#D97706',
+                    tension: 0.4,
+                    borderWidth: 3,
+                    pointRadius: 6,
+                    pointHoverRadius: 8,
+                    hoverBorderWidth: 2,
                 }]
             },
             options: {
                 responsive: true,
+                interaction: {
+                    mode: 'nearest',
+                    intersect: false
+                },
                 plugins: {
                     legend: {
                         display: true,
                         labels: {
-                            color: '#2B4324',
+                            color: '#556B2F',
                             font: {
                                 size: 14,
-                                weight: 'bold'
+                                weight: '600'
                             }
                         }
                     },
                     tooltip: {
-                        backgroundColor: '#2B4324',
+                        backgroundColor: '#556B2F',
                         titleColor: '#fff',
                         bodyColor: '#fff',
                         titleFont: {
                             weight: 'bold'
-                        }
+                        },
+                        padding: 10,
+                        cornerRadius: 6,
                     }
                 },
                 scales: {
                     y: {
                         beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0,0,0,0.05)',
+                            borderDash: [5, 5],
+                        },
+                        ticks: {
+                            color: '#556B2F',
+                            font: {
+                                size: 13
+                            }
+                        },
                         title: {
                             display: true,
                             text: 'Кількість заявок',
-                            color: '#555',
+                            color: '#556B2F',
                             font: {
                                 size: 16,
-                                weight: 'bold'
+                                weight: '600'
                             }
-                        },
-                        ticks: {
-                            color: '#333',
-                            font: {
-                                size: 12
-                            }
-                        },
-                        grid: {
-                            color: 'rgba(200, 200, 200, 0.3)'
                         }
                     },
                     x: {
+                        grid: {
+                            display: false,
+                        },
+                        ticks: {
+                            color: '#556B2F',
+                            font: {
+                                size: 13
+                            },
+                            maxRotation: 45,
+                            minRotation: 30,
+                        },
                         title: {
                             display: true,
                             text: 'Користувачі',
-                            color: '#555',
+                            color: '#556B2F',
                             font: {
                                 size: 16,
-                                weight: 'bold'
+                                weight: '600'
                             }
-                        },
-                        ticks: {
-                            color: '#333',
-                            font: {
-                                size: 12
-                            }
-                        },
-                        grid: {
-                            color: 'rgba(200, 200, 200, 0.1)'
                         }
                     }
                 }
             }
         });
     });
+
+
 </script>

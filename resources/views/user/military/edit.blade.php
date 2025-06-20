@@ -1,9 +1,4 @@
 @extends('layouts.app')
-<head>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-    <link href="{{ asset('css/icon.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/global.css') }}" rel="stylesheet">
-</head>
 @include('layouts.header_military')
 @section('content')
     <div class="main-content" style="font-family: 'Open Sans', sans-serif;">

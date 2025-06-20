@@ -2,7 +2,7 @@
 @include('layouts.header_volunteer')
 
 @section('content')
-    <div class="container" style="max-width: 1300px; padding: 50px 0px;">
+    <div class="main-content" style="font-family: 'Open Sans', sans-serif;">
         <div class="block-info">
            <div class="profile-card">
                 <div class="profile-info">
@@ -158,6 +158,21 @@
 @endsection
 
 <style>
+
+    body {
+        overflow-x: hidden;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    .main-content {
+        background-color: var(--main-white);
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
     .block-info{
         display: flex;
         justify-content: space-between;
@@ -165,6 +180,8 @@
         align-items: start;
         text-align: start;
         gap: 44px;
+
+        padding: 64px 80px;
     }
 
 
@@ -545,6 +562,66 @@
 
 
     @media (max-width: 768px) {
+
+        .block-info{
+            flex-direction: column;
+            gap: 24px;
+            padding: 24px;
+            align-items: center;
+        }
+
+
+        .profile-card {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 16px;
+            border-radius: 16px;
+        }
+
+        .profile-photo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 8px;
+        }
+
+        .profile-photo img {
+            width: 120px;
+            height: 120px;
+        }
+
+        .profile-info{
+            align-items: center;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .profile-info-title{
+            margin: 0;
+            color: var(--orange-my) !important;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .profile-info-subtitle{
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .profile-info-subtitle p{
+            font-size: 16px;
+            text-align: center;
+        }
+
+
+        .application-block{
+            gap: 12px;
+            padding: 0;
+        }
 
         .card-application{
             width: calc(50% - 12px);

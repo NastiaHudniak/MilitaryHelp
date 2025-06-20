@@ -94,7 +94,7 @@
                                  data-outline="{{ asset('images/icon/bookmarks/bookmark.svg') }}"
                                  data-filled="{{ asset('images/icon/bookmarks/bookmark-filled.svg') }}">
                         </button>
-                        <a href="javascript:void(0);" class="button-view-info" data-toggle="modal" data-target="#applicationModal{{ $volunteer->id }}">
+                        <a href="" class="button-view-info" data-toggle="modal" data-target="#applicationModal{{ $volunteer->id }}">
                             Детальніше
                             <img src="{{ asset('images/icon/info.svg') }}">
                         </a>
@@ -102,13 +102,13 @@
                 </div>
             @endforeach
                 @foreach ($volunteers as $volunteer)
-                    <div class="modal" id="applicationModal{{ $volunteer->id }}" tabindex="-1" aria-labelledby="applicationModalLabel{{ $volunteer->id }}" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" style="top: 10%; left: 30%;">
+                    <div class="modal" id="applicationModal{{ $volunteer->id }}" tabindex="-1" aria-labelledby="applicationModalLabel{{ $volunteer->id }}" aria-hidden="true" data-backdrop="static" data-keyboard="false" style="top: 10%; left: 30%;">
                         <div class="modal-info-block">
                             <div class="modal-status-close">
                                 <div class="modal-title" id="applicationModalLabel{{ $volunteer->id }}">
                                     <p class="info-title">{{ $volunteer->name }} {{ $volunteer->surname }}</p>
                                 </div>
-                                <button type="button" class="close-button" data-bs-dismiss="modal" aria-label="Close">
+                                <button type="button" class="close-button" data-dismiss="modal" aria-label="Close">
                                     <img src="{{ asset('images/icon/cancell.svg') }}">
                                 </button>
                             </div>
@@ -176,7 +176,6 @@
             let currentSort = '';
             let currentQuery = '';
 
-            // --- Ініціалізація кнопок обраних ---
             function initFavoriteButtons() {
                 document.querySelectorAll('.favorite-btn').forEach(btn => {
                     btn.onclick = function () {
@@ -184,6 +183,8 @@
                         const icon = this.querySelector('img');
                         const outlineSrc = icon.dataset.outline;
                         const filledSrc = icon.dataset.filled;
+
+                        console.log('Натиснули на favorite-btn, ID:', volunteerId);
 
                         fetch(`/users/${volunteerId}/favorite`, {
                             method: 'POST',
@@ -193,22 +194,28 @@
                             },
                             body: JSON.stringify({})
                         })
-                            .then(response => response.json())
+                            .then(response => {
+                                if (!response.ok) throw new Error('Network response was not ok');
+                                return response.json();
+                            })
                             .then(data => {
-                                if (data.action === 'added') {
-                                    icon.src = filledSrc;
-                                } else if (data.action === 'removed') {
-                                    icon.src = outlineSrc;
+                                console.log('Відповідь сервера:', data);
+
+                                if (data.status === 'added') {
+                                    icon.src = filledSrc + '?' + new Date().getTime();
+                                    showToast('Волонтер доданий в обране', 'success');
+                                } else if (data.status === 'removed') {
+                                    icon.src = outlineSrc + '?' + new Date().getTime();
+                                    showToast('Волонтер видалений з обраного', 'success');
                                 }
                             })
                             .catch(error => {
                                 console.error('Помилка:', error);
+                                showToast('Сталася помилка. Спробуйте ще раз.', 'error');
                             });
                     };
                 });
             }
-
-            // --- Основна функція запиту ---
             function fetchVolunteers() {
                 const url = `{{ route('user.military.vol.search') }}?` +
                     new URLSearchParams({

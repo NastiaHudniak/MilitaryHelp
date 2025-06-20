@@ -31,16 +31,14 @@
             </a>
 
             <div class="card-buttons">
-{{--                @php--}}
-{{--                    $isLiked = in_array($application->id, $userLikedApplicationIds);--}}
-{{--                @endphp--}}
-{{--                <button class="like-btn" type="button" data-id="{{ $application->id }}">--}}
-{{--                    <img src="{{ $isLiked ? asset('images/icon/likes/like-filled.svg') : asset('images/icon/likes/like.svg') }}"--}}
-{{--                         alt="Like"--}}
-{{--                         class="like-icon"--}}
-{{--                         data-outline="{{ asset('images/icon/likes/like.svg') }}"--}}
-{{--                         data-filled="{{ asset('images/icon/likes/like-filled.svg') }}">--}}
-{{--                </button>--}}
+                <button class="like-btn" type="button" data-id="{{ $application->id }}">
+                    <img src="{{ $application->is_liked ? asset('images/icon/likes/like-filled.svg') : asset('images/icon/likes/like.svg') }}"
+                         alt="Like"
+                         class="like-icon"
+                         data-outline="{{ asset('images/icon/likes/like.svg') }}"
+                         data-filled="{{ asset('images/icon/likes/like-filled.svg') }}">
+                </button>
+
                 @php
                     $isConfirmedByThisVolunteer = $application->volunteer_id === auth()->id();
                 @endphp
@@ -97,7 +95,9 @@
 
 
             <div class="modal-footer">
-                <a href="{{ route('user.military.pdf', $application->id) }}" class="button-report" type="button">
+                <a href="#"
+                   class="button-report generate-one-pdf"
+                   data-url="{{ route('user.military.pdf', $application->id) }}">
                     <img src="{{ asset('images/icon/pdf.svg') }}">
                     Сформувати .pdf
                 </a>
@@ -541,3 +541,54 @@
 
 
 </style>
+
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+
+            document.querySelectorAll('.generate-one-pdf').forEach(button => {
+                button.addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    if (button.disabled) return;  // блокування подвійних кліків
+                    button.disabled = true;
+
+                    const url = this.getAttribute('data-url');
+                    if (!url) return;
+
+                    showToast('Формується PDF...', 'info');
+
+                    fetch(url, {
+                        method: 'GET',
+                        headers: {'X-Requested-With': 'XMLHttpRequest'}
+                    })
+                        .then(response => {
+                            if (!response.ok) throw new Error('PDF не вдалося згенерувати.');
+                            return response.blob();
+                        })
+                        .then(blob => {
+                            const downloadUrl = window.URL.createObjectURL(blob);
+                            const a = document.createElement('a');
+                            a.href = downloadUrl;
+                            a.download = 'Звіт.pdf';
+                            document.body.appendChild(a);
+                            a.click();
+                            a.remove();
+                            window.URL.revokeObjectURL(downloadUrl);
+                            showToast('Файл успішно завантажено', 'success');
+                        })
+                        .catch(error => {
+                            console.error(error);
+                            showToast('Сталася помилка при генерації PDF.', 'error');
+                        })
+                        .finally(() => {
+                            button.disabled = false;
+                        });
+                });
+            });
+        });
+
+
+    </script>

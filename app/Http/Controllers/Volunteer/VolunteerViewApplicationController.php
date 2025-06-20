@@ -62,43 +62,111 @@ class VolunteerViewApplicationController extends Controller
         return redirect()->route('user.volunteer.index')->with('success', 'Заявка створена успішно!');
     }
 
-    public function search(Request $request)
+
+
+
+    public function getFilteredApplications(Request $request)
     {
-        $query = $request->input('query');
-        $category = $request->input('category');
-        $sort = $request->input('sort');
-        $user_id = Auth::user()->id;
+        $user_id = Auth::id();
 
-        $applications = Application::with(['category', 'volunteer', 'millitary', 'images'])
-            // ->when($user_id, function($q) use ($user_id) {
-            //     $q->where('millitary_id', $user_id);
-            // })
-            ->whereNull('volunteer_id')
-            // ->where('category_id', $category)
-            ->when(!is_null($category), function($q) use ($category) {
-                $q->where('category_id', $category);
-            })
-            ->where(function ($q) use ($query) {
-                $q->where('title', 'like', "%{$query}%")
-                ->orWhere('description', 'like', "%{$query}%");
-            });
+        $query = Application::with(['images', 'category', 'millitary', 'likedByUsers'])
+            ->whereNull('volunteer_id'); // тільки відкриті заявки
 
-        if ($sort === 'latest') {
-            $applications->orderBy('created_at', 'desc');
-        } elseif ($sort === 'oldest') {
-            $applications->orderBy('created_at', 'asc');
+        // Фільтри
+        if ($request->filled('category')) {
+            $query->where('category_id', $request->category);
         }
 
-        return response()->json(['applications' => $applications->get()]);
+        if ($request->filled('status')) {
+            $status = $request->status;
+            if ($status === "created") $status = "створено";
+            elseif ($status === "accept") $status = "прийнято";
+            elseif ($status === "cancel") $status = "відхилено";
+            $query->where('status', $status);
+        }
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('urgent') && $request->urgent === 'true') {
+            $query->where('is_urgent', true);
+        }
+
+        // Сортування
+        $sort = $request->input('sort', 'urgent_oldest');
+        if ($sort === 'urgent_oldest') {
+            $query->orderByDesc('is_urgent')->orderBy('created_at', 'asc');
+        } elseif ($sort === 'oldest') {
+            $query->orderBy('created_at', 'asc');
+        } elseif ($sort === 'newest') {
+            $query->orderBy('created_at', 'desc');
+        } elseif ($sort === 'title') {
+            $query->orderBy('title', 'asc');
+        }
+
+        $applications = $query->get();
+
+        // Позначаємо, які заявки лайкнуті поточним волонтером
+        $applications->map(function ($application) use ($user_id) {
+            $application->is_liked = $application->likedByUsers->contains('id', $user_id);
+            return $application;
+        });
+
+        // HTML рендеринг
+        $html = '';
+        foreach ($applications as $application) {
+            $html .= view('components.application-card-vol', compact('application'))->render();
+        }
+
+        return response()->json([
+            'sort' => $sort,
+            'html' => $html,
+        ]);
     }
 
+
+
+
+//    public function generatePDF($id)
+//    {
+//        $application = Application::with(['category', 'volunteer', 'images'])->findOrFail($id);
+//        $pdf = Pdf::loadView('user.volunteer.pdf', compact('application'));
+//
+//        return $pdf->download('application-' . $application->id . '.pdf');
+//    }
 
     public function generatePDF($id)
     {
+        $user = Auth::user(); // військовий
+        $date = \Carbon\Carbon::now()->format('d.m.Y');
+        $fullName = $user->surname . ' ' . $user->name;
         $application = Application::with(['category', 'volunteer', 'images'])->findOrFail($id);
-        $pdf = Pdf::loadView('user.volunteer.pdf', compact('application'));
+        $pdf = Pdf::loadView('user.volunteer.pdf', compact('application', 'date', 'fullName'));
+        //return view('user.military.pdf', compact('application'));
+        return $pdf->download('application-'.$application->id.'.pdf');
 
-        return $pdf->download('application-' . $application->id . '.pdf');
     }
 
+    public function exportAllApplicationsToPDF()
+    {
+        $user = Auth::user();
+
+        $applications = \App\Models\Application::with(['category', 'volunteer', 'images'])
+            ->whereNull('volunteer_id')
+            ->get();
+
+        $applicationCount = $applications->count();
+        $date = \Carbon\Carbon::now()->format('d.m.Y');
+        $fullName = $user->surname . ' ' . $user->name;
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('user.military.all_applications_pdf', compact('applications', 'applicationCount', 'date', 'fullName'))
+            ->setPaper('a4', 'portrait');
+
+        return $pdf->download('all_applications_'.$user->id.'.pdf');
+    }
 }

@@ -2,7 +2,7 @@
 @include('layouts.header_volunteer')
 
 @section('content')
-    <div class="container" style="max-width: 1300px; padding: 40px 0px;">
+    <div class="main-content" style="font-family: 'Open Sans', sans-serif;">
         <div class="block-info">
             <div class="block-infos">
                 <div class="profile-card">
@@ -40,7 +40,7 @@
                         </div>
 
                         <div class="form-buttons" style="margin-top: 1rem;">
-                            <button type="submit" class="create-button">Підтаердити заявку</button>
+                            <button type="submit" class="create-button">Підтвердити заявку</button>
                             <div class="label-create">
                                 <p>Не хочете редагувати заявку? </p>
                                 <a href="{{ route('user.volunteer.mil.view_military') }}">Назад</a>
@@ -79,7 +79,6 @@
                 </div>
                 <div class="modal-description">
                     <p class="info-description">{{ $application->description }}
-                    <p class="info-description"> Заявку створив:{{ $application->millitary->name }} {{ $application->millitary->surname }}</p>
                 </div>
             </div>
 
@@ -92,6 +91,19 @@
 
 
 <style>
+    body {
+        overflow-x: hidden;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    .main-content {
+        background-color: var(--main-white);
+        max-width: 100%;
+        margin: 0 auto;
+    }
     .block-info{
         display: flex;
         justify-content: space-between;
@@ -99,6 +111,7 @@
         align-items: start;
         text-align: start;
         gap: 44px;
+        padding: 64px 80px;
     }
 
     .block-infos{
@@ -242,28 +255,6 @@
         display: inline-block;
     }
 
-    .like-btn, .button-report {
-        background: none;
-        border: none;
-        padding: 0;
-        margin: 0;
-        outline: none;
-        cursor: pointer;
-        appearance: none;
-    }
-
-    .like-btn:focus,
-    .like-btn:active {
-        outline: none;
-        box-shadow: none;
-    }
-
-    .like-icon {
-        width: 24px;
-        height: 24px;
-        display: block;
-    }
-
 
     .buttons-blocks{
         width: 100%;
@@ -274,63 +265,6 @@
         border: none;
     }
 
-    .button-view-info{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: auto;
-        height: fit-content;
-        background-color: var(--yellow-my);
-        border-radius: 16px;
-        border: 1px var(--main-green-dark) solid;
-        color: var(--main-green-dark);
-        gap: 8px;
-        font-size: 14px;
-        font-weight: 500;
-        line-height: 130%;
-        padding: 6px 16px;
-        text-align: center;
-        cursor: pointer;
-        text-decoration: none;
-        transition: background-color 0.5s ease, color 0.5s ease;
-    }
-
-    .card-buttons{
-        display: flex;
-        align-items: center;
-        flex-direction: row;
-        padding: 0;
-        gap: 16px;
-    }
-
-    .button-actions{
-        text-decoration: none;
-        border: none;
-        background-color: transparent;
-        padding: 0;
-    }
-
-
-    .modal-info-block{
-        width: 40%;
-        display: flex;
-        justify-content: start;
-        flex-direction: column;
-        gap: 24px;
-        border-radius: 16px;
-        padding: 24px;
-        background-color: var(--main-white);
-    }
-
-
-    .modal-status-close{
-        display: flex;
-        justify-content: space-between;
-        flex-direction: row;
-        padding: 0;
-        margin: 0;
-
-    }
 
     .info-status {
         display: flex;
@@ -362,46 +296,6 @@
     }
 
 
-    .close-button{
-        padding: 0;
-        margin: 0;
-        background-color: transparent;
-        border: none;
-    }
-
-    .modal-text{
-        display: flex;
-        justify-content: start;
-        flex-direction: column;
-        gap: 12px;
-    }
-
-    .modal-title, .modal-description{
-        display: flex;
-        justify-content: start;
-        flex-direction: column;
-        gap: 0;
-
-    }
-
-    .info-title{
-        color: var(--black-my);
-        font-size: 20px;
-        font-weight: 600;
-        line-height: 130%;
-        word-wrap: break-word;
-        margin: 0;
-    }
-
-    .info-category{
-        color: var(--greey-my);
-        font-size: 16px;
-        font-weight: 400;
-        line-height: 130%;
-        word-wrap: break-word;
-        margin: 0;
-    }
-
     .info-description{
         color: var(--green-dark);
         font-size: 16px;
@@ -411,56 +305,6 @@
         margin: 0;
     }
 
-    .modal-foto{
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex-direction: row;
-        gap: 16px;
-    }
-
-    .navigation-modal-photo{
-        height: fit-content;
-        display: flex;
-        justify-content: center;
-        padding: 8px 4px;
-        flex-direction: column;
-        gap: 16px;
-        border-radius: 16px;
-        background-color: var(--yellow-my);
-    }
-
-    .modal-footer{
-        width: 100%;
-        display: flex;
-        align-items: start;
-        justify-content: start;
-        flex-direction: row;
-        gap: 16px;
-    }
-    .card-buttons-f{
-        display: flex;
-        align-items: center;
-        flex-direction: row;
-        padding: 0;
-        gap: 16px;
-    }
-
-    .modal-text-volunteers{
-        display: flex;
-        justify-content: start;
-        flex-direction: column;
-        gap: 0;
-    }
-
-    .info-vol{
-        color: var(--orange-my);
-        font-size: 16px;
-        font-weight: 400;
-        line-height: 130%;
-        word-wrap: break-word;
-        margin: 0;
-    }
 
 
     @media (max-width: 768px) {
@@ -583,12 +427,6 @@
         }
     }
 
-    .form-button{
-        display: flex;
-        flex-direction: row;
-        gap: 8px;
-        align-items: center;
-    }
 
     @media (max-width: 768px) {
         .card {
@@ -596,12 +434,7 @@
         }
     }
 
-    .label {
-        font-size: 1rem;
-        font-weight: 400;
-        color: var(--black-my);
-        margin: 0;
-    }
+
 
     .form-group {
         display: flex;
@@ -645,25 +478,6 @@
         gap: 0.75rem;
     }
 
-    .role-group {
-        color: var(--green-dark);
-    }
-
-    .role-options {
-        display: flex;
-        gap: 16px;
-        flex-wrap: wrap;
-    }
-
-    .role-option {
-        display: flex;
-        align-items: center;
-        font-size: 1rem;
-        font-weight: 500;
-        gap: 6px;
-        cursor: pointer;
-    }
-
     .role-option input[type="checkbox"] {
         width: 16px;
         height: 16px;
@@ -691,25 +505,6 @@
         transform: scale(1.05);
     }
 
-    .reject-button{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        height: fit-content;
-        background-color: var(--yellow-my) !important;
-        border-radius: 16px;
-        border: 1px var(--main-green-dark) solid !important;
-        color: var(--main-green-dark) !important;
-        gap: 8px;
-        font-size: 0.9rem;
-        font-weight: 600;
-        padding: 0.83rem !important;
-        text-align: center;
-        cursor: pointer !important;
-        text-decoration: none;
-        transition: background-color 0.5s ease, color 0.5s ease;
-    }
 
     .label-create {
         display: flex;
@@ -735,5 +530,43 @@
         text-decoration: none;
     }
 
+
+    @media (max-width: 768px) {
+        .block-info{
+            flex-direction: column;
+            gap: 24px;
+            padding: 24px;
+        }
+
+
+        .profile-photo img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .profile-info{
+            gap: 16px;
+        }
+
+        .profile-info-title{
+            font-size: 20px;
+        }
+
+        .profile-info-subtitle{
+            gap: 4px;
+        }
+
+        .profile-info-subtitle p{
+            font-size: 16px;
+        }
+
+        .card-application{
+            width: 100%;
+        }
+
+
+    }
 
 </style>

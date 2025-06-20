@@ -145,7 +145,7 @@ Route::prefix('user')->group(function () {
 
 
     Route::get('/military/export', [MilitaryViewApplicationController::class, 'export'])->name('user.military.export');
-    Route::get('military/pdf/{id}', [MilitaryViewApplicationController::class, 'generatePDF'])->name('user.military.pdf');
+    Route::get('/military/pdf/{id}', [MilitaryViewApplicationController::class, 'generatePDF'])->name('user.military.pdf');
 
 });
 
@@ -185,7 +185,13 @@ Route::prefix('user')->group(function () {
     Route::get('/volunteer/view_app', [VolunteerViewApplicationController::class, 'index'])->name('user.volunteer.view_app');
     Route::get('/volunteer/search', [VolunteerViewApplicationController::class, 'search'])->name('user.volunteer.search');
     Route::get('/volunteer/filter', [VolunteerViewApplicationController::class, 'filter'])->name('user.volunteer.filter');
+    Route::get('/volunteer/applications/filter', [VolunteerViewApplicationController::class, 'getFilteredApplications'])
+        ->name('user.volunteer.filteredApplications');
+    Route::get('/volunteer/confirm/applications/filter', [VolunteerViewConfirmApplicationController::class, 'getFilteredApplications'])
+        ->name('user.volunteer.confirm.filteredApplications');
+
     Route::get('/volunteer/confirm/view_confirm_app', [VolunteerViewConfirmApplicationController::class, 'index'])->name('user.volunteer.confirm.view_confirm_app');
+
     Route::get('/volunteer/view_info_military/{id}', [VolunteerViewInfoMilitaryController::class, 'index'])->name('user.volunteer.view_info_military');
     Route::get('/volunteer/confirm_application/{id}', [VolunteerConfirmationApplicationController::class, 'index'])->name('user.volunteer.confirm_application');
     Route::post('/volunteer/confirm_application/{id}', [VolunteerConfirmationApplicationController::class, 'confirm'])->name('user.volunteer.confirm_application.confirm');
@@ -202,7 +208,7 @@ Route::prefix('user')->group(function () {
     Route::get('volunteer/account/{user}/edit_photo', [EditVolunteerImageController::class, 'edit'])->name('user.volunteer.account.edit_photo');
     Route::post('volunteer/account/{user}/update_photo', [EditVolunteerImageController::class, 'update'])->name('user.volunteer.account.update_photo');
 
-    Route::get('volunteer/pdf/{id}', [VolunteerViewApplicationController::class, 'generatePDF'])->name('user.volunteer.pdf');
+    Route::get('/volunteer/pdf/{id}', [VolunteerViewApplicationController::class, 'generatePDF'])->name('user.volunteer.pdf');
 
 });
 
@@ -223,6 +229,11 @@ Route::post('/applications/like/toggle/{application}', [ApplicationLikeControlle
 Route::get('/military/export/pdf', [MilitaryViewApplicationController::class, 'exportAllApplicationsToPDF'])
     ->name('user.military.exportAllPDF');
 
+Route::get('/volunteer/export/pdf', [VolunteerViewApplicationController::class, 'exportAllApplicationsToPDF'])
+    ->name('user.volunteer.exportAllPDF');
+
+Route::get('/volunteer/confirm/export/pdf', [VolunteerViewConfirmApplicationController::class, 'exportAllApplicationsToPDF'])
+    ->name('user.volunteer.confirm.exportAllPDF');
 
 Route::post('/users/{user}/favorite', [FavoriteUserController::class, 'toggle']);
 

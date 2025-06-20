@@ -3,38 +3,7 @@
 
 @section('content')
     <div class="main-content" style="font-family: 'Open Sans', sans-serif;">
-{{--        <div class="row mb-4">--}}
-{{--            <div class="nawb">--}}
-{{--                <label for="application-sort-filter" class="form-label" >Сортування за:</label>--}}
-{{--                <div class="input-group" style="width: 250px; ">--}}
-{{--                    <select id="sort-filter" class="form-control">--}}
-{{--                        <option value="latest">Останнi</option>--}}
-{{--                        <option value="oldest">Старіші</option>--}}
-{{--                    </select>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--            <div class="nawb">--}}
-{{--                <label for="application-category-filter" class="form-label" >Фільтр за категорією заявки</label>--}}
-{{--                <div class="input-group" style="width: 250px; ">--}}
-{{--                    <div class="input-group-prepend">--}}
-{{--                        <span class="input-group-text">--}}
-{{--                            <i class="fas fa-filter"></i>--}}
-{{--                        </span>--}}
-{{--                    </div>--}}
-{{--                    <select id="category-filter" class="form-control">--}}
-{{--                        <option value="">Усі заявки</option>--}}
-{{--                        @foreach ($categories as $category)--}}
-{{--                            <option value="{{ $category->id }}">{{ $category->name }}</option>--}}
-{{--                        @endforeach--}}
-{{--                    </select>--}}
-{{--                    <div class="input-group-append">--}}
-{{--                        <button id="reset-filter" class="btn btn-outline-secondary" type="button">--}}
-{{--                            <i class="fas fa-times"></i>--}}
-{{--                        </button>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
+
         <button class="filters-toggle-btn" onclick="toggleFilters()">Фільтри</button>
 
         <div class="filters-blocks" id="filtersBlock">
@@ -47,8 +16,8 @@
                 </nav>
                 <div class="buttons">
                     <a href="#"
-                       class="button-report generate-all-pdf">
-                        {{--                       data-url="{{ route('user.military.exportAllPDF') }}">--}}
+                       class="button-report generate-all-pdf"
+                       data-url="{{ route('user.volunteer.confirm.exportAllPDF') }}">
                         <img src="{{ asset('images/icon/pdf.svg') }}">
                         Сформувати звіт в .pdf
                     </a>
@@ -130,93 +99,164 @@
     </div>
 
     <script>
-        document.getElementById('search').addEventListener('input', function() {
-            const query = document.getElementById('search').value;
-            const category = document.getElementById('category-filter').value;
-            const sort = document.getElementById('sort-filter').value;
-            fetchApplications(query,  category, sort);
-        });
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.getElementById('search');
+            const sortSelect = document.getElementById('sort-filter');
+            const filterTermBtn = document.getElementById('filter-term');
+            const categorySelect = document.getElementById('category-filter');
+            const statusSelect = document.getElementById('status-filter');
+            const resetBtn = document.getElementById('reset-filter');
+            const container = document.getElementById('application-card-container');
+            const noResults = document.getElementById('no-results');
 
-        document.getElementById('reset-filter').addEventListener('click', function() {
-            const query = document.getElementById('search').value;
-            const category = document.getElementById('category-filter').value;
-            const sort = document.getElementById('sort-filter').value;
-            document.getElementById('search').value = '';
-            document.getElementById('category-filter').value = '';
-            fetchApplications(query,  '', sort);
-        });
+            let urgentFilterActive = false;
 
-        document.getElementById('category-filter').addEventListener('change', function() {
-            const query = document.getElementById('search').value;
-            const category = document.getElementById('category-filter').value;
-            const sort = document.getElementById('sort-filter').value;
-            fetchApplications(query,  category, sort);
-        });
+            function fetchApplications() {
+                const search = searchInput.value;
+                const sort = sortSelect.value;
+                const category = categorySelect.value;
+                const status = statusSelect.value;
+                const urgent = urgentFilterActive ? 'true' : '';
 
+                const url = new URL("{{ route('user.volunteer.confirm.filteredApplications') }}", window.location.origin);
+                if (search) url.searchParams.append('search', search);
+                if (sort) url.searchParams.append('sort', sort);
+                if (category) url.searchParams.append('category', category);
+                if (status) url.searchParams.append('status', status);
+                if (urgent) url.searchParams.append('urgent', urgent);
 
-        document.getElementById('sort-filter').addEventListener('change', function() {
-            const query = document.getElementById('search').value;
-            const category = document.getElementById('category-filter').value;
-            const sort = document.getElementById('sort-filter').value;
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        container.innerHTML = data.html;
+                        if (data.html.trim() === '') {
+                            noResults.style.display = 'block';
+                        } else {
+                            noResults.style.display = 'none';
+                        }
+                        initLikeButtons(); // <-- Ініціалізація лайків після оновлення DOM
+                    })
+                    .catch(error => {
+                        console.error('Помилка під час завантаження заявок:', error);
+                    });
+            }
 
-            fetchApplications(query,  category, sort);
-        });
+            function initLikeButtons() {
+                document.querySelectorAll('.like-btn .like-icon').forEach(function (icon) {
+                    icon.addEventListener('click', function (e) {
+                        e.stopPropagation();
 
+                        const btn = icon.closest('.like-btn');
+                        const applicationId = btn.dataset.id;
+                        const outlineSrc = icon.dataset.outline;
+                        const filledSrc = icon.dataset.filled;
 
-        function fetchApplications(query, category, sort) {
-            const url = `{{ route('user.volunteer.confirm.search') }}?query=${encodeURIComponent(query)}&category=${encodeURIComponent(category)}&sort=${encodeURIComponent(sort)}`;
-            console.log(url);
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    const cardContainer = document.getElementById('application-card-container');
-                    const noResults = document.getElementById('no-results');
-                    cardContainer.innerHTML = '';
+                        fetch(`/applications/like/toggle/${applicationId}`, {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({})
+                        })
+                            .then(response => {
+                                if (!response.ok) {
+                                    if (response.status === 401) {
+                                        alert('Спочатку увійдіть, щоб поставити лайк!');
+                                        return;
+                                    }
+                                    throw new Error('Помилка мережі');
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                if (!data) return;
 
-                    if (data.applications.length === 0) {
-                        noResults.style.display = 'block';
-                    } else {
-                        noResults.style.display = 'none';
-                        data.applications.forEach(application => {
-                            const card = document.createElement('div');
-                            card.className = 'col-md-3 mb-4';
-                            card.innerHTML = `
-                        <div class="card h-100">
-                            <div class="card-header" style="background-color: var(--green-400);">
-                                <h5 class="card-title" style="color: var(--green-800);">${application.title}</h5>
-                                <h6 class="card-subtitle" style="color: #556155;">${application.category.name}</h6>
-                            </div>
-                            <div class="card-body d-flex flex-column" style="background-color: var(--green-300); color: var(--green-800);">
-                                 <div class="image-scroll-container mb-3" style="overflow-x: auto; white-space: nowrap; padding-bottom: 10px;">
-                                    ${application.images.map(image => `
-                                        <img src="${'{{ asset('storage/') }}' + '/' + image.image_url}" alt="Зображення заявки" class="img-fluid" style="max-height: 150px; object-fit: cover; display: inline-block; margin-right: 10px;">
-                                    `).join('')}
-                                </div>
-                                <p class="card-text flex-grow-1">${application.description}</p>
-                                <p class="card-text"><strong style="color: #000000;">Статус:</strong> ${application.status}</p>
-                            </div>
-                            <div class="card-footer" style="background-color: var(--green-200);">
-                            <a href="javascript:void(0);" class="btn btn-sm"  data-toggle="modal" data-target="#applicationModal{{ $application->id }}" style="background-color: var(--yellow-500);" >
-                                <i class="fas fa-ellipsis-v" style="font-size: 15px;"></i> Переглянути більше
-                            </a>
-                            <a href="{{ route('user.volunteer.confirm.edit_confirm_app', $application->id) }}" class="btn btn-sm" style="color: var(--green-500);">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                            <a href="{{ route('user.volunteer.pdf', $application->id) }}" class="btn btn-sm" style="background-color: var(--yellow-500);">PDF</a>
+                                if (data.status === 'added') {
+                                    icon.setAttribute('src', filledSrc);
+                                    btn.classList.add('liked');
+                                } else if (data.status === 'removed') {
+                                    icon.setAttribute('src', outlineSrc);
+                                    btn.classList.remove('liked');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                alert('Сталася помилка.');
+                            });
+                    });
+                });
+            }
 
+            // Обробка подій
+            searchInput.addEventListener('input', fetchApplications);
+            sortSelect.addEventListener('change', fetchApplications);
+            categorySelect.addEventListener('change', fetchApplications);
+            statusSelect.addEventListener('change', fetchApplications);
 
-                        </div>
-                </div>
-`;
-                            cardContainer.appendChild(card);
+            filterTermBtn.addEventListener('click', () => {
+                urgentFilterActive = !urgentFilterActive;
+                if (urgentFilterActive) {
+                    filterTermBtn.classList.add('active');
+                } else {
+                    filterTermBtn.classList.remove('active');
+                }
+                fetchApplications();
+            });
+
+            resetBtn.addEventListener('click', function () {
+                searchInput.value = '';
+                sortSelect.value = 'urgent_oldest';
+                categorySelect.value = '';
+                statusSelect.value = '';
+                urgentFilterActive = false;
+                filterTermBtn.classList.remove('active');
+                fetchApplications();
+            });
+
+            // Початкове завантаження
+            fetchApplications();
+
+            // PDF генерація
+            document.querySelectorAll('.generate-all-pdf').forEach(button => {
+                button.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const url = this.getAttribute('data-url');
+                    if (!url) return;
+
+                    showToast('Формується PDF...', 'info');
+
+                    fetch(url, {
+                        method: 'GET',
+                        headers: {'X-Requested-With': 'XMLHttpRequest'}
+                    })
+                        .then(response => {
+                            if (!response.ok) throw new Error('PDF не вдалося згенерувати.');
+                            return response.blob();
+                        })
+                        .then(blob => {
+                            const downloadUrl = window.URL.createObjectURL(blob);
+                            const a = document.createElement('a');
+                            a.href = downloadUrl;
+                            a.download = 'звіт.pdf';
+                            document.body.appendChild(a);
+                            a.click();
+                            a.remove();
+                            window.URL.revokeObjectURL(downloadUrl);
+                            showToast('Завантаження почалося!', 'success');
+                        })
+                        .catch(error => {
+                            console.error(error);
+                            showToast('Сталася помилка при генерації PDF.', 'error');
                         });
-                    }
-                })
-                .catch(error => console.error('Error:', error));
+                });
+            });
+        });
+
+        function toggleFilters() {
+            const block = document.getElementById('filtersBlock');
+            block.classList.toggle('open');
         }
-
-
-
     </script>
      @include('layouts.footer')
 @endsection

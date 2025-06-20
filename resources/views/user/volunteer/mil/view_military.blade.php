@@ -28,7 +28,7 @@
                         <select id="sort-filter" class="sort-input">
                             <option value="">Виберіть сортування</option>
                             <option value="alphabet">За алфавітом (ім'я)</option>
-                            <option value="rating">За рейтингом</option>
+                            <option value="favorites_first">Спочатку обрані</option>
                         </select>
                     </div>
                 </div>
@@ -84,6 +84,206 @@
             @endforeach
         </div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const searchInput = document.getElementById('search');
+            const filterFavoritesBtn = document.getElementById('filter-favorites');
+            const filterAllBtn = document.getElementById('filter-all');
+            const sortSelect = document.getElementById('sort-filter');
+            const cardContainer = document.getElementById('military-card-container');
+            const resetFiltersBtn = document.getElementById('reset-filters');
+
+            let currentFilter = ''; // '', 'favorites'
+            let currentSort = '';
+            let currentQuery = '';
+
+            function initFavoriteButtons() {
+                document.querySelectorAll('.favorite-btn .favorite-icon').forEach(function (icon) {
+                    icon.addEventListener('click', function (e) {
+                        e.stopPropagation();
+                        const btn = icon.closest('.favorite-btn');
+                        const userId = btn.dataset.id;
+                        const outlineSrc = icon.dataset.outline;
+                        const filledSrc = icon.dataset.filled;
+
+                        fetch(`/users/${userId}/favorite`, {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({})
+                        })
+                            .then(response => {
+                                if (!response.ok) {
+                                    if (response.status === 401) {
+                                        alert('Будь ласка, увійдіть, щоб додати в обрані');
+                                        return;
+                                    }
+                                    throw new Error('Помилка мережі');
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                if (!data) return;
+
+                                if (data.status === 'added') {
+                                    icon.setAttribute('src', filledSrc);
+                                    btn.classList.add('favorited');
+                                    showToast('Військовий доданий в обране', 'success');
+                                } else if (data.status === 'removed') {
+                                    icon.setAttribute('src', outlineSrc);
+                                    btn.classList.remove('favorited');
+                                    showToast('Військовий видалений з обраного', 'success');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                showToast('Сталася помилка. Спробуйте ще раз.', 'error');
+                            });
+                    });
+                });
+            }
+            function fetchMilitaries() {
+                const url = `{{ route('user.volunteer.mil.search') }}?` + new URLSearchParams({
+                    query: currentQuery,
+                    filter: currentFilter,
+                    sort: currentSort
+                }).toString();
+
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        const militaries = data.militaries || data.$militaries || [];
+
+                        cardContainer.innerHTML = '';
+
+                        if (militaries.length === 0) {
+                            cardContainer.innerHTML = '<p style="text-align:center; width:100%">Нічого не знайдено</p>';
+                            return;
+                        }
+
+                        militaries.forEach(military => {
+                            const imgSrc = (military.images.length > 0)
+                                ? `{{ asset('storage') }}/${military.images[0].image_url}`
+                                : `{{ asset('images/acc.jpg') }}`;
+
+                            const isFavorite = military.is_favorite
+                                ? '{{ asset('images/icon/bookmarks/bookmark-filled.svg') }}'
+                                : '{{ asset('images/icon/bookmarks/bookmark.svg') }}';
+
+                            const card = document.createElement('div');
+                            card.className = 'card-military';
+                            card.innerHTML = `
+                            <div class="card-foto">
+                                <img src="${imgSrc}" alt="User Image" style="width:70px; height:70px; border-radius: 50px;">
+                            </div>
+                            <div class="card-header-app">
+                                <h5 class="card-title-app">${military.name} ${military.surname}</h5>
+                            </div>
+                            <div class="buttons-blocks">
+                                <button class="favorite-btn" type="button" data-id="${military.id}">
+                                    <img src="${isFavorite}"
+                                         alt="Favorite"
+                                         class="favorite-icon"
+                                         data-outline="{{ asset('images/icon/bookmarks/bookmark.svg') }}"
+                                         data-filled="{{ asset('images/icon/bookmarks/bookmark-filled.svg') }}">
+                                </button>
+                                <a href="/volunteer/view_info_military/${military.id}" class="button-view-info">
+                                    Детальніше
+                                    <img src="{{ asset('images/icon/info.svg') }}">
+                                </a>
+                            </div>
+                        `;
+                            cardContainer.appendChild(card);
+                        });
+
+                        initFavoriteButtons();
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+
+            function setActiveFilterButton(activeBtn) {
+                [filterFavoritesBtn, filterAllBtn].forEach(btn => btn.classList.remove('active'));
+                activeBtn.classList.add('active');
+            }
+
+            // --- Event listeners ---
+            searchInput.addEventListener('input', e => {
+                currentQuery = e.target.value;
+                fetchMilitaries();
+            });
+
+            filterFavoritesBtn.addEventListener('click', () => {
+                currentFilter = 'favorites';
+                setActiveFilterButton(filterFavoritesBtn);
+                fetchMilitaries();
+            });
+
+            filterAllBtn.addEventListener('click', () => {
+                currentFilter = '';
+                setActiveFilterButton(filterAllBtn);
+                fetchMilitaries();
+            });
+
+            sortSelect.addEventListener('change', e => {
+                currentSort = e.target.value;
+                fetchMilitaries();
+            });
+
+            resetFiltersBtn.addEventListener('click', () => {
+                searchInput.value = '';
+                currentQuery = '';
+
+                currentFilter = '';
+                setActiveFilterButton(filterAllBtn);
+
+                currentSort = '';
+                sortSelect.value = '';
+
+                fetchMilitaries();
+            });
+
+
+
+            // Запуск при завантаженні сторінки
+            fetchMilitaries();
+        });
+
+        function initFavoriteButtons() {
+            document.querySelectorAll('.favorite-btn').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const id = this.getAttribute('data-id');
+                    const icon = this.querySelector('.favorite-icon');
+                    const isFilled = icon.getAttribute('src') === icon.dataset.filled;
+
+                    fetch(`/favorites/toggle/${id}`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Content-Type': 'application/json',
+                        }
+                    })
+                        .then(response => {
+                            if (!response.ok) throw new Error('Не вдалося змінити обране');
+                            // toggle icon
+                            icon.setAttribute('src', isFilled ? icon.dataset.outline : icon.dataset.filled);
+                        })
+                        .catch(error => console.error(error));
+                });
+            });
+        }
+
+        function toggleFilters() {
+            const block = document.getElementById('filtersBlock');
+            block.classList.toggle('open');
+        }
+    </script>
+
+
+
+
 
     <script>
 
@@ -165,14 +365,16 @@ function fetchVolunteers(query) {
                             if (data.status === 'added') {
                                 icon.setAttribute('src', filledSrc);
                                 btn.classList.add('favorited');
+                                showToast('Військовий доданий в обране', 'success');
                             } else if (data.status === 'removed') {
                                 icon.setAttribute('src', outlineSrc);
                                 btn.classList.remove('favorited');
+                                showToast('Військовий видалений з обраного', 'success');
                             }
                         })
                         .catch(error => {
                             console.error('Error:', error);
-                            alert('Сталася помилка.');
+                            showToast('Сталася помилка. Спробуйте ще раз.', 'error');
                         });
                 });
             });
@@ -407,7 +609,7 @@ function fetchVolunteers(query) {
 
     @media (max-width: 768px) {
 
-        .card-volunteer{
+        .card-military{
             width: calc(50% - 12px);
             gap: 12px;
         }

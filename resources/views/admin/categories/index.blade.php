@@ -20,6 +20,7 @@
                             <img src="{{ asset('images/icon/pdf.svg') }}">
                             Сформувати звіт в .pdf
                         </a>
+
                     </div>
 
                     <nav class="navbar-search">
@@ -73,6 +74,43 @@
         </div>
 
         <script>
+            document.querySelector('.generate-all-pdf').addEventListener('click', function(e) {
+                e.preventDefault();
+
+                const btn = this;
+                const url = btn.getAttribute('data-url');
+                btn.style.pointerEvents = 'none';  // заборона повторних кліків
+                btn.innerHTML = '<img src="{{ asset("images/icon/pdf.svg") }}" style="opacity: 0.5;"> Завантаження...';
+                showToast('Формується PDF...', 'info');
+
+                fetch(url)
+                    .then(response => {
+                        if (!response.ok) throw new Error('Помилка при формуванні PDF');
+                        return response.blob();
+                    })
+                    .then(blob => {
+                        const downloadUrl = window.URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = downloadUrl;
+                        a.download = 'categories_report.pdf';
+                        document.body.appendChild(a);
+                        a.click();
+                        a.remove();
+                        window.URL.revokeObjectURL(downloadUrl);
+
+                        btn.innerHTML = '<img src="{{ asset("images/icon/pdf.svg") }}"> Сформувати звіт в .pdf';
+                        btn.style.pointerEvents = 'auto';
+                        showToast('Файл успішно завантажено', 'success');
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        showToast('Сталася помилка при генерації PDF.', 'error');
+                        btn.innerHTML = '<img src="{{ asset("images/icon/pdf.svg") }}"> Сформувати звіт в .pdf';
+                        btn.style.pointerEvents = 'auto';
+                    });
+            });
+
+
         document.getElementById('search').addEventListener('input', function () {
             let query = this.value;
 

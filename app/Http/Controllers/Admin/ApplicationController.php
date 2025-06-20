@@ -15,8 +15,10 @@ class ApplicationController extends Controller
     {
         $users = User::all();
         $categories = Category::all();
-        $applications = Application::all();
-        return view('admin.applications.index', compact('applications','users', 'categories'));
+
+        $applications = Application::with(['category', 'volunteer', 'millitary'])->get();
+
+        return view('admin.applications.index', compact('applications', 'users', 'categories'));
     }
 
     public function create()
@@ -24,9 +26,9 @@ class ApplicationController extends Controller
         $applications = Application::all();
         $users = User::all();
         $categories = Category::all();
-        $volunteers = User::where('role_id', 3)->get(); 
-        $militaries = User::where('role_id', 2)->get(); 
-    
+        $volunteers = User::where('role_id', 3)->get();
+        $militaries = User::where('role_id', 2)->get();
+
         return view('admin.applications.create', compact('applications','users','categories', 'volunteers', 'militaries'));
     }
 
@@ -64,7 +66,7 @@ class ApplicationController extends Controller
         $applications = Application::findOrFail($id);
         $categories = Category::all();
         $users = User::all();
-        $volunteers = User::where('role_id', 3)->get(); 
+        $volunteers = User::where('role_id', 3)->get();
     $militaries = User::where('role_id', 2)->get();
         return view('admin.applications.edit', compact('applications', 'categories', 'users', 'volunteers', 'militaries'));
     }
@@ -92,8 +94,8 @@ class ApplicationController extends Controller
     {
         $application->delete();
         return redirect()->route('admin.applications.index')->with('error', 'Заявка видалена успішно!');
-    }   
-    
+    }
+
     public function search(Request $request)
     {
         $query = $request->input('query');
@@ -104,7 +106,7 @@ class ApplicationController extends Controller
 
         return response()->json(['applications' => $applications]);
     }
-    
+
     function filter(Request $request)
 {
     $query = $request->input('query');
@@ -113,7 +115,7 @@ class ApplicationController extends Controller
         ->when($query, function ($q) use ($query) {
             $q->where('title', 'like', "%{$query}%")
               ->orWhere('description', 'like', "%{$query}%");
-        })  
+        })
         ->when($category, function($q) use ($category) {
             $q->where('category_id', $category);
         })
@@ -125,7 +127,7 @@ class ApplicationController extends Controller
 public function exportPDF()
     {
         $applications = Application::all();
-        
+
         $totalApplications = $applications->count();
         $pdf = Pdf::loadView('admin.applications.pdf', compact('applications', 'totalApplications'));
 
