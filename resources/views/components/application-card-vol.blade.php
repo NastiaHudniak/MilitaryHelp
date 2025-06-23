@@ -117,7 +117,51 @@
         </div>
     </div>
 
+    <script>
+        document.addEventListener('click', function (e) {
+            const button = e.target.closest('.generate-one-pdf');
+            if (!button) return;
 
+            e.preventDefault();
+
+            if (button.disabled) return;
+            button.disabled = true;
+
+            const url = button.getAttribute('data-url');
+            if (!url) return;
+
+            showToast('Формується PDF...', 'info');
+
+            fetch(url, {
+                method: 'GET',
+                headers: {'X-Requested-With': 'XMLHttpRequest'}
+            })
+                .then(response => {
+                    if (!response.ok) throw new Error('PDF не вдалося згенерувати.');
+                    return response.blob();
+                })
+                .then(blob => {
+                    const downloadUrl = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = downloadUrl;
+                    a.download = 'Звіт.pdf';
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                    window.URL.revokeObjectURL(downloadUrl);
+                    showToast('Файл успішно завантажено', 'success');
+                })
+                .catch(error => {
+                    console.error(error);
+                    showToast('Сталася помилка при генерації PDF.', 'error');
+                })
+                .finally(() => {
+                    button.disabled = false;
+                });
+        });
+
+
+    </script>
 <style>
     .card-application{
         width: calc(25% - 27px);
@@ -544,51 +588,4 @@
 
 
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
 
-
-            document.querySelectorAll('.generate-one-pdf').forEach(button => {
-                button.addEventListener('click', function (e) {
-                    e.preventDefault();
-
-                    if (button.disabled) return;  // блокування подвійних кліків
-                    button.disabled = true;
-
-                    const url = this.getAttribute('data-url');
-                    if (!url) return;
-
-                    showToast('Формується PDF...', 'info');
-
-                    fetch(url, {
-                        method: 'GET',
-                        headers: {'X-Requested-With': 'XMLHttpRequest'}
-                    })
-                        .then(response => {
-                            if (!response.ok) throw new Error('PDF не вдалося згенерувати.');
-                            return response.blob();
-                        })
-                        .then(blob => {
-                            const downloadUrl = window.URL.createObjectURL(blob);
-                            const a = document.createElement('a');
-                            a.href = downloadUrl;
-                            a.download = 'Звіт.pdf';
-                            document.body.appendChild(a);
-                            a.click();
-                            a.remove();
-                            window.URL.revokeObjectURL(downloadUrl);
-                            showToast('Файл успішно завантажено', 'success');
-                        })
-                        .catch(error => {
-                            console.error(error);
-                            showToast('Сталася помилка при генерації PDF.', 'error');
-                        })
-                        .finally(() => {
-                            button.disabled = false;
-                        });
-                });
-            });
-        });
-
-
-    </script>

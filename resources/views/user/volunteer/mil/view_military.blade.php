@@ -98,6 +98,7 @@
             let currentSort = '';
             let currentQuery = '';
 
+            let searchTimeout;
             function initFavoriteButtons() {
                 document.querySelectorAll('.favorite-btn .favorite-icon').forEach(function (icon) {
                     icon.addEventListener('click', function (e) {
@@ -151,7 +152,7 @@
                     filter: currentFilter,
                     sort: currentSort
                 }).toString();
-
+                showLoaderWithDelay();
                 fetch(url)
                     .then(response => response.json())
                     .then(data => {
@@ -190,7 +191,7 @@
                                          data-outline="{{ asset('images/icon/bookmarks/bookmark.svg') }}"
                                          data-filled="{{ asset('images/icon/bookmarks/bookmark-filled.svg') }}">
                                 </button>
-                                <a href="/volunteer/view_info_military/${military.id}" class="button-view-info">
+                                <a href="/user/volunteer/view_info_military/${military.id}" class="button-view-info">
                                     Детальніше
                                     <img src="{{ asset('images/icon/info.svg') }}">
                                 </a>
@@ -201,7 +202,12 @@
 
                         initFavoriteButtons();
                     })
-                    .catch(error => console.error('Error:', error));
+                    .catch(error => console.error('Error:', error))
+                    .finally(() => {
+                    setTimeout(() => {
+                        hideLoader();
+                    }, 100);
+                });
             }
 
             function setActiveFilterButton(activeBtn) {
@@ -211,8 +217,9 @@
 
             // --- Event listeners ---
             searchInput.addEventListener('input', e => {
+                clearTimeout(searchTimeout);
                 currentQuery = e.target.value;
-                fetchMilitaries();
+                searchTimeout = setTimeout(fetchMilitaries, 1000);
             });
 
             filterFavoritesBtn.addEventListener('click', () => {

@@ -111,9 +111,9 @@
     function showToast(message, type = 'success') {
         const icons = {
             success: "{{ asset('images/icon/alerts/done.svg') }}",
-            warning: "{{ asset('images/icon/warning.svg') }}",
-            info: "{{ asset('images/icon/info.svg') }}",
-            error: "{{ asset('images/icon/cansel.svg') }}"
+            warning: "{{ asset('images/icon/alerts/warning.svg') }}",
+            info: "{{ asset('images/icon/alerts/info.svg') }}",
+            error: "{{ asset('images/icon/alerts/cansel.svg') }}"
         };
 
         const icon = icons[type] || 'ℹ️';

@@ -54,10 +54,14 @@ class CategoryController extends Controller
     public function update(Request $request, $id)
     {
         $category = Category::findOrFail($id);
+        $messages = [
+            'name.required' => '* Обов`язкове поле.',
+            'name.max' => '* Логін не може містити більше ніж 255 символів.',
 
+        ];
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:categories,name,' . $category->id,
-        ]);
+        ], $messages);
 
         $category->update($validated);
 

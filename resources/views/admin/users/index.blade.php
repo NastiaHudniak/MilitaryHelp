@@ -150,6 +150,8 @@
                     btn.innerHTML = '<img src="{{ asset("images/icon/pdf.svg") }}"> Сформувати звіт в .pdf';
                     btn.style.pointerEvents = 'auto';
                 });
+            });
+
         });
 
 

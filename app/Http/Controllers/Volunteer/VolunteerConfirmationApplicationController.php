@@ -14,7 +14,7 @@ class VolunteerConfirmationApplicationController extends Controller
 {
     public function index($id)
     {
-        $application = Application::with('images') 
+        $application = Application::with('images')
         ->findOrFail($id);
 
         $millitary = User::with('images')->findOrFail($application->millitary_id);
@@ -37,6 +37,6 @@ class VolunteerConfirmationApplicationController extends Controller
         $application->status = 'прийнято';
         $application->volunteer_id = Auth::id();
         $application->save();
-        return redirect()->route('user.volunteer.index')->with('success', 'Заявку підтверджено.');
+        return redirect()->route('user.volunteer.confirm.view_confirm_app')->with('success', 'Заявку підтверджено.');
     }
 }

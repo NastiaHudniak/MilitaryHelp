@@ -58,6 +58,15 @@
             gap: 12px;
         }
 
+        .term{
+            border-radius: 16px;
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 130%;
+            background-color: var(--red-100);
+            color: var(--red-100-15);
+            padding: 4px 8px;
+        }
         .modal-title, .modal-description {
             display: flex;
             justify-content: start;
@@ -143,6 +152,9 @@
             <p class="info-title">{{ $application->title }}</p>
             <p class="info-category">{{ $application->category->name }}</p>
         </div>
+        @if($application->is_urgent)
+            <span class="term">Термінова</span>
+        @endif
         <div class="modal-description">
             <p class="info-description">{{ $application->description }}</p>
         </div>

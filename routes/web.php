@@ -221,7 +221,7 @@ Route::post('/military/rating/{application}', [MilitaryHomeController::class, 's
 
 
 
-Route::post('/send-feedback', [FeedbackController::class, 'send'])->name('feedback.send');
+    Route::post('/send-feedback', [FeedbackController::class, 'send'])->name('feedback.send');
 
 // routes/web.php
 Route::post('/applications/like/toggle/{application}', [ApplicationLikeController::class, 'toggleLike']);

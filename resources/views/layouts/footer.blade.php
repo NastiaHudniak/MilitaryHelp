@@ -103,13 +103,18 @@
         // showLoader(true);
         showLoaderWithDelay();
 
-        fetch("{{ route('feedback.send') }}", {
+        const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        fetch("http://localhost/send-feedback", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                "Accept": "application/json",
+                "X-CSRF-TOKEN": token
             },
-            body: JSON.stringify({ message })
+            body: JSON.stringify({
+                message: "Текст твого повідомлення"
+            })
         })
             .then(res => {
                 // showLoader(false);
@@ -128,7 +133,7 @@
                 }
             })
             .catch(err => {
-                showError('Сталася помилка при надсиланні. Спробуйте пізніше.');
+                showToast('Сталася помилка при надсиланні. Спробуйте пізніше.', 'error');
                 console.error(err);
             });
     });

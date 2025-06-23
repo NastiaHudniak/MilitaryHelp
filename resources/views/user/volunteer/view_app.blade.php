@@ -24,10 +24,6 @@
                         <img src="{{ asset('images/icon/pdf.svg') }}">
                         Сформувати звіт в .pdf
                     </a>
-                    <a type="submit" class="button-report">
-                        <img src="{{ asset('images/icon/excel.svg') }}" >
-                        Сформувати звіт в .xslx
-                    </a>
 
 
 
@@ -116,7 +112,7 @@
             const noResults = document.getElementById('no-results');
 
             let urgentFilterActive = false;
-
+            let searchTimeout;
             function fetchApplications() {
                 const search = searchInput.value;
                 const sort = sortSelect.value;
@@ -130,7 +126,7 @@
                 if (category) url.searchParams.append('category', category);
                 if (status) url.searchParams.append('status', status);
                 if (urgent) url.searchParams.append('urgent', urgent);
-
+                showLoaderWithDelay();
                 fetch(url)
                     .then(response => response.json())
                     .then(data => {
@@ -144,6 +140,11 @@
                     })
                     .catch(error => {
                         console.error('Помилка під час завантаження заявок:', error);
+                    })
+                    .finally(() => {
+                        setTimeout(() => {
+                            hideLoader();
+                        }, 100);
                     });
             }
 
@@ -195,7 +196,10 @@
             }
 
             // Обробка подій
-            searchInput.addEventListener('input', fetchApplications);
+            searchInput.addEventListener('input', () => {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(fetchApplications, 1000); // затримка 1 секунда
+            });
             sortSelect.addEventListener('change', fetchApplications);
             categorySelect.addEventListener('change', fetchApplications);
             statusSelect.addEventListener('change', fetchApplications);

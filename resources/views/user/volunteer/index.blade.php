@@ -386,7 +386,7 @@
 
     .analytics {
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
         padding: 0px 116px;
         align-items: center;
         width: 100%;

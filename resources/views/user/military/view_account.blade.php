@@ -49,10 +49,6 @@
                     <p class="analytics-number" data-target="{{ $acceptedApplications }}">0</p>
                     <p class="analytics-label">заявок виконано</p>
                 </div>
-                <div class="analytics-block">
-                    <p class="analytics-number" data-target="2">0%</p>
-                    <p class="analytics-label">заявки відхилено</p>
-                </div>
             </div>
         </section>
     </div>
@@ -333,7 +329,8 @@
 
     .analytics {
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
+        gap: 116px;
         padding: 0px 64px;
         align-items: center;
         width: 100%;

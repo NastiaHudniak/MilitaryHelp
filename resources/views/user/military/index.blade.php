@@ -56,14 +56,8 @@
 
                                 const toast = unviewedToasts[index];
                                 toast.style.display = 'flex';
-
-                                const removeToast = () => {
-                                    toast.classList.add('fade-out');
-                                    setTimeout(() => {
-                                        toast.remove();
-                                        showNextToast(index + 1);
-                                    }, 1000);
-                                };
+                                toast.style.animation = 'none';
+                                toast.style.opacity = '1';
 
                                 const confirmButtons = toast.querySelectorAll('.confirm-btn');
                                 confirmButtons.forEach(btn => {
@@ -81,7 +75,9 @@
                                     toast.remove();
                                     showNextToast(index + 1);
                                 });
-                                setTimeout(removeToast, 9000);
+
+                                // ❌ Видалено автозакриття:
+                                // setTimeout(removeToast, 9000);
                             }
 
                             showNextToast();
@@ -153,10 +149,6 @@
                     <div class="analytics-block">
                         <p class="analytics-number" data-target="{{ $acceptedApplications }}">0</p>
                         <p class="analytics-label">заявок виконано</p>
-                    </div>
-                    <div class="analytics-block">
-                        <p class="analytics-number" data-target="2">0%</p>
-                        <p class="analytics-label">заявки відхилено</p>
                     </div>
                 </div>
             </section>
@@ -452,7 +444,8 @@
 
         .analytics {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
+            gap: 116px;
             padding: 0px 116px;
             align-items: center;
             width: 100%;

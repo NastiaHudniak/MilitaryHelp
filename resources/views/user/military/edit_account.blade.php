@@ -150,10 +150,10 @@
                 if (confirmLeave) {
                     form.submit();
                 } else {
-                    window.location.href = "{{ route('user.military.index') }}";
+                    window.location.href = "{{ route('user.military.view_account') }}";
                 }
             } else {
-                window.location.href = "{{ route('user.military.index') }}";
+                window.location.href = "{{ route('user.military.view_account') }}";
             }
         });
     </script>

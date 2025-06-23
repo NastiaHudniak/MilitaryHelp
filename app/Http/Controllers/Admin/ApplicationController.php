@@ -34,6 +34,32 @@ class ApplicationController extends Controller
 
     public function store(Request $request)
     {
+        $messages = [
+            'category_id.required' => '* Оберіть категорію.',
+            'category_id.exists' => '* Обрана категорія не існує.',
+
+            'volunteer_id.required' => '* Оберіть волонтера.',
+            'volunteer_id.exists' => '* Обраний волонтер не існує.',
+
+            'millitary_id.required' => '* Оберіть військового.',
+            'millitary_id.exists' => '* Обраний військовий не існує.',
+
+            'title.required' => '* Обов’язкове поле.',
+            'title.string' => '* Назва повинна бути рядком.',
+            'title.max' => '* Назва не може перевищувати 255 символів.',
+
+            'description.required' => '* Обов’язкове поле.',
+            'description.string' => '* Опис повинен бути рядком.',
+            'description.max' => '* Опис не може перевищувати 1000 символів.',
+
+            'status.required' => '* Оберіть статус.',
+            'status.string' => '* Статус повинен бути рядком.',
+            'status.max' => '* Статус не може перевищувати 255 символів.',
+
+            'comment.string' => '* Коментар повинен бути рядком.',
+            'comment.max' => '* Коментар не може перевищувати 1000 символів.',
+        ];
+
         $validator = Validator::make($request->all(), [
             'category_id' => 'required|exists:categories,id',
             'volunteer_id' => 'required|exists:users,id',
@@ -42,7 +68,8 @@ class ApplicationController extends Controller
             'description' => 'required|string|max:1000',
             'status' => 'required|string|max:255',
             'comment' => 'nullable|string|max:1000',
-        ]);
+        ], $messages);
+
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
@@ -74,7 +101,31 @@ class ApplicationController extends Controller
     public function update(Request $request, $id)
     {
         $applications = Application::findOrFail($id);
+        $messages = [
+            'category_id.required' => '* Оберіть категорію.',
+            'category_id.exists' => '* Обрана категорія не існує.',
 
+            'volunteer_id.required' => '* Оберіть волонтера.',
+            'volunteer_id.exists' => '* Обраний волонтер не існує.',
+
+            'millitary_id.required' => '* Оберіть військового.',
+            'millitary_id.exists' => '* Обраний військовий не існує.',
+
+            'title.required' => '* Обов’язкове поле.',
+            'title.string' => '* Назва повинна бути рядком.',
+            'title.max' => '* Назва не може перевищувати 255 символів.',
+
+            'description.required' => '* Обов’язкове поле.',
+            'description.string' => '* Опис повинен бути рядком.',
+            'description.max' => '* Опис не може перевищувати 1000 символів.',
+
+            'status.required' => '* Оберіть статус.',
+            'status.string' => '* Статус повинен бути рядком.',
+            'status.max' => '* Статус не може перевищувати 255 символів.',
+
+            'comment.string' => '* Коментар повинен бути рядком.',
+            'comment.max' => '* Коментар не може перевищувати 1000 символів.',
+        ];
         $validated = $request->validate([
             'category_id' => 'required|exists:categories,id',
             'volunteer_id' => 'required|exists:users,id',
@@ -83,7 +134,7 @@ class ApplicationController extends Controller
             'description' => 'required|string|max:1000',
             'status' => 'required|string|max:255',
             'comment' => 'nullable|string|max:1000',
-        ]);
+        ], $messages);
 
         $applications->update($validated);
 

@@ -73,7 +73,7 @@ class MilitaryHomeController extends Controller
         // Оновлення статусу, що рейтинг вже поставлений
         $application->update(['rating_given' => true]);
 
-        return redirect()->route('user.military.index')->with('message', 'Рейтинг успішно збережено!');
+        return redirect()->route('user.military.view_app')->with('message', 'Рейтинг успішно збережено!');
     }
 
 

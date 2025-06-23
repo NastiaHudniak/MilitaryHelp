@@ -24,10 +24,10 @@
                         <img src="{{ asset('images/icon/pdf.svg') }}">
                         Сформувати звіт в .pdf
                     </a>
-                    <a type="submit" class="button-report">
-                        <img src="{{ asset('images/icon/excel.svg') }}" >
-                        Сформувати звіт в .xslx
-                    </a>
+{{--                    <a type="submit" class="button-report">--}}
+{{--                        <img src="{{ asset('images/icon/excel.svg') }}" >--}}
+{{--                        Сформувати звіт в .xslx--}}
+{{--                    </a>--}}
 
 
 
@@ -112,8 +112,8 @@
             const resetBtn = document.getElementById('reset-filter');
             const container = document.getElementById('application-card-container');
             const noResults = document.getElementById('no-results');
-
             let urgentFilterActive = false;
+            let searchTimeout;
 
             function fetchApplications() {
                 const search = searchInput.value;
@@ -128,7 +128,7 @@
                 if (category) url.searchParams.append('category', category);
                 if (status) url.searchParams.append('status', status);
                 if (urgent) url.searchParams.append('urgent', urgent);
-
+                showLoaderWithDelay();
                 fetch(url)
                     .then(response => response.json())
                     .then(data => {
@@ -141,11 +141,19 @@
                     })
                     .catch(error => {
                         console.error('Помилка під час завантаження:', error);
+                    })
+                    .finally(() => {
+                        setTimeout(() => {
+                            hideLoader();
+                        }, 100);
                     });
             }
 
             // Обробка змін
-            searchInput.addEventListener('input', fetchApplications);
+            searchInput.addEventListener('input', () => {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(fetchApplications, 1000); // затримка 1 секунда
+            });
             sortSelect.addEventListener('change', fetchApplications);
             categorySelect.addEventListener('change', fetchApplications);
             statusSelect.addEventListener('change', fetchApplications);
@@ -192,8 +200,10 @@
                         .then(blob => {
                             const downloadUrl = window.URL.createObjectURL(blob);
                             const a = document.createElement('a');
+                            const currentDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+                            const fileName = `Звіт_Створені_заявки_${currentDate}.pdf`;
                             a.href = downloadUrl;
-                            a.download = 'звіт.pdf';
+                            a.download = fileName;
                             document.body.appendChild(a);
                             a.click();
                             a.remove();

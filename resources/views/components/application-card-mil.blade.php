@@ -1,5 +1,6 @@
+<meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <div class="card-application">
+<div class="card-application">
         <div class="card-foto">
             <div class="image-scroll-container" style="overflow-x: auto; white-space: nowrap; margin: 0">
                 @if($application->images->isEmpty())
@@ -62,7 +63,9 @@
                     <img src="{{ asset('images/icon/cancell.svg') }}">
                 </button>
             </div>
-
+            @if($application->is_urgent)
+                <span style="width: max-content" class="term">Термінова</span>
+            @endif
             <div class="modal-text">
                 <div class="modal-title">
                     <p class="info-title">{{ $application->title }}</p>
@@ -141,7 +144,59 @@
         </div>
     </div>
 
+    <script>
 
+        function confirmDelete(title) {
+            return confirm(`Видалити заявку "${title}"?`);
+        }
+
+
+        document.addEventListener('click', function (e) {
+            const button = e.target.closest('.generate-one-pdf');
+            if (!button) return;
+
+            e.preventDefault();
+
+            if (button.disabled) return; // <--- захист від повторних кліків
+            button.disabled = true;
+
+            const url = button.getAttribute('data-url');
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+            showToast('Формується PDF...', 'info');
+
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': csrfToken
+                }
+            })
+                .then(response => {
+                    if (!response.ok) throw new Error('PDF не вдалося згенерувати.');
+                    return response.blob();
+                })
+                .then(blob => {
+                    const downloadUrl = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = downloadUrl;
+                    a.download = 'Звіт.pdf';
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                    setTimeout(() => window.URL.revokeObjectURL(downloadUrl), 100);
+                    showToast('Файл успішно завантажено', 'success');
+                })
+                .catch(error => {
+                    console.error(error);
+                    showToast('Сталася помилка при генерації PDF.', 'error');
+                })
+                .finally(() => {
+                    button.disabled = false;
+                });
+        });
+
+    </script>
 <style>
     .card-application{
         width: calc(25% - 27px);
@@ -550,55 +605,4 @@
 
 
 </style>
-<script>
 
-    function confirmDelete(title) {
-        return confirm(`Видалити заявку "${title}"?`);
-    }
-
-
-    document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('.generate-one-pdf').forEach(button => {
-            button.addEventListener('click', function (e) {
-                e.preventDefault();
-
-                if (button.disabled) return;  // блокування подвійних кліків
-                button.disabled = true;
-
-                const url = this.getAttribute('data-url');
-                if (!url) return;
-
-                showToast('Формується PDF...', 'info');
-
-                fetch(url, {
-                    method: 'GET',
-                    headers: {'X-Requested-With': 'XMLHttpRequest'}
-                })
-                    .then(response => {
-                        if (!response.ok) throw new Error('PDF не вдалося згенерувати.');
-                        return response.blob();
-                    })
-                    .then(blob => {
-                        const downloadUrl = window.URL.createObjectURL(blob);
-                        const a = document.createElement('a');
-                        a.href = downloadUrl;
-                        a.download = 'Звіт.pdf';
-                        document.body.appendChild(a);
-                        a.click();
-                        a.remove();
-                        window.URL.revokeObjectURL(downloadUrl);
-                        showToast('Файл успішно завантажено', 'success');
-                    })
-                    .catch(error => {
-                        console.error(error);
-                        showToast('Сталася помилка при генерації PDF.', 'error');
-                    })
-                    .finally(() => {
-                        button.disabled = false;
-                    });
-            });
-        });
-    });
-
-
-</script>

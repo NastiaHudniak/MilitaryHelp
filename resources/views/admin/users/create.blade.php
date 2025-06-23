@@ -111,7 +111,7 @@
                     <button type="submit" class="register-button">Створити</button>
                     <div class="label-reg">
                         <p>Не хочете створювати?</p>
-                        <a id="back-button">Назад</a>
+                        <a id="back-button" href = "{{ route('admin.users.index') }}">Назад</a>
                     </div>
                 </div>
             </form>

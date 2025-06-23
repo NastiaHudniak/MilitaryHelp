@@ -21,7 +21,15 @@
             padding: 0;
             margin: 0;
         }
-
+        .term{
+            border-radius: 16px;
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 130%;
+            background-color: var(--red-100);
+            color: var(--red-100-15);
+            padding: 4px 8px;
+        }
         .info-status {
             width: fit-content;
             display: inline-block;
@@ -163,6 +171,9 @@
             <p class="info-title">Назва заявки "{{ $application->title }}"</p>
             <p class="info-category">{{ $application->category->name }}</p>
         </div>
+        @if($application->is_urgent)
+            <span class="term">Термінова</span>
+        @endif
         <div class="modal-description">
             <p class="info-description">{{ $application->description }}</p>
         </div>

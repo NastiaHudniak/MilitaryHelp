@@ -76,7 +76,7 @@
                         </div>
                     </div>
 
-
+                    <input type="hidden" name="role_id" value="{{ $user->role_id }}">
                     {{--                    <div class="form-group role-group">--}}
                     {{--                        <label class="label" for="role_id">Роль</label>--}}
                     {{--                        <div class="role-options">--}}
@@ -143,10 +143,10 @@
                 if (confirmLeave) {
                     form.submit();
                 } else {
-                    window.location.href = "{{ route('user.volunteer.index') }}";
+                    window.location.href = "{{ route('user.volunteer.view_account') }}";
                 }
             } else {
-                window.location.href = "{{ route('user.volunteer.index') }}";
+                window.location.href = "{{ route('user.volunteer.view_account') }}";
             }
         });
     </script>

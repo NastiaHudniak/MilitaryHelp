@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @include('layouts.header_military')
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 @section('content')
     <div class="main-content" style="font-family: 'Open Sans', sans-serif;">
@@ -102,7 +103,7 @@
                 </div>
             @endforeach
                 @foreach ($volunteers as $volunteer)
-                    <div class="modal" id="applicationModal{{ $volunteer->id }}" tabindex="-1" aria-labelledby="applicationModalLabel{{ $volunteer->id }}" aria-hidden="true" data-backdrop="static" data-keyboard="false" style="top: 10%; left: 30%;">
+                    <div class="modal" id="applicationModal{{ $volunteer->id }}" tabindex="-1" aria-labelledby="applicationModalLabel{{ $volunteer->id }}"  aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false"  style="top: 10%; left: 30%;">
                         <div class="modal-info-block">
                             <div class="modal-status-close">
                                 <div class="modal-title" id="applicationModalLabel{{ $volunteer->id }}">
@@ -161,6 +162,7 @@
     </div>
 
     <script>
+
         document.addEventListener("DOMContentLoaded", function () {
             // --- Початкові змінні ---
             const searchInput = document.getElementById('search');
@@ -175,7 +177,7 @@
             let currentFilter = ''; // '', 'favorites', 'known'
             let currentSort = '';
             let currentQuery = '';
-
+            let searchTimeout;
             function initFavoriteButtons() {
                 document.querySelectorAll('.favorite-btn').forEach(btn => {
                     btn.onclick = function () {
@@ -223,11 +225,13 @@
                         filter: currentFilter,
                         sort: currentSort
                     }).toString();
-
+                showLoaderWithDelay();
                 fetch(url)
                     .then(response => response.json())
                     .then(data => {
                         cardContainer.innerHTML = '';
+                        // Спочатку видаляємо старі модалки
+                        document.querySelectorAll('.modal.dynamic-modal').forEach(modal => modal.remove());
 
                         if (data.volunteers.length === 0) {
                             if (noResults) noResults.style.display = 'block';
@@ -238,9 +242,14 @@
 
                         data.volunteers.forEach(volunteer => {
                             const avgRating = volunteer.average_rating ? volunteer.average_rating.toFixed(1) : '0.0';
-                            let imgSrc = volunteer.images.length > 0
+                            const imgSrc = volunteer.images.length > 0
                                 ? `{{ asset('storage') }}/${volunteer.images[0].image_url}`
                                 : `{{ asset('images/acc.jpg') }}`;
+
+                            const isFavorite = volunteer.is_favorite;
+                            const outlineSrc = `{{ asset('images/icon/bookmarks/bookmark.svg') }}`;
+                            const filledSrc = `{{ asset('images/icon/bookmarks/bookmark-filled.svg') }}`;
+                            const favoriteImg = isFavorite ? filledSrc : outlineSrc;
 
                             function getStarHTML(index) {
                                 if (volunteer.average_rating >= index) return `<div class="full"></div>`;
@@ -256,42 +265,92 @@
                             const card = document.createElement('div');
                             card.className = 'card-volunteer';
                             card.innerHTML = `
-    <div class="card-foto">
-        <img src="${imgSrc}" alt="User Image" style="border-radius: 50%;">
-    </div>
-    <div class="card-header-app">
-        <h5 class="card-title-app">${volunteer.name} ${volunteer.surname}</h5>
-        <div class="star-rating">${starsHTML}<p>${avgRating}</p></div>
-    </div>
-    <div class="buttons-blocks">
-        <button class="favorite-btn" type="button" data-id="${volunteer.id}">
-            <img src="${volunteer.is_favorite ? '{{ asset('images/icon/bookmarks/bookmark-filled.svg') }}' : '{{ asset('images/icon/bookmarks/bookmark.svg') }}'}"
-                alt="Favorite"
-                class="favorite-icon"
-                data-outline="{{ asset('images/icon/bookmarks/bookmark.svg') }}"
-                data-filled="{{ asset('images/icon/bookmarks/bookmark-filled.svg') }}">
-        </button>
-        <a href="javascript:void(0);" class="button-view-info" data-toggle="modal" data-target="#applicationModal${volunteer.id}">
-            Детальніше
-            <img src="{{ asset('images/icon/info.svg') }}">
-        </a>
-    </div>
-`;
-
+                    <div class="card-foto">
+                        <img src="${imgSrc}" alt="User Image" style="border-radius: 50%;">
+                    </div>
+                    <div class="card-header-app">
+                        <h5 class="card-title-app">${volunteer.name} ${volunteer.surname}</h5>
+                        <div class="star-rating">${starsHTML}<p>${avgRating}</p></div>
+                    </div>
+                    <div class="buttons-blocks">
+                        <button class="favorite-btn" type="button" data-id="${volunteer.id}">
+                            <img src="${favoriteImg}"
+                                alt="Favorite"
+                                class="favorite-icon"
+                                data-outline="${outlineSrc}"
+                                data-filled="${filledSrc}">
+                        </button>
+                        <a href="javascript:void(0);" class="button-view-info" data-toggle="modal" data-target="#applicationModal${volunteer.id}">
+                            Детальніше
+                            <img src="{{ asset('images/icon/info.svg') }}">
+                        </a>
+                    </div>
+                `;
                             cardContainer.appendChild(card);
+
+                            // Додати відповідну модалку в кінець body
+                            const modalHTML = `
+                    <div class="modal fade dynamic-modal" id="applicationModal${volunteer.id}" tabindex="-1"
+     aria-labelledby="applicationModalLabel${volunteer.id}" aria-hidden="true"
+     data-backdrop="static" data-keyboard="false" style="top: 10%; left: 30%;">
+
+    <div class="modal-info-block">
+        <div class="modal-status-close">
+            <div class="modal-title" id="applicationModalLabel${volunteer.id}">
+                <p class="info-title">${volunteer.name} ${volunteer.surname}</p>
+            </div>
+            <button type="button" class="close-button" data-dismiss="modal" aria-label="Close">
+                <img src="/images/icon/cancell.svg">
+            </button>
+        </div>
+        <div class="modal-foto-text">
+            <div class="modal-foto">
+                <img src="${imgSrc}" alt="User Image" style="border-radius: 500px;">
+            </div>
+            <div class="modal-description">
+                <p class="info-description">${volunteer.email}</p>
+                <p class="info-description">${volunteer.phone}</p>
+                <p class="info-description">${volunteer.address}</p>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <div class="star-rating">
+                ${starsHTML}
+                <p>${avgRating}</p>
+            </div>
+            <button class="favorite-btn" type="button" data-id="${volunteer.id}">
+                <img src="${favoriteImg}"
+                     alt="Favorite"
+                     class="favorite-icon"
+                     data-outline="${outlineSrc}"
+                     data-filled="${filledSrc}">
+            </button>
+        </div>
+    </div>
+</div>
+                `;
+                            document.body.insertAdjacentHTML('beforeend', modalHTML);
                         });
 
                         initFavoriteButtons();
                     })
                     .catch(error => {
                         console.error('Error:', error);
+                    })
+                    .finally(() => {
+                        setTimeout(() => {
+                            hideLoader();
+                        }, 100);
                     });
             }
 
-            // --- Слухачі подій ---
+
             searchInput.addEventListener('input', e => {
+                clearTimeout(searchTimeout);
                 currentQuery = e.target.value;
-                fetchVolunteers();
+                searchTimeout = setTimeout(fetchVolunteers, 1000);
+
             });
 
             filterFavoritesBtn.addEventListener('click', () => {
@@ -341,6 +400,24 @@
         function toggleFilters() {
             const block = document.getElementById('filtersBlock');
             block.classList.toggle('open');
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) {
+                modal.style.display = 'none';
+                modal.classList.remove('show');
+            }
+
+            // Видаляємо backdrop
+            const backdrop = document.querySelector('.modal-backdrop');
+            if (backdrop) {
+                backdrop.remove();
+            }
+
+            // Опціонально прибрати scroll lock
+            document.body.classList.remove('modal-open');
+            document.body.style.overflow = ''; // Bootstrap додає overflow:hidden
         }
     </script>
 

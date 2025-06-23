@@ -62,6 +62,6 @@ class MilitaryAddApplicationsController extends Controller
            'comment' => $request->input('comment', 'немає'),
            'is_urgent' => $request->input('is_urgent', 0), // якщо не вибрано — буде 0
        ]);
-       return redirect()->route('user.military.index')->with('success', 'Заявка успішно створена');
+       return redirect()->route('user.military.view_app')->with('success', 'Заявка успішно створена');
    }
 }

@@ -16,9 +16,14 @@ class ApplicationImageController extends Controller
 
     public function store(Request $request, Application $application)
     {
+        $messages = [
+            'image.required' => '* Оберіть зображення для завантаження.',
+            'image.max' => '* Розмір зображення не повинен перевищувати 10 МБ.',
+        ];
+
         $request->validate([
             'image' => 'required|max:10240',
-        ]);
+        ], $messages);
 
         $imagePath = $request->file('image')->store('application_image', 'public');
 

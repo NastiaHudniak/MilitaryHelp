@@ -41,7 +41,7 @@
                     <a class="head-name">Редагування заявки</a>
                 @elseif(Route::currentRouteName() === 'user.military.edit_account')
                     <a class="head-name">Редагування персональної інформації</a>
-                @elseif(Route::currentRouteName() === 'user.military.rate')
+                @elseif(Route::currentRouteName() === 'military.rate')
                     <a class="head-name">Виставлення рейтингу</a>
                 @elseif(Route::currentRouteName() === 'user.military.view_account')
                     <a class="head-name">Особистий кабінет</a>
